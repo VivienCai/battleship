@@ -26,6 +26,10 @@ public class Main {
         board[4][7] = 'x';
         board[7][4] = 'x';
         board[7][8] = 'x';
+        board[3][4] = 'x';
+        board[4][3] = 'x';
+        board[8][7] = 'x';
+        board[5][9] = 'x';
 
         for (int k = 2; k <=5; k++) {
         // HORIZONTAL
@@ -100,7 +104,11 @@ public class Main {
         }
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <=10; j++) {
-                System.out.print(sum[i][j] + " ");
+                if (sum[i][j]<10) {
+                    System.out.print("0" + sum[i][j] + " ");
+                } else {
+                    System.out.print(sum[i][j] + " ");
+                }
             }
             System.out.println();
         }  
