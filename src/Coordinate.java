@@ -1,6 +1,8 @@
 public class Coordinate {
     private int x_coor;
     private int y_coor;
+    private boolean isShip;
+    private boolean isHit;
 
     public Coordinate(int y, int x) {
         x_coor = x;
@@ -24,7 +26,7 @@ public class Coordinate {
     }
 
     public char columnIndex(int y) {
-        char asciiVal = (char) ((y-1) + 'A');
+        char asciiVal = (char) ((y - 1) + 'A');
         return asciiVal;
     }
 }

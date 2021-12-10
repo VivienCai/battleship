@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class Ship {
     private String name;
     private boolean isSunk;
@@ -5,6 +7,8 @@ public class Ship {
     private int size;
     private int timesHit;
     Coordinate placement;
+
+    private ArrayList<Ship> listOfShips = new ArrayList<Ship>();
 
     public Ship(boolean isV, int s, Coordinate p) {
         int count = 0;
@@ -31,6 +35,7 @@ public class Ship {
         isVertical = isV;
         size = s;
         placement = p;
+
     }
 
 }
