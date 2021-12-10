@@ -1,6 +1,5 @@
 // package ics4u_battleship;
 
-
 // note: add a game class for cleaner code
 
 public class Main {
@@ -25,8 +24,8 @@ public class Main {
                 board[i][j] = 'o';
                 sum[i][j] = 0;
             }
-        }   
-        
+        }
+
         // trying summing with 3 ship
 
         // vertical then horiztonal
@@ -40,19 +39,20 @@ public class Main {
         // board[8][7] = 'x';
         // board[5][9] = 'x';
 
-        for (int k = 2; k <=5; k++) {
-        // HORIZONTAL
-            for (int i = 1; i <=10; i++) {
-                for (int j = 1; j <= 10-k+1; j++) {
+        // summing ships from length 2 to 5
+        for (int k = 2; k <= 5; k++) {
+            // HORIZONTAL
+            for (int i = 1; i <= 10; i++) {
+                for (int j = 1; j <= 10 - k + 1; j++) {
                     // int shipsize = 3;
                     boolean ok = true;
-                    for (int g = j; g < j+k; g++) {
-                        if (board[i][g]=='x') {
+                    for (int g = j; g < j + k; g++) {
+                        if (board[i][g] == 'x') { // if missed point
                             ok = false;
                         }
                     }
                     if (ok) {
-                        for (int g = j; g < j+k; g++) {
+                        for (int g = j; g < j + k; g++) {
                             sum[i][g]++;
                         }
                     }
@@ -61,33 +61,35 @@ public class Main {
 
             // VERTICAL
             for (int i = 1; i <= 10; i++) {
-                for (int j = 1; j <= 10-k+1; j++) {
+                for (int j = 1; j <= 10 - k + 1; j++) {
                     // int shipsize = 3;
                     boolean ok = true;
-                    for (int g = j; g < j+k; g++) {
-                        if (board[g][i]=='x') {
+                    for (int g = j; g < j + k; g++) {
+                        if (board[g][i] == 'x') {
                             ok = false;
                         }
                     }
                     if (ok) {
-                        for (int g = j; g < j+k; g++) {
+                        for (int g = j; g < j + k; g++) {
                             sum[g][i]++;
                         }
                     }
                 }
             }
         }
-        for (int i = 1; i <=10; i++) {
-            for (int j = 1; j <= 10-3+1; j++) {
+        // since there are 2 ships of length 3
+        // horizontal
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= 10 - 3 + 1; j++) {
                 // int shipsize = 3;
                 boolean ok = true;
-                for (int g = j; g < j+3; g++) {
-                    if (board[i][g]=='x') {
+                for (int g = j; g < j + 3; g++) {
+                    if (board[i][g] == 'x') {
                         ok = false;
                     }
                 }
                 if (ok) {
-                    for (int g = j; g < j+3; g++) {
+                    for (int g = j; g < j + 3; g++) {
                         sum[i][g]++;
                     }
                 }
@@ -96,33 +98,31 @@ public class Main {
 
         // VERTICAL
         for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 10-3+1; j++) {
+            for (int j = 1; j <= 10 - 3 + 1; j++) {
                 // int shipsize = 3;
                 boolean ok = true;
-                for (int g = j; g < j+3; g++) {
-                    if (board[g][i]=='x') {
+                for (int g = j; g < j + 3; g++) {
+                    if (board[g][i] == 'x') {
                         ok = false;
                     }
                 }
                 if (ok) {
-                    for (int g = j; g < j+3; g++) {
+                    for (int g = j; g < j + 3; g++) {
                         sum[g][i]++;
                     }
                 }
             }
         }
-
-
         for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <=10; j++) {
-                if (sum[i][j]<10) {
+            for (int j = 1; j <= 10; j++) {
+                if (sum[i][j] < 10) {
                     System.out.print("0" + sum[i][j] + " ");
                 } else {
                     System.out.print(sum[i][j] + " ");
                 }
             }
             System.out.println();
-        }  
+        }
 
     }
 
