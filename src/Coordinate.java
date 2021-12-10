@@ -2,7 +2,7 @@ public class Coordinate {
     private int x_coor;
     private int y_coor;
 
-    public Coordinate(int x, int y) {
+    public Coordinate(int y, int x) {
         x_coor = x;
         y_coor = y;
     }
@@ -21,5 +21,10 @@ public class Coordinate {
 
     public void sety(int newY) {
         y_coor = newY;
+    }
+
+    public char columnIndex(int y) {
+        char asciiVal = (char) ((y-1) + 'A');
+        return asciiVal;
     }
 }
