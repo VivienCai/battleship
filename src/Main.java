@@ -4,6 +4,8 @@ import java.util.*;
 
 public class Main {
     // testing array
+    static Scanner sc = new Scanner(System.in);
+
     static int sum[][] = new int[11][11];
     static char board[][] = new char[11][11];
     static int max = 0;
@@ -93,6 +95,63 @@ public class Main {
         max = 0;
     }
 
+    public static int getInput(String output) {
+    	String input;
+    	int xcoord=-1;
+    	int finalOutput=-1;
+    	while (true) {  //keeps on running until user makes a valid input
+	    	System.out.println(output);
+	    	System.out.println("Please enter your desired x coordinate, and then press enter.");
+	    	input=sc.nextLine();
+	    	if(isInt(input)) {
+	    		xcoord=Integer.parseInt(input);
+	    		if (xcoord>=1 &&xcoord<=10) {
+	    			//do smtg to return x value
+	    			break;
+	    		}else {
+	    			System.out.println("Please enter a valid input");
+	    		}
+	    		
+	    	}
+	    	else {
+	    		System.out.println("Please enter a valid input");
+	    	}
+    	}
+    	int ycoord;
+    	while (true) {
+	    	System.out.println(output);
+	    	System.out.println("Please enter your desired y coordinate, and then press enter.");
+    		input=sc.nextLine();
+    		if(isInt(input)) {
+    			ycoord=Integer.parseInt(input);
+    			if (ycoord>=1 &&ycoord<=10) {
+	    			//do smtg to return y value
+	    			break;
+    			}else {
+	    			System.out.println("Please enter a valid input");
+	    		}
+	    		
+	    	}
+	    	else {
+	    		System.out.println("Please enter a valid input");
+	    	}
+    	
+    	}
+    	return finalOutput;
+    }
+    	
+    
+    
+    public static boolean isInt(String input) {
+		try {Integer.parseInt(input); //checks if the user input is an int
+	            return true; //If it is, return true
+	        }
+	        catch( Exception e ) {
+	            return false;//else, return false
+	        }
+	}
+    
+    
     public static void main(String[] args) {
         // general execution goes here
 
@@ -109,7 +168,6 @@ public class Main {
         // }
 
         while (true) {
-            Scanner sc = new Scanner(System.in);
             System.out.println("Enter the coordinate you want to hit. Enter -1");
             int y= sc.nextInt(),  x = sc.nextInt();
             if (y == -1) {
