@@ -88,6 +88,9 @@ public class Main {
                 sum[i][j] = 0;
             }
         }
+        isParity = new ArrayList<Coordinate>();
+        possibleHits = new ArrayList<Coordinate>();
+        max = 0;
     }
 
     public static void main(String[] args) {
@@ -121,13 +124,28 @@ public class Main {
             for (int i = 1; i <= 10; i++) {
                 for (int j = 1; j <= 10; j++) {
                     max = Math.max(max, sum[i][j]);
-                    if (isOdd(i, j) == initialIsOdd) {
-                        isParity.add(new Coordinate(i,j));
-                    } else {
-                        possibleHits.add(new Coordinate(i, j));
+                }
+            }
+
+            for (int i = 1; i <= 10; i++) {
+                for (int j = 1; j <= 10; j++) {
+                    if (sum[i][j] == max) {
+                        if (isOdd(i, j) == initialIsOdd) {
+                            isParity.add(new Coordinate(i,j));
+                        } else {
+                            possibleHits.add(new Coordinate(i, j));
+                        }
                     }
                 }
             }
+
+
+            // for (Coordinate i : possibleHits)  {
+            //     System.out.printf("%d, %d ", i.getY(), i.getX());
+            // }
+            // for (Coordinate i : isParity)  {
+            //     System.out.printf("%d, %d ", i.getY(), i.getX());
+            // }
             if (isParity.size() > 0) {
                 int randIndex = (int)(Math.random() * isParity.size());
                 Coordinate hit = isParity.get(randIndex);
