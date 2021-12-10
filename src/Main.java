@@ -7,6 +7,15 @@ public class Main {
     // testing array
     static int sum[][] = new int[11][11];
     static char board[][] = new char[11][11];
+    static int max = 0;
+    
+    public static boolean isOdd(int column, int row) {
+        if ((column + row)%2==1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public static void main(String[] args) {
         // general execution goes here
@@ -21,15 +30,15 @@ public class Main {
         // trying summing with 3 ship
 
         // vertical then horiztonal
-        board[5][5] = 'x';
-        board[6][6] = 'x';
-        board[4][7] = 'x';
-        board[7][4] = 'x';
-        board[7][8] = 'x';
-        board[3][4] = 'x';
-        board[4][3] = 'x';
-        board[8][7] = 'x';
-        board[5][9] = 'x';
+        // board[5][5] = 'x';
+        // board[6][6] = 'x';
+        // board[4][7] = 'x';
+        // board[7][4] = 'x';
+        // board[7][8] = 'x';
+        // board[3][4] = 'x';
+        // board[4][3] = 'x';
+        // board[8][7] = 'x';
+        // board[5][9] = 'x';
 
         for (int k = 2; k <=5; k++) {
         // HORIZONTAL
@@ -102,6 +111,8 @@ public class Main {
                 }
             }
         }
+
+
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <=10; j++) {
                 if (sum[i][j]<10) {
