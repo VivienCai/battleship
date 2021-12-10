@@ -7,11 +7,16 @@ public class AI {
         // for every ship
         for (int shipSize = 2; shipSize <= 5; shipSize++) {
             boolean orientationV = (int) ((Math.random() * 2) + 1) == 1 ? true : false;
-            
-            if (orientationV) {
-                
-            }
 
+            if (orientationV) {
+                int x = (int) ((Math.random() * 10) + 1);
+                int y = (int) ((Math.random() * (11 - shipSize)) + 1);
+
+            } else {
+                int x = (int) ((Math.random() * (11 - shipSize)) + 1);
+                int y = (int) ((Math.random() * 10) + 1);
+            }
+            Ship ship = new Ship(orientationV, shipSize, new Coordinate());
             // int x = (int) (Math.random() * (10 - 5));
             // int y = (int) (Math.random() * (10 - 5));
             // System.out.println(x);
