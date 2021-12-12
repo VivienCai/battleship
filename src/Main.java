@@ -24,7 +24,18 @@ public class Main {
     }
 
     public static void printArray() {
-        for (int i = 1; i <= 10; i++) {
+		System.out.print("   ");
+
+    	for (int i=1;i<11;i++) { //for the bar at the top
+    		System.out.print(i+("  "));
+    	}
+    	System.out.println();
+    	System.out.println("_______________________________");
+    	char c='a';
+    	for (int i = 1; i <= 10; i++) {
+    		
+    		System.out.print(c+" ");
+    		c++;
             for (int j = 1; j <= 10; j++) {
                 if (sum[i][j] < 10) {
                     System.out.print("0" + sum[i][j] + " ");
@@ -133,9 +144,6 @@ public class Main {
 	    }
 	}
     	
-    	
-    
-    
     public static boolean isInt(String input) {
 		try {Integer.parseInt(input); //checks if the user input is an int
 	            return true; //If it is, return true
