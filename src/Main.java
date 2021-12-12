@@ -95,19 +95,16 @@ public class Main {
         max = 0;
     }
 
-    public static int getInput(String output) {
+    public static int getInputx(String output) {
     	String input;
-    	int xcoord=-1;
-    	int finalOutput=-1;
+    	int coord=-1;
     	while (true) {  //keeps on running until user makes a valid input
 	    	System.out.println(output);
-	    	System.out.println("Please enter your desired x coordinate, and then press enter.");
 	    	input=sc.nextLine();
 	    	if(isInt(input)) {
-	    		xcoord=Integer.parseInt(input);
-	    		if (xcoord>=1 &&xcoord<=10) {
-	    			//do smtg to return x value
-	    			break;
+	    		coord=Integer.parseInt(input);
+	    		if (coord>=1 &&coord<=10) {
+	    			return coord;
 	    		}else {
 	    			System.out.println("Please enter a valid input");
 	    		}
@@ -117,28 +114,25 @@ public class Main {
 	    		System.out.println("Please enter a valid input");
 	    	}
     	}
-    	int ycoord;
-    	while (true) {
-	    	System.out.println(output);
-	    	System.out.println("Please enter your desired y coordinate, and then press enter.");
-    		input=sc.nextLine();
-    		if(isInt(input)) {
-    			ycoord=Integer.parseInt(input);
-    			if (ycoord>=1 &&ycoord<=10) {
-	    			//do smtg to return y value
-	    			break;
-    			}else {
-	    			System.out.println("Please enter a valid input");
-	    		}
-	    		
-	    	}
-	    	else {
-	    		System.out.println("Please enter a valid input");
-	    	}
-    	
-    	}
-    	return finalOutput;
     }
+    	
+    public static int getInputy(String output) {
+    	String input;
+    	char c;
+    	int coord=-1;
+    	while (true) {  //keeps on running until user makes a valid input
+	    	System.out.println(output);
+	    	input=sc.nextLine();
+	    	c=input.charAt(0);
+	    	coord=(c-'a')+1;
+	    	if (coord>=1 &&coord<=10) {
+	    		return coord;
+	   		}else {
+	   			System.out.println("Please enter a valid input");
+	   		}   		
+	    }
+	}
+    	
     	
     
     
@@ -168,8 +162,8 @@ public class Main {
         // }
 
         while (true) {
-            System.out.println("Enter the coordinate you want to hit. Enter -1");
-            int y= sc.nextInt(),  x = sc.nextInt();
+        	int y = getInputy("Please enter your desired y value (letter)");
+            int x= getInputx("Please enter your desired x value");
             if (y == -1) {
                 break;
             }
