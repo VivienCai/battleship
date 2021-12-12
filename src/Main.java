@@ -162,8 +162,8 @@ public class Main {
         // }
 
         while (true) {
-        	int y = getInputy("Please enter your desired y value (letter)");
-            int x= getInputx("Please enter your desired x value");
+        	int y = getInputy("Please enter your desired y value (lowercase letter)");
+            int x= getInputx("Please enter your desired x value (number)");
             if (y == -1) {
                 break;
             }
