@@ -7,6 +7,8 @@ public class playerStuff {
 	static int y;
     static ArrayList<Coordinate> shipPositions = new ArrayList<Coordinate>();
     static int size; //size of ship
+    static char ships[][]=new char[11][11];
+    static Coordinate coorb[][]=new Coordinate[11][11];
 	public static Coordinate getCoords() {
 		//give vertical and horizontal coord and check if it overlaps
 	boolean check=true;	
@@ -14,7 +16,7 @@ public class playerStuff {
 		while (true) {
 			check=true;
 			//getting input values
-	        x =getInputx("Pick your x coordinate for ship"+(i));
+	        x =getInputx("Pick your x coordinate for ship"+(i)); //place in the order 2,3,4,5,3
 	        y =getInputy("Pick your y coordinate for ship"+(i));
 			boolean vertical;
 			System.out.println("Please enter 1 for vertical, and anything else for horizontal");
@@ -28,34 +30,63 @@ public class playerStuff {
 			
 			//assigning input values
 			Coordinate coords=new Coordinate (y,x);	
-			shipPositions.set(i, coords);
-			
-			
-			//checking input values
-			if (i==1||i==4||i==5) {
+			shipPositions.set(i-1, coords); //home coord value for ship number i
+			if (i==1||i==2||i==3||i==4) {
 				size=i+1;
 				if (vertical==true) {
 					for (int j=0;j<size;j++) {
-						shipPositions.get(i).setIsShip(true);
+						coorb[y+j][x].setIsShip(true); //if vertical extend size tiles
+					}
+				}
+				if (vertical==false) {
+					for (int j=0;j<size;j++) {
+						coorb[y][x+j].setIsShip(true);
+					}
+				}
+			}
+			else if (i==5)  {  //for the last ship, since there are 2 ships with 3 tiles 
+				size=3;
+				if (vertical==true) {
+					for (int j=0;j<size;j++) {
+						coorb[y+j][x].setIsShip(true); //if vertical extend size tiles
+					}
+				}
+				if (vertical==false) {
+					for (int j=0;j<size;j++) {
+						coorb[y][x+j].setIsShip(true);
 					}
 				}
 			}
 			
 			
-		
-		
+			//check
+			
 		}
-
-	
-    }
-	
-   
-	
+	}
 	return (Coordinate.x_coor==x);
 	}
 	
 	
-	
+	public static boolean isOccupied(Coordinate homeCoord, boolean isV, int size ) {
+		homeCoord.getX();
+		for (int i=0;i<size;i++) { //loops for each stud of ship
+			if(isV) {
+				if (coorb[homeCoord.getY()+1][homeCoord.getX()].getIsShip()) { //if there is a ship on grid, 
+					return true;
+				}
+				else {
+					if (i==(size-1)) {
+						return false; //only returns false if all places have been checked
+					}
+					
+					
+				}
+			}
+		}
+		return false;
+				
+				
+	}
 	
 	
 	
