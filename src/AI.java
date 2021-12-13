@@ -15,6 +15,27 @@ public class AI {
                 board[i][j] = 'o';
             }
         }
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= 10; j++) {
+                coorBoard[i][j] = new Coordinate(j, i);
+            }
+        }
+    }
+
+    public static void testPrint() {
+        System.out.println("__________test________");
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= 10; j++) {
+                if (coorBoard[i][j].getIsShip()) {
+                    System.out.print("T");
+                } else {
+                    System.out.print("F");
+                }
+                System.out.print(board[i][j] + " ");
+
+            }
+            System.out.println();
+        }
     }
 
     public static void printBoard() {
@@ -29,7 +50,7 @@ public class AI {
     }
     // helper methods
 
-    public static Coordinate generatepointToPlace(int shipSize, boolean orientationV) {
+    public static Coordinate generatePoint(int shipSize, boolean orientationV) {
         int x;
         int y;
         // if vertical
@@ -44,27 +65,27 @@ public class AI {
         }
         System.out.print(x + " ");
         System.out.print(y + " ");
-        System.out.println(shipSize + " ");
+        System.out.print(shipSize + " ");
+        System.out.println(orientationV);
 
         return new Coordinate(y, x);
     }
 
     public static boolean anyGeneratedIsShip(Coordinate generate, boolean orientationV, int shipSize) {
-        Coordinate nextShip;
-        for (int j = 1; j < shipSize; j++) {
+        for (int j = 0; j < shipSize; j++) {
             if (orientationV) {
-                nextShip = new Coordinate(generate.getY() + j, generate.getX());
-                
-
+                if (coorBoard[generate.getY() + j][generate.getX()].getIsShip()) {
+                    System.out.println("hello");
+                    return true;
+                }
             } else {
-                nextShip = new Coordinate(generate.getY(), generate.getX() + j);
-
+                if (coorBoard[generate.getY()][generate.getX() + j].getIsShip()) {
+                    System.out.println("hello");
+                    return true;
+                }
             }
-            if (nextShip.getIsShip()) {
-                return true;
-            }
-
         }
+
         return false;
 
     }
@@ -75,39 +96,42 @@ public class AI {
         for (int i = 2; i <= 5; i++) {
             int shipSize = i;
 
+            // instantiating
             boolean orientationV = (int) ((Math.random() * 2) + 1) == 1 ? true : false;
             Coordinate generate = new Coordinate(0, 0);
             boolean isCoorUnique = false;
+            generate = generatePoint(shipSize, orientationV);
 
-            //while the coordinate isnt unique 
+            // while the coordinate isnt unique
             while (!isCoorUnique) {
-                generate = generatepointToPlace(shipSize, orientationV);
                 if (anyGeneratedIsShip(generate, orientationV, shipSize)) {
-                    
-                    generate = generatepointToPlace(shipSize, orientationV);
+
+                    generate = generatePoint(shipSize, orientationV);
                 } else {
                     isCoorUnique = true;
                 }
             }
             Ship ship = new Ship(orientationV, shipSize, generate);
-            generate.setIsShip(true);
-            board[generate.getY()][generate.getX()] = 'x';
 
             for (int j = 1; j < shipSize; j++) {
+                generate.setIsShip(true);
+                coorBoard[generate.getY()][generate.getX()].setIsShip(true);
+                board[generate.getY()][generate.getX()] = 'x';
                 // if the orientation is vertical
                 if (orientationV) {
-                    Coordinate nextShip = new Coordinate(generate.getY() + j, generate.getX());
-                    nextShip.setIsShip(true);
-                    listOfShip.add(nextShip);
+                    // Coordinate nextShip = new Coordinate(generate.getY() + j, generate.getX());
+                    // nextShip.setIsShip(true);
+                    // listOfShip.add(nextShip);
+                    coorBoard[generate.getY() + j][generate.getX()].setIsShip(true);
                     board[generate.getY() + j][generate.getX()] = 'x';
                 } else {
-                    Coordinate nextShip = new Coordinate(generate.getY(), generate.getX() + j);
-                    nextShip.setIsShip(true);
-                    listOfShip.add(nextShip);
+                    coorBoard[generate.getY()][generate.getX() + j].setIsShip(true);
                     board[generate.getY()][generate.getX() + j] = 'x';
+                    // listOfShip.add(nextShip);
 
                 }
             }
+            testPrint();
         }
 
     }
@@ -119,6 +143,7 @@ public class AI {
         //
         place();
         printBoard();
+        testPrint();
 
     }
 

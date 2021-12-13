@@ -1,7 +1,7 @@
 public class Coordinate {
     private int x_coor;
     private int y_coor;
-    private boolean isShip;
+    private boolean isShip = false;
     private boolean isHit;
 
     public Coordinate(int y, int x) {
@@ -45,7 +45,7 @@ public class Coordinate {
     public void setIsHit(boolean newIsHit) {
         isHit = newIsHit;
     }
-    
+
     public boolean getIsShip() {
         return isShip;
     }
