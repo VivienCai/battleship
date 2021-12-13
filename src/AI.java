@@ -54,9 +54,7 @@ public class AI {
         for (int j = 1; j < shipSize; j++) {
             if (orientationV) {
                 nextShip = new Coordinate(generate.getY() + j, generate.getX());
-                if(int i =0;i<listOfShip.size;i++){
-
-                }
+                
 
             } else {
                 nextShip = new Coordinate(generate.getY(), generate.getX() + j);
@@ -76,13 +74,16 @@ public class AI {
 
         for (int i = 2; i <= 5; i++) {
             int shipSize = i;
+
             boolean orientationV = (int) ((Math.random() * 2) + 1) == 1 ? true : false;
             Coordinate generate = new Coordinate(0, 0);
             boolean isCoorUnique = false;
-            // if the
+
+            //while the coordinate isnt unique 
             while (!isCoorUnique) {
                 generate = generatepointToPlace(shipSize, orientationV);
                 if (anyGeneratedIsShip(generate, orientationV, shipSize)) {
+                    
                     generate = generatepointToPlace(shipSize, orientationV);
                 } else {
                     isCoorUnique = true;
