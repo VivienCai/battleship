@@ -154,6 +154,9 @@ public class Main {
 	}
     
     
+    static char playerBoard[][]=new char [11][11];
+    static char playerHits [][]=new char[11][11];
+    
     public static void main(String[] args) {
         // general execution goes here
 
@@ -168,7 +171,9 @@ public class Main {
         //     sumRows(k);
         //     sumColumns(k);
         // }
+        
 
+  
         while (true) {
         	int y = getInputy("Please enter your desired y value (lowercase letter)");
             int x= getInputx("Please enter your desired x value (number)");
@@ -217,33 +222,13 @@ public class Main {
             }
             resetArray();
         }
+        for (int i=0;i<5;i++) {
+        int x =getInputx("Place your first ship");
+        }
 
-        // summing ships from length 2 to 5
-        // for (int k = 2; k <= 5; k++) {
-        //     sumRows(k);
-        //     sumColumns(k);
-        // }
-        // printArray();
-
-        // for (int i = 1; i <= 10; i++) {
-        //     for (int j = 1; j <= 10; j++) {
-        //         max = Math.max(max, sum[i][j]);
-        //         if (isOdd(i, j) == initialIsOdd) {
-        //             isParity.add(new Coordinate(i,j));
-        //         } else {
-        //             possibleHits.add(new Coordinate(i, j));
-        //         }
-        //     }
-        // }
-        // if (isParity.size() > 0) {
-        //     int randIndex = (int)(Math.random() * isParity.size());
-        //     Coordinate hit = isParity.get(randIndex);
-        //     System.out.printf("You should hit square %c %d.\n", hit.columnIndex(hit.getY()), hit.getX());
-        // } else {
-        //     int randIndex = (int)(Math.random() * possibleHits.size());
-        //     Coordinate hit = possibleHits.get(randIndex);
-        //     System.out.printf("You should hit square %c %d.\n",hit.columnIndex(hit.getY()), hit.getX());
-        // }
+        
+        
+        
 
     }
 
