@@ -60,6 +60,12 @@ public class playerStuff {
 			
 			
 			//check
+			if (isOccupied(coords, vertical,size)) {
+				check=true; //if overlapping, while loop keeps running
+			}
+			else {
+				check=false;//if not, while loop ends and next iteration of for loop runs
+			}
 			
 		}
 	}
@@ -71,7 +77,7 @@ public class playerStuff {
 		homeCoord.getX();
 		for (int i=0;i<size;i++) { //loops for each stud of ship
 			if(isV) {
-				if (coorb[homeCoord.getY()+1][homeCoord.getX()].getIsShip()) { //if there is a ship on grid, 
+				if (coorb[homeCoord.getY()+i][homeCoord.getX()].getIsShip()) { //if there is a ship on grid, 
 					return true;
 				}
 				else {
@@ -80,6 +86,16 @@ public class playerStuff {
 					}
 					
 					
+				}
+			}
+			else { //not vertical
+				if (coorb[homeCoord.getY()][homeCoord.getX()+i].getIsShip()) { //if there is a ship on grid, 
+					return true;
+				}
+				else {
+					if (i==(size-1)) {
+						return false; //only returns false if all places have been checked
+					}
 				}
 			}
 		}
