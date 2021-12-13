@@ -22,22 +22,6 @@ public class AI {
         }
     }
 
-    public static void testPrint() {
-        System.out.println("__________test________");
-        for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 10; j++) {
-                if (coorBoard[i][j].getIsShip()) {
-                    System.out.print("T");
-                } else {
-                    System.out.print("F");
-                }
-                System.out.print(board[i][j] + " ");
-
-            }
-            System.out.println();
-        }
-    }
-
     public static void printBoard() {
         System.out.println("_____________________________");
         for (int i = 1; i <= 10; i++) {
@@ -48,7 +32,6 @@ public class AI {
         }
 
     }
-    // helper methods
 
     public static Coordinate generatePoint(int shipSize, boolean orientationV) {
         int x;
@@ -63,11 +46,6 @@ public class AI {
             x = (int) ((Math.random() * (11 - shipSize)) + 1);
             y = (int) ((Math.random() * 10) + 1);
         }
-        System.out.print(x + " ");
-        System.out.print(y + " ");
-        System.out.print(shipSize + " ");
-        System.out.println(orientationV);
-
         return new Coordinate(y, x);
     }
 
@@ -75,26 +53,27 @@ public class AI {
         for (int j = 0; j < shipSize; j++) {
             if (orientationV) {
                 if (coorBoard[generate.getY() + j][generate.getX()].getIsShip()) {
-                    System.out.println("hello");
                     return true;
                 }
             } else {
                 if (coorBoard[generate.getY()][generate.getX() + j].getIsShip()) {
-                    System.out.println("hello");
                     return true;
                 }
             }
         }
-
         return false;
-
     }
 
     // placing algorithm
     public static void place() {
+        // loops from 2 - 6 since there are 2 ships of length 3
+        for (int i = 2; i <= 6; i++) {
 
-        for (int i = 2; i <= 5; i++) {
             int shipSize = i;
+            if (i == 6) {
+
+                shipSize = 3;
+            }
 
             // instantiating
             boolean orientationV = (int) ((Math.random() * 2) + 1) == 1 ? true : false;
@@ -131,20 +110,14 @@ public class AI {
 
                 }
             }
-            testPrint();
         }
 
     }
 
     public static void main(String[] args) {
         initBoard();
-
-        printBoard();
-        //
         place();
         printBoard();
-        testPrint();
-
     }
-
+    
 }
