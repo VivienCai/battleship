@@ -13,6 +13,14 @@ public class Coordinate {
         return x_coor;
     }
 
+    public void occupyShip() {
+        isShip = true;
+    }
+
+    public void hitShip() {
+        isHit = true;
+    }
+
     public int getY() {
         return y_coor;
     }

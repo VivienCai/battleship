@@ -160,76 +160,129 @@ public class Main {
     public static void main(String[] args) {
         // general execution goes here
 
-        for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 10; j++) {
-                board[i][j] = 'o';
-                sum[i][j] = 0;
-            }
-        }
-
-        // for (int k = 2; k <= 5; k++) {
-        //     sumRows(k);
-        //     sumColumns(k);
+        // for (int i = 1; i <= 10; i++) {
+        //     for (int j = 1; j <= 10; j++) {
+        //         board[i][j] = 'o';
+        //         sum[i][j] = 0;
+        //     }
         // }
+
+        // // for (int k = 2; k <= 5; k++) {
+        // //     sumRows(k);
+        // //     sumColumns(k);
+        // // }
         
 
   
-        while (true) {
-        	int y = getInputy("Please enter your desired y value (lowercase letter)");
-            int x= getInputx("Please enter your desired x value (number)");
-            if (y == -1) {
-                break;
-            }
-            board[y][x] = 'x';
-            for (int k = 2; k <= 5; k++) {
-                sumRows(k);
-                sumColumns(k);
-            }
-            printArray();
-            for (int i = 1; i <= 10; i++) {
-                for (int j = 1; j <= 10; j++) {
-                    max = Math.max(max, sum[i][j]);
-                }
-            }
+        // while (true) {
+        // 	int y = getInputy("Please enter your desired y value (lowercase letter)");
+        //     int x= getInputx("Please enter your desired x value (number)");
+        //     if (y == -1) {
+        //         break;
+        //     }
+        //     board[y][x] = 'x';
+        //     for (int k = 2; k <= 5; k++) {
+        //         sumRows(k);
+        //         sumColumns(k);
+        //     }
+        //     printArray();
+        //     for (int i = 1; i <= 10; i++) {
+        //         for (int j = 1; j <= 10; j++) {
+        //             max = Math.max(max, sum[i][j]);
+        //         }
+        //     }
 
-            for (int i = 1; i <= 10; i++) {
-                for (int j = 1; j <= 10; j++) {
-                    if (sum[i][j] == max) {
-                        if (isOdd(i, j) == initialIsOdd) {
-                            isParity.add(new Coordinate(i,j));
-                        } else {
-                            possibleHits.add(new Coordinate(i, j));
-                        }
-                    }
-                }
-            }
+        //     for (int i = 1; i <= 10; i++) {
+        //         for (int j = 1; j <= 10; j++) {
+        //             if (sum[i][j] == max) {
+        //                 if (isOdd(i, j) == initialIsOdd) {
+        //                     isParity.add(new Coordinate(i,j));
+        //                 } else {
+        //                     possibleHits.add(new Coordinate(i, j));
+        //                 }
+        //             }
+        //         }
+        //     }
 
 
-            // for (Coordinate i : possibleHits)  {
-            //     System.out.printf("%d, %d ", i.getY(), i.getX());
-            // }
-            // for (Coordinate i : isParity)  {
-            //     System.out.printf("%d, %d ", i.getY(), i.getX());
-            // }
-            if (isParity.size() > 0) {
-                int randIndex = (int)(Math.random() * isParity.size());
-                Coordinate hit = isParity.get(randIndex);
-                System.out.printf("You should hit square %c %d.\n", hit.columnIndex(hit.getY()), hit.getX());
-            } else {
-                int randIndex = (int)(Math.random() * possibleHits.size());
-                Coordinate hit = possibleHits.get(randIndex);
-                System.out.printf("You should hit square %c %d.\n",hit.columnIndex(hit.getY()), hit.getX());
-            }
-            resetArray();
+        //     // for (Coordinate i : possibleHits)  {
+        //     //     System.out.printf("%d, %d ", i.getY(), i.getX());
+        //     // }
+        //     // for (Coordinate i : isParity)  {
+        //     //     System.out.printf("%d, %d ", i.getY(), i.getX());
+        //     // }
+        //     if (isParity.size() > 0) {
+        //         int randIndex = (int)(Math.random() * isParity.size());
+        //         Coordinate hit = isParity.get(randIndex);
+        //         System.out.printf("You should hit square %c %d.\n", hit.columnIndex(hit.getY()), hit.getX());
+        //     } else {
+        //         int randIndex = (int)(Math.random() * possibleHits.size());
+        //         Coordinate hit = possibleHits.get(randIndex);
+        //         System.out.printf("You should hit square %c %d.\n",hit.columnIndex(hit.getY()), hit.getX());
+        //     }
+        //     resetArray();
+        // }
+
+
+        // loop through all 5 ships
+        // limit the range where they can place the ships based on its size
+        // ask for vertical vs horizontal orientation and "home coordinate"
+        // place each ship and assign the home coordinate for the ship and check if there are any ships where it is trying to be placed
+        // create the ship class and put it in the arraylist 
+        
+
+    Coordinate testar[][] = new Coordinate[11][11];
+    for (int i = 0; i <= 10; i++) {
+        for (int j = 0; j <=10; j++) {
+            testar[i][j] = new Coordinate(i,j);
         }
-        for (int i=0;i<5;i++) {
-        int x =getInputx("Place your first ship");
-        }
-
-        
-        
-        
-
     }
+
+    Ship testing = new Ship(true, 3, new Coordinate(1,3));
+    Ship.getList().add(testing);
+
+    occupyArray(testar);
+
+    for (int i = 1; i <= 10; i++) {
+        for (int j = 1; j <=10; j++) {
+            if (testar[i][j].getIsShip()==true) {
+                System.out.printf("x ");
+            }else {
+                System.out.printf("o ");
+            }
+            
+        }
+        System.out.println();
+    }
+    
+    }
+    public void playerPlaceShip(Coordinate homeCoord, int size, boolean isV) {
+        Ship.getList().add(new Ship(isV, size, homeCoord));
+    }
+
+    public static void occupyArray(Coordinate playerPlacement[][]) {
+        for (Ship currentShip : Ship.getList()) {
+            Coordinate homeCoord = currentShip.getHomeCoord();
+            int homeY = homeCoord.getY();
+            int homeX = homeCoord.getX();
+            int size = currentShip.getSize();
+            if (currentShip.getVertical() == false) {
+                for (int j = homeX; j < homeX+size; j++) {
+                    Coordinate current = new Coordinate(homeY,j);
+                    current.occupyShip();
+                    playerPlacement[homeY][j] = current;
+                }
+                
+            } else {
+                for (int j = homeY; j < homeY+size; j++) {
+                    Coordinate current = new Coordinate(j,homeX);
+                    current.occupyShip();
+                    playerPlacement[j][homeX] = current;
+                }
+            }
+        }
+    }
+
+
 
 }
