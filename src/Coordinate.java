@@ -29,4 +29,21 @@ public class Coordinate {
         char asciiVal = (char) ((y - 1) + 'A');
         return asciiVal;
     }
+
+    public boolean getIsHit() {
+        return isHit;
+    }
+
+    public void setIsHit(boolean newIsHit) {
+        isHit = newIsHit;
+    }
+    
+    public boolean getIsShip() {
+        return isShip;
+    }
+
+    public void setIsShip(boolean newIsShip) {
+        isShip = newIsShip;
+    }
+
 }
