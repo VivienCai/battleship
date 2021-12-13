@@ -6,9 +6,9 @@ public class Ship {
     private boolean isVertical;
     private int size;
     private int timesHit;
-    Coordinate placement;
+    private Coordinate placement;
 
-    private ArrayList<Ship> listOfShips = new ArrayList<Ship>();
+    private static ArrayList<Ship> listOfShips = new ArrayList<Ship>();
 
     public Ship(boolean isV, int s, Coordinate p) {
         int count = 0;
@@ -37,5 +37,19 @@ public class Ship {
         placement = p;
 
     }
+    public static ArrayList<Ship> getList() {
+        return listOfShips;
+    }
 
+    public boolean getVertical() {
+        return isVertical;
+    }
+    
+    public int getSize() {
+        return size;
+    }
+
+    public Coordinate getHomeCoord() {
+        return placement;
+    }
 }
