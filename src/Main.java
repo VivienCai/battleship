@@ -15,6 +15,8 @@ public class Main {
         // ask player to place ships
         System.out.println("Please place your ships. "); //INSERT JIAAN LI CODE
 
+
+
         // generate a random placement
         //instantiating Coordinate for boards
         for (int i = 0; i <= 10; i++) {
@@ -33,32 +35,34 @@ public class Main {
             // ask player for coordinate to attack
 
             //print the placement array of the player and the hit array of the player
-            System.out.println("Your placement board: ");
-            Game.printPlacementArray(playerPlacementBoard);
-            System.out.println("AI's board: ");
-            Game.printPlacementArray(playerAttackBoard);
+            // System.out.println("Your placement board: ");
+            // Game.printPlacementArray(playerPlacementBoard);
+            // System.out.println("AI's board: ");
+            // Game.printPlacementArray(playerAttackBoard);
             
-            System.out.println("Please enter a letter from A-J for the vertical part of your coordinate: ");
-            char inputy = Hit.getInputY();
-            System.out.println("Please enter a number from 1-10 for the horizontal part of your coordinate: ");
-            int inputx = Hit.getInputX();
+            // System.out.println("Please enter a letter from A-J for the vertical part of your coordinate: ");
+            // char inputy = Hit.getInputY();
+            // System.out.println("Please enter a number from 1-10 for the horizontal part of your coordinate: ");
+            // int inputx = Hit.getInputX();
 
-            if (playerAttackBoard[inputy][inputx].getIsHit()) {
-                continue;
-            }
+            // if (playerAttackBoard[inputy][inputx].getIsHit()) {
+            //     continue;
+            // }
             
-            // check if the players hit hits a ship and mark it on the ai placement board 
-            // if 
+            // // check if the players hit hits a ship and mark it on the ai placement board 
+            // // if 
             
-            if (AIPlacementBoard[inputy][inputx].getIsShip()) {
-                System.out.println("You hit a ship point!");
-                AIPlacementBoard[inputy][inputx].setIsHit(true);
-                playerAttackBoard[inputy][inputx].setIsHit(true);
-                playerAttackBoard[inputy][inputx].setIsShip(true);
-            } else {
-                System.out.println("You did not hit a ship point.");
-                playerAttackBoard[inputy][inputx].setIsHit(true);
-            }
+            // if (AIPlacementBoard[inputy][inputx].getIsShip()) {
+            //     System.out.println("You hit a ship point!");
+            //     AIPlacementBoard[inputy][inputx].setIsHit(true);
+            //     playerAttackBoard[inputy][inputx].setIsHit(true);
+            //     playerAttackBoard[inputy][inputx].setIsShip(true);
+            // } else {
+            //     System.out.println("You did not hit a ship point.");
+            //     playerAttackBoard[inputy][inputx].setIsHit(true);
+            // }
+            playerStuff.getCoords(playerPlacementBoard);
+
             
             // ai generate a hit using hit or hunt
 
@@ -85,7 +89,7 @@ public class Main {
         Ship testing = new Ship(true, 3, new Coordinate(1, 3));
         Ship.getList().add(testing);
 
-        occupyArray(testar);
+        // occupyArray(testar);
 
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 10; j++) {
@@ -101,30 +105,5 @@ public class Main {
 
     }
 
-    public void playerPlaceShip(Coordinate homeCoord, int size, boolean isV) {
-        Ship.getList().add(new Ship(isV, size, homeCoord));
-    }
-
-    public static void occupyArray(Coordinate playerPlacement[][]) {
-        for (Ship currentShip : Ship.getList()) {
-            Coordinate homeCoord = currentShip.getHomeCoord();
-            int homeY = homeCoord.getY();
-            int homeX = homeCoord.getX();
-            int size = currentShip.getSize();
-            if (currentShip.getVertical() == false) {
-                for (int j = homeX; j < homeX + size; j++) {
-                    Coordinate current = new Coordinate(homeY, j);
-                    current.occupyShip();
-                    playerPlacement[homeY][j] = current;
-                }
-
-            } else {
-                for (int j = homeY; j < homeY + size; j++) {
-                    Coordinate current = new Coordinate(j, homeX);
-                    current.occupyShip();
-                    playerPlacement[j][homeX] = current;
-                }
-            }
-        }
-    }
+    
 }
