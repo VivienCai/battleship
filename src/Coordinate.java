@@ -2,7 +2,7 @@ public class Coordinate {
     private int x_coor;
     private int y_coor;
     private boolean isShip = false;
-    private boolean isHit;
+    private boolean isHit = false;
 
     public Coordinate(int y, int x) {
         x_coor = x;

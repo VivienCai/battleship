@@ -2,33 +2,21 @@ import java.util.*;
 
 public class AI {
     static char board[][] = new char[11][11];
-    static Coordinate coorBoard[][] = new Coordinate[11][11];
-
     static ArrayList<Coordinate> listOfShip = new ArrayList<Coordinate>();
 
-    // initialize board
-    public static void initBoard() {
-        for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 10; j++) {
-                board[i][j] = 'o';
-            }
-        }
-        for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 10; j++) {
-                coorBoard[i][j] = new Coordinate(j, i);
-            }
-        }
-    }
-
-    public static void printBoard() {
+    public static void printBoard(Coordinate coorBoard[][]) {
         System.out.println("_____________________________");
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 10; j++) {
-                System.out.print(board[i][j] + " ");
+                if (coorBoard[i][j].getIsShip()) {
+                    System.out.print("X ");
+                }
+                else{
+                    System.out.print("O ");
+                }
             }
             System.out.println();
         }
-
     }
 
     // generates the home coordinate for ship
@@ -50,7 +38,7 @@ public class AI {
 
     // checks if the ship will overlap any other coordinates that are already
     // occupied
-    public static boolean anyGeneratedIsShip(Coordinate home, boolean orientationV, int shipSize) {
+    public static boolean anyGeneratedIsShip(Coordinate home, boolean orientationV, int shipSize, Coordinate coorBoard[][]) {
         for (int j = 0; j < shipSize; j++) {
             if (orientationV) {
                 if (coorBoard[home.getY() + j][home.getX()].getIsShip()) {
@@ -66,7 +54,7 @@ public class AI {
     }
 
     // PLACING ALGORITHM
-    public static void place() {
+    public static void place(Coordinate coorBoard[][]) {
         // loops from 2 - 6 since there are 2 ships of length 3
         for (int i = 2; i <= 6; i++) {
             int shipSize = i;
@@ -85,7 +73,7 @@ public class AI {
             while (!isCoorUnique) {
                 // if the ship intersects with any other ship that already occupied with another
                 // ship, generate a new point
-                if (anyGeneratedIsShip(home, orientationV, shipSize)) {
+                if (anyGeneratedIsShip(home, orientationV, shipSize, coorBoard)) {
                     home = generatePoint(shipSize, orientationV);
                 } else {
                     isCoorUnique = true;
@@ -110,12 +98,6 @@ public class AI {
             }
         }
 
-    }
-
-    public static void main(String[] args) {
-        initBoard();
-        place();
-        printBoard();
     }
 
 }

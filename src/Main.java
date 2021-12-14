@@ -3,222 +3,71 @@ import java.util.*;
 // note: add a game class for cleaner code
 
 public class Main {
-    // testing array
-    static Scanner sc = new Scanner(System.in);
-
-    static int sum[][] = new int[11][11];
-    static char board[][] = new char[11][11];
-    static int max = 0;
-    static ArrayList<Coordinate> possibleHits = new ArrayList<Coordinate>(), isParity = new ArrayList<Coordinate>();
-    static boolean initialIsOdd = false;
-    // static ArrayList<Coordinate> inParity = new ArrayList<Coordinate>();
-
-    public static boolean isOdd(int column, int row) {
-        if ((column + row) % 2 == 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public static void printArray() {
-        System.out.print("   ");
-
-        for (int i = 1; i < 11; i++) { // for the bar at the top
-            System.out.print(i + ("  "));
-        }
-        System.out.println();
-        System.out.println("_______________________________");
-        char c = 'a';
-        for (int i = 1; i <= 10; i++) {
-
-            System.out.print(c + " ");
-            c++;
-            for (int j = 1; j <= 10; j++) {
-                if (sum[i][j] < 10) {
-                    System.out.print("0" + sum[i][j] + " ");
-                } else {
-                    System.out.print(sum[i][j] + " ");
-                }
-            }
-            System.out.println();
-        }
-    }
-
-    public static void sumRows(int shipSize) {
-        for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 10 - shipSize + 1; j++) {
-                // int shipsize = 3;
-                boolean ok = true;
-                for (int g = j; g < j + shipSize; g++) {
-                    if (board[i][g] == 'x') { // if missed point
-                        ok = false;
-                    }
-                }
-                if (ok) {
-                    if (shipSize == 3) {
-                        for (int g = j; g < j + shipSize; g++) {
-                            sum[i][g] += 2;
-                        }
-                    } else {
-                        for (int g = j; g < j + shipSize; g++) {
-                            sum[i][g]++;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public static void sumColumns(int shipSize) {
-        for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 10 - shipSize + 1; j++) {
-                boolean ok = true;
-                for (int g = j; g < j + shipSize; g++) {
-                    if (board[g][i] == 'x') {
-                        ok = false;
-                    }
-                }
-                if (ok) {
-                    if (shipSize == 3) {
-                        for (int g = j; g < j + shipSize; g++) {
-                            sum[g][i] += 2;
-                        }
-                    } else {
-                        for (int g = j; g < j + shipSize; g++) {
-                            sum[g][i]++;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public static void resetArray() {
-        for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 10; j++) {
-                sum[i][j] = 0;
-            }
-        }
-        isParity = new ArrayList<Coordinate>();
-        possibleHits = new ArrayList<Coordinate>();
-        max = 0;
-    }
-
-    public static int getInputx(String output) {
-        String input;
-        int coord = -1;
-        while (true) { // keeps on running until user makes a valid input
-            System.out.println(output);
-            input = sc.nextLine();
-            if (isInt(input)) {
-                coord = Integer.parseInt(input);
-                if (coord >= 1 && coord <= 10) {
-                    return coord;
-                } else {
-                    System.out.println("Please enter a valid input");
-                }
-
-            } else {
-                System.out.println("Please enter a valid input");
-            }
-        }
-    }
-
-    public static int getInputy(String output) {
-        String input;
-        char c;
-        int coord = -1;
-        while (true) { // keeps on running until user makes a valid input
-            System.out.println(output);
-            input = sc.nextLine();
-            c = input.charAt(0);
-            coord = (c - 'a') + 1;
-            if (coord >= 1 && coord <= 10) {
-                return coord;
-            } else {
-                System.out.println("Please enter a valid input");
-            }
-        }
-    }
-
-    public static boolean isInt(String input) {
-        try {
-            Integer.parseInt(input); // checks if the user input is an int
-            return true; // If it is, return true
-        } catch (Exception e) {
-            return false;// else, return false
-        }
-    }
-
-    static char playerBoard[][] = new char[11][11];
-    static char playerHits[][] = new char[11][11];
-
+    static Scanner sc =new Scanner(System.in);
+    static boolean gamestate = true;
+    public static Coordinate playerPlacementBoard[][] = new Coordinate[11][11];
+    public static Coordinate playerAttackBoard[][] = new Coordinate[11][11];
+    
+    public static Coordinate AIPlacementBoard[][] = new Coordinate[11][11];
+    public static Coordinate AIAttackBoard[][] = new Coordinate[11][11];
+    
     public static void main(String[] args) {
-        // general execution goes here
+        // ask player to place ships
+        System.out.println("Please place your ships. "); //INSERT JIAAN LI CODE
 
-        // for (int i = 1; i <= 10; i++) {
-        // for (int j = 1; j <= 10; j++) {
-        // board[i][j] = 'o';
-        // sum[i][j] = 0;
-        // }
-        // }
+        // generate a random placement
+        //instantiating Coordinate for boards
+        for (int i = 0; i <= 10; i++) {
+            for (int j = 0; j <= 10; j++) {
+                playerPlacementBoard[i][j] = new Coordinate(i, j);
+                playerAttackBoard[i][j] = new Coordinate(i, j);
+                AIPlacementBoard[i][j] = new Coordinate(i, j);
+                AIAttackBoard[i][j] = new Coordinate(i, j);
+            }
+        }
+        //generating random placement for AI PlacementBoard
+        AI.place(AIPlacementBoard);
+        AI.printBoard(AIPlacementBoard);
+        // initliaze the player board and ai board (should have 2?)
+        while (gamestate) {
+            // ask player for coordinate to attack
 
-        // // for (int k = 2; k <= 5; k++) {
-        // // sumRows(k);
-        // // sumColumns(k);
-        // // }
+            //print the placement array of the player and the hit array of the player
+            System.out.println("Your placement board: ");
+            Game.printPlacementArray(playerPlacementBoard);
+            System.out.println("AI's board: ");
+            Game.printPlacementArray(playerAttackBoard);
+            
+            System.out.println("Please enter a letter from A-J for the vertical part of your coordinate: ");
+            char inputy = Hit.getInputY();
+            System.out.println("Please enter a number from 1-10 for the horizontal part of your coordinate: ");
+            int inputx = Hit.getInputX();
 
-        // while (true) {
-        // int y = getInputy("Please enter your desired y value (lowercase letter)");
-        // int x= getInputx("Please enter your desired x value (number)");
-        // if (y == -1) {
-        // break;
-        // }
-        // board[y][x] = 'x';
-        // for (int k = 2; k <= 5; k++) {
-        // sumRows(k);
-        // sumColumns(k);
-        // }
-        // printArray();
-        // for (int i = 1; i <= 10; i++) {
-        // for (int j = 1; j <= 10; j++) {
-        // max = Math.max(max, sum[i][j]);
-        // }
-        // }
+            if (playerAttackBoard[inputy][inputx].getIsHit()) {
+                continue;
+            }
+            
+            // check if the players hit hits a ship and mark it on the ai placement board 
+            // if 
+            
+            if (AIPlacementBoard[inputy][inputx].getIsShip()) {
+                System.out.println("You hit a ship point!");
+                AIPlacementBoard[inputy][inputx].setIsHit(true);
+                playerAttackBoard[inputy][inputx].setIsHit(true);
+                playerAttackBoard[inputy][inputx].setIsShip(true);
+            } else {
+                System.out.println("You did not hit a ship point.");
+                playerAttackBoard[inputy][inputx].setIsHit(true);
+            }
+            
+            // ai generate a hit using hit or hunt
 
-        // for (int i = 1; i <= 10; i++) {
-        // for (int j = 1; j <= 10; j++) {
-        // if (sum[i][j] == max) {
-        // if (isOdd(i, j) == initialIsOdd) {
-        // isParity.add(new Coordinate(i,j));
-        // } else {
-        // possibleHits.add(new Coordinate(i, j));
-        // }
-        // }
-        // }
-        // }
 
-        // // for (Coordinate i : possibleHits) {
-        // // System.out.printf("%d, %d ", i.getY(), i.getX());
-        // // }
-        // // for (Coordinate i : isParity) {
-        // // System.out.printf("%d, %d ", i.getY(), i.getX());
-        // // }
-        // if (isParity.size() > 0) {
-        // int randIndex = (int)(Math.random() * isParity.size());
-        // Coordinate hit = isParity.get(randIndex);
-        // System.out.printf("You should hit square %c %d.\n",
-        // hit.columnIndex(hit.getY()), hit.getX());
-        // } else {
-        // int randIndex = (int)(Math.random() * possibleHits.size());
-        // Coordinate hit = possibleHits.get(randIndex);
-        // System.out.printf("You should hit square %c
-        // %d.\n",hit.columnIndex(hit.getY()), hit.getX());
-        // }
-        // resetArray();
-        // }
+        }
 
+
+
+ 
         // loop through all 5 ships
         // limit the range where they can place the ships based on its size
         // ask for vertical vs horizontal orientation and "home coordinate"
@@ -278,5 +127,4 @@ public class Main {
             }
         }
     }
-
 }
