@@ -82,7 +82,7 @@ public class AI {
     }
 
     //HITTING ALGORITHM
-    static int sum[][] = new int[11][11];
+    // static int sum[][] = new int[11][11];
     static int max = 0;
     static ArrayList<Coordinate> possibleHits = new ArrayList<Coordinate>(), isParity = new ArrayList<Coordinate>();
     static boolean initialIsOdd = false;
@@ -92,10 +92,9 @@ public class AI {
         for (int i = 2; i <= 5; i++) {
             sumColumns(i);
             sumRows(i);
-            // resetArray();
         }
-        printArray();
         AIhit();
+        printArray();
         resetArray();
     }
 
@@ -121,10 +120,11 @@ public class AI {
             System.out.print(c + " ");
             c++;
             for (int j = 1; j <= 10; j++) {
-                if (sum[i][j] < 10) {
-                    System.out.print("0" + sum[i][j] + " ");
+                Coordinate cur = Main.AIAttackBoard[i][j];
+                if (cur.getProbability() < 10) {
+                    System.out.print("0" + cur.getProbability() + " ");
                 } else {
-                    System.out.print(sum[i][j] + " ");
+                    System.out.print(cur.getProbability() + " ");
                 }
             }
             System.out.println();
@@ -145,11 +145,11 @@ public class AI {
                 if (ok) {
                     if (shipSize == 3) {
                         for (int g = j; g < j + shipSize; g++) {
-                            sum[i][g] += 2;
+                            Main.AIAttackBoard[i][g].setProbability(Main.AIAttackBoard[g][i].getProbability() + 2);
                         }
                     } else {
                         for (int g = j; g < j + shipSize; g++) {
-                            sum[i][g]++;
+                            Main.AIAttackBoard[i][g].setProbability(Main.AIAttackBoard[g][i].getProbability() + 1);
                         }
                     }
                 }
@@ -169,11 +169,11 @@ public class AI {
                 if (ok) {
                     if (shipSize == 3) {
                         for (int g = j; g < j + shipSize; g++) {
-                            sum[g][i] += 2;
+                            Main.AIAttackBoard[g][i].setProbability(Main.AIAttackBoard[g][i].getProbability()+2);
                         }
                     } else {
                         for (int g = j; g < j + shipSize; g++) {
-                            sum[g][i]++;
+                            Main.AIAttackBoard[g][i].setProbability(Main.AIAttackBoard[g][i].getProbability()+1);
                         }
                     }
                 }
@@ -184,7 +184,7 @@ public class AI {
     public static void resetArray() {
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 10; j++) {
-                sum[i][j] = 0;
+                Main.AIAttackBoard[i][j].setProbability(0);
             }
         }
         isParity = new ArrayList<Coordinate>();
@@ -245,12 +245,14 @@ public class AI {
     public static void AIhit() {
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 10; j++) {
-                max = Math.max(max, sum[i][j]);
+                Coordinate cur = Main.AIAttackBoard[i][j];
+                max = Math.max(max, cur.getProbability());
             }
         }
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 10; j++) {
-                if (sum[i][j] == max) {
+                Coordinate cur = Main.AIAttackBoard[i][j];
+                if (cur.getProbability() == max) {
                     if (isOdd(i, j) == initialIsOdd) {
                         isParity.add(new Coordinate(i, j));
                     } else {
@@ -284,5 +286,5 @@ public class AI {
             }
         }
     }
-   
+    
 }

@@ -75,6 +75,7 @@ public class Game {
             
             if (!inBounds) {
                 System.out.println("Your ship is out of bounds. Please choose another point to place your ship.");
+                i--;
                 continue;
             } else {
 
@@ -96,7 +97,7 @@ public class Game {
                     }   
                 }
             }
-
+        System.out.println("Your placement board:");
         printPlacementArray(Main.playerPlacementBoard);
         }
         
