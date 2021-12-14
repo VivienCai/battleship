@@ -1,23 +1,8 @@
 import java.util.*;
 
 public class AI {
-    static char board[][] = new char[11][11];
+    static Scanner sc = new Scanner(System.in);
     static ArrayList<Coordinate> listOfShip = new ArrayList<Coordinate>();
-
-    public static void printBoard(Coordinate coorBoard[][]) {
-        System.out.println("_____________________________");
-        for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 10; j++) {
-                if (coorBoard[i][j].getIsShip()) {
-                    System.out.print("X ");
-                }
-                else{
-                    System.out.print("O ");
-                }
-            }
-            System.out.println();
-        }
-    }
 
     // generates the home coordinate for ship
     public static Coordinate generatePoint(int shipSize, boolean orientationV) {
@@ -36,8 +21,7 @@ public class AI {
         return new Coordinate(y, x);
     }
 
-    // checks if the ship will overlap any other coordinates that are already
-    // occupied
+    // checks if the ship will overlap any other coordinates that are already occupied
     public static boolean anyGeneratedIsShip(Coordinate home, boolean orientationV, int shipSize, Coordinate coorBoard[][]) {
         for (int j = 0; j < shipSize; j++) {
             if (orientationV) {
@@ -85,14 +69,11 @@ public class AI {
             for (int j = 1; j < shipSize; j++) {
                 home.setIsShip(true);
                 coorBoard[home.getY()][home.getX()].setIsShip(true);
-                board[home.getY()][home.getX()] = 'x';
                 // if the orientation is vertical
                 if (orientationV) {
                     coorBoard[home.getY() + j][home.getX()].setIsShip(true);
-                    board[home.getY() + j][home.getX()] = 'x';
                 } else {
                     coorBoard[home.getY()][home.getX() + j].setIsShip(true);
-                    board[home.getY()][home.getX() + j] = 'x';
 
                 }
             }
@@ -100,4 +81,208 @@ public class AI {
 
     }
 
+    //HITTING ALGORITHM
+    static int sum[][] = new int[11][11];
+    static int max = 0;
+    static ArrayList<Coordinate> possibleHits = new ArrayList<Coordinate>(), isParity = new ArrayList<Coordinate>();
+    static boolean initialIsOdd = false;
+    static ArrayList<Coordinate> inParity = new ArrayList<Coordinate>();
+
+    public static void findProbability() {
+        for (int i = 2; i <= 5; i++) {
+            sumColumns(i);
+            sumRows(i);
+            // resetArray();
+        }
+        printArray();
+        AIhit();
+        resetArray();
+    }
+
+    public static boolean isOdd(int column, int row) {
+        if ((column + row) % 2 == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static void printArray() {
+        System.out.print("   ");
+
+        for (int i = 1; i < 11; i++) { // for the bar at the top
+            System.out.print(i + ("  "));
+        }
+        System.out.println();
+        System.out.println("_______________________________");
+        char c = 'a';
+        for (int i = 1; i <= 10; i++) {
+
+            System.out.print(c + " ");
+            c++;
+            for (int j = 1; j <= 10; j++) {
+                if (sum[i][j] < 10) {
+                    System.out.print("0" + sum[i][j] + " ");
+                } else {
+                    System.out.print(sum[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public static void sumRows(int shipSize) {
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= 10 - shipSize + 1; j++) {
+                // int shipsize = 3;
+                boolean ok = true;
+                for (int g = j; g < j + shipSize; g++) {
+                    Coordinate cur = Main.AIAttackBoard[i][g];
+                    if (cur.getIsHit()) { // if missed point
+                        ok = false;
+                    }
+                }
+                if (ok) {
+                    if (shipSize == 3) {
+                        for (int g = j; g < j + shipSize; g++) {
+                            sum[i][g] += 2;
+                        }
+                    } else {
+                        for (int g = j; g < j + shipSize; g++) {
+                            sum[i][g]++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void sumColumns(int shipSize) {
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= 10 - shipSize + 1; j++) {
+                boolean ok = true;
+                for (int g = j; g < j + shipSize; g++) {
+                    if (Main.AIAttackBoard[g][i].getIsHit()) {
+                        ok = false;
+                    }
+                }
+                if (ok) {
+                    if (shipSize == 3) {
+                        for (int g = j; g < j + shipSize; g++) {
+                            sum[g][i] += 2;
+                        }
+                    } else {
+                        for (int g = j; g < j + shipSize; g++) {
+                            sum[g][i]++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void resetArray() {
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= 10; j++) {
+                sum[i][j] = 0;
+            }
+        }
+        isParity = new ArrayList<Coordinate>();
+        possibleHits = new ArrayList<Coordinate>();
+        max = 0;
+    }
+
+    public static int getInputX() {
+        String input;
+        int coord = -1;
+        while (true) { // keeps on running until user makes a valid input
+            input = sc.nextLine();
+            if (isInt(input)) {
+                coord = Integer.parseInt(input);
+                if (coord >= 1 && coord <= 10) {
+                    return coord;
+                } else {
+                    System.out.println("Please enter a valid input");
+                }
+
+            } else {
+                System.out.println("Please enter a valid input");
+            }
+        }
+    }
+
+    public static char getInputY() {
+        // String input;
+        char c;
+        char coord = 'x';
+        while (true) { // keeps on running until user makes a valid input
+            // System.out.println(output);
+            c = sc.nextLine().charAt(0);
+            coord = (char) ((c - 'A') + 1);
+            if (coord >= 1 && coord <= 10) {
+                return coord;
+            } else {
+                System.out.println("Please enter a valid input");
+            }
+        }
+    }
+
+    public static boolean isInt(String input) {
+        try {
+            Integer.parseInt(input); // checks if the user input is an int
+            return true; // If it is, return true
+        } catch (Exception e) {
+            return false;// else, return false
+        }
+    }
+
+    static char playerBoard[][] = new char[11][11];
+    static char playerHits[][] = new char[11][11];
+    // summing ships from length 2 to 5
+
+    // printArray();
+
+    public static void AIhit() {
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= 10; j++) {
+                max = Math.max(max, sum[i][j]);
+            }
+        }
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= 10; j++) {
+                if (sum[i][j] == max) {
+                    if (isOdd(i, j) == initialIsOdd) {
+                        isParity.add(new Coordinate(i, j));
+                    } else {
+                        possibleHits.add(new Coordinate(i, j));
+                    }
+                }
+            }
+        }
+
+        if (isParity.size() > 0) {
+            int randIndex = (int) (Math.random() * isParity.size());
+            Coordinate hit = isParity.get(randIndex);
+            Main.AIAttackBoard[hit.getY()][hit.getX()].setIsHit(true);
+            System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(hit.getY()), hit.getX());
+            if (Main.playerPlacementBoard[hit.getY()][hit.getX()].getIsShip()) {
+                System.out.println("The AI hit one of your ships.");
+            }
+            else {
+                System.out.println("The AI missed.");
+            }
+
+        } else {
+            int randIndex = (int) (Math.random() * possibleHits.size());
+            Coordinate hit = possibleHits.get(randIndex);
+            Main.AIAttackBoard[hit.getY()][hit.getX()].setIsHit(true);
+            System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(hit.getY()), hit.getX());
+            if (Main.playerPlacementBoard[hit.getY()][hit.getX()].getIsShip()) {
+                System.out.println("The AI hit one of your ships.");
+            } else {
+                System.out.println("The AI missed.");
+            }
+        }
+    }
+   
 }

@@ -23,12 +23,12 @@ public class Main {
             }
         }
         // ask player to place ships
-        System.out.println("Please place your ships. "); //INSERT JIAAN LI CODE
+        System.out.println("Please place your ships. "); 
         Game.placeShip();
 
         // generate a random placement
         
-        //generating random placement for AI PlacementBoard
+        // generating random placement for AI PlacementBoard
         AI.place(AIPlacementBoard);
         Game.printPlacementArray(AIPlacementBoard);
         // initliaze the player board and ai board (should have 2?)
@@ -44,9 +44,9 @@ public class Main {
             Game.printPlacementArray(playerAttackBoard);
             
             System.out.println("Please enter a letter from A-J for the vertical part of your coordinate: ");
-            char inputy = Hit.getInputY();
+            char inputy = AI.getInputY();
             System.out.println("Please enter a number from 1-10 for the horizontal part of your coordinate: ");
-            int inputx = Hit.getInputX();
+            int inputx = AI.getInputX();
 
             if (playerAttackBoard[inputy][inputx].getIsHit()) {
                 continue;
@@ -68,13 +68,16 @@ public class Main {
 
             
             // ai generate a hit using hit or hunt
+            System.out.println("AI's turn");
+            // generate a hit
+            AI.findProbability();
+            
+            // verify if hit or not
+            // print the probability board and AIATtackBoard
 
 
         }
 
-
-
- 
         // loop through all 5 ships
         // limit the range where they can place the ships based on its size
         // ask for vertical vs horizontal orientation and "home coordinate"
@@ -82,29 +85,6 @@ public class Main {
         // there are any ships where it is trying to be placed
         // create the ship class and put it in the arraylist
 
-        Coordinate testar[][] = new Coordinate[11][11];
-        for (int i = 0; i <= 10; i++) {
-            for (int j = 0; j <= 10; j++) {
-                testar[i][j] = new Coordinate(i, j);
-            }
-        }
-
-        Ship testing = new Ship(true, 3, new Coordinate(1, 3));
-        Ship.getList().add(testing);
-
-        // occupyArray(testar);
-
-        for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 10; j++) {
-                if (testar[i][j].getIsShip() == true) {
-                    System.out.printf("x ");
-                } else {
-                    System.out.printf("o ");
-                }
-
-            }
-            System.out.println();
-        }
 
     }
 

@@ -62,9 +62,9 @@ public class Game {
             }
             
             System.out.println("Please enter your y coordinate.");
-            int y = Hit.getInputY();
+            int y = AI.getInputY();
             System.out.println("Please enter your x coordinate. ");
-            int x = Hit.getInputX();
+            int x = AI.getInputX();
             boolean inBounds = false;
             
             if (isV) {
