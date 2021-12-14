@@ -17,28 +17,28 @@
 //    private   static char huntBoard[][]=new char[11][11];
 //    static int tempsum=0;
    
-//     	public static void main(String args[]) {
-// 		Coordinate hitTest=new Coordinate(5,5);
-// 		initBoard();
-// 		initSum();
-// 		hunt1(hitTest, huntBoard);
-// 	}
+    	public static void main(String args[]) {
+		Coordinate hitTest=new Coordinate(5,5);
+		initBoard();
+		initSum();
+		hunt1(hitTest, huntBoard);
+		printArray();
+	}
 
 	
     
-// 	public static void hunt1(Coordinate hitPoint1, char board [][]) {
-// 		hitPoint=hitPoint1;
-// 		// O - not hit or occupied
-// 	    // X - occupied by a ship, hit
-// 	    // M - not occupied by a ship, hit
-// 	    // S - occupied by a ship, not hit
-// 	//	Coordinate board[][]=board1.clone();
-// 		exist();  //sets all ships to exist
-// 		for (int i=0;i<5;i++) {
-// 			if (shipExists[i]) {
-// 				if (i==4) {
-// 					size=3; //add some sum stuff
-//         			System.out.print("hi1");
+	public static void hunt1(Coordinate hitPoint1, char board [][]) {
+		hitPoint=hitPoint1;
+		// O - not hit or occupied
+	    // X - occupied by a ship, hit
+	    // M - not occupied by a ship, hit
+	    // S - occupied by a ship, not hit
+	//	Coordinate board[][]=board1.clone();
+		exist();  //sets all ships to exist
+		for (int i=0;i<5;i++) {
+			if (shipExists[i]) {
+				if (i==4) {
+					size=3; //add some sum stuff
 
 // 					sumX(size);
 // 					sumY(size);
@@ -58,90 +58,64 @@
 //     	nearby(false, false);                  //initialise range values. find nearby occupied spots
 //     	nearby(false,true);
     	
-    	    	
+    	 System.out.println(rangeL+" "+rangeR);   	
     	
-//     	for(int j=hitPoint.getX()-rangeL;j<(hitPoint.getX()+rangeR)-size;j++) {  //runs for the number of open squares 
-//     		if(shipSize==3) {
-//     			for (int g=j;g<j;g++) {
-//         			sum[g][hitPoint.getY()] +=2;  //i have no clue what this does it was copied from sarinas code and its supposed to sum stuff
-//         		}
-//     			printArray();
-//     			System.out.print("hi2");
+    	for(int j=hitPoint.getX()-rangeL;j<(hitPoint.getX()+rangeR)-size+2;j++) {  //runs for the number of open squares 
+    			for (int g=j;g<j+shipSize;g++) {     //i have no clue what this does it was copied from sarinas code and its supposed to sum stuff
+        			sum[hitPoint.getY()][g] +=1;
 
-//     		}
-//     		else{
-//     			for (int g=j;g<j;g++) {
-//         			sum[g][hitPoint.getY()] +=1;
-//         			printArray();
-//         			System.out.print("hi");
+        		}
+	
+    	}	    
+    }
 
-//         		}
-    			
-//     		}	
-//     	}	    
-//     }
-
-//     public static void sumY(int shipSize) {
-//     	nearby(true, false);                
-//     	nearby(true,true);
-    	
+    public static void sumY(int shipSize, char board[][]) {
+    	nearby(true, false, board[][]);                
+    	nearby(true,true, board[][]);
     	       
-//     	for(int j=hitPoint.getY()-rangeU;j<(hitPoint.getY()+rangeD)-size;j++) {  //runs for the number of open squares 
-// 			System.out.println("joe1");
-
-//     		if(size==3) {
-//     			for (int g=j;g<j;g++) {
-//         			sum[hitPoint.getX()][g] +=2;  //i have no clue what this does it was copied from sarinas code and its supposed to sum stuff
-//         			System.out.println("joe2");
-//         			tempsum++;
-//     			}
-//     		}
-//     		else{
-//     			for (int g=j;g<j;g++) {
-//     				System.out.println("joe3");
-//         			sum[hitPoint.getX()][g] +=1;
-//         			tempsum++;
+    	for(int j=hitPoint.getY()-rangeU;j<(hitPoint.getY()+rangeD)-size+2;j++) {  //runs for the number of open squares 
+			tempsum++;
+    		for (int g=j;g<j+shipSize;g++) {
+       			sum[g][hitPoint.getX()] +=1;
+       			tempsum++;
 
 //     			}
 //     		}
     		
-//     	}
-//     	printArray();
-//     	System.out.println(hitPoint.getX());
-//     	System.out.println(sum[5][5]);
-//     	System.out.println(tempsum);
-//     }
+    	
+
+    }
 	
 	
-// 	public static void nearby(boolean isV, boolean positive) {
-// 		if (isV==false&&positive==true) {                                //any obstructions to the right
-// 			for (int i=0;i<size;i++) {
-// 				if (board[hitPoint.getX()+i+1][hitPoint.getY()]!='O') {  //if not open   
-// 					rangeR=i;                                                                    //ADD EDGE DETECTION AFOISHEFIUSHFIKJSEF
-// 				}
-// 			}
-// 		}
-// 		else if (isV==false&&positive==false) {
-// 			for (int i=0;i<size;i++) {                                //any obstructions to the left
-// 				if (board[hitPoint.getX()-i-1][hitPoint.getY()]!='O') {  //if not open
-// 					rangeL=i;
-// 				}
-// 			}
-// 		}
-// 		else if (isV==true&&positive==false) {
-// 			for (int i=0;i<size;i++) {                                //any obstructions up
-// 				if (board[hitPoint.getX()][hitPoint.getY()+i+1]!='O') {  //if not open
-// 					rangeU=i;
-// 				}
-// 			}
-// 		}
-// 		else if (isV==true&&positive==true) {
-// 			for (int i=0;i<size;i++) {                                //any obstructions down
-// 				if (board[hitPoint.getX()][hitPoint.getY()-i-1]!='O') {  //if not open
-// 					rangeD=i;
-// 				}
-// 			}
-// 		}
+	public static void nearby(boolean isV, boolean positive, char board[][]) {
+		if (isV==false&&positive==true) {                                //any obstructions to the right
+			for (int i=0;i<size;i++) {
+				if (board[hitPoint.getX()+i+1][hitPoint.getY()]!='O') {  //if not open   
+					rangeR=i;                                                                    //ADD EDGE DETECTION AFOISHEFIUSHFIKJSEF
+				}
+			}
+		}
+		else if (isV==false&&positive==false) {
+			for (int i=0;i<size;i++) {                                //any obstructions to the left
+				if (board[hitPoint.getX()-i-1][hitPoint.getY()]!='O') {  //if not open
+					rangeL=i;
+				}
+			}
+		}
+		else if (isV==true&&positive==false) {
+			for (int i=0;i<size;i++) {                                //any obstructions up
+				if (board[hitPoint.getX()][hitPoint.getY()+i+1]!='O') {  //if not open
+					rangeU=i;
+				}
+			}
+		}
+		else if (isV==true&&positive==true) {
+			for (int i=0;i<size;i++) {                                //any obstructions down
+				if (board[hitPoint.getX()][hitPoint.getY()-i-1]!='O') {  //if not open
+					rangeD=i;
+				}
+			}
+		}
 		
 		
 // 	}
