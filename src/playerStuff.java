@@ -9,69 +9,79 @@ public class playerStuff {
     static int size; //size of ship
     static char ships[][]=new char[11][11];
     static Coordinate coorb[][]=new Coordinate[11][11];
+    
 	public static Coordinate getCoords() {
 		//give vertical and horizontal coord and check if it overlaps
-	boolean check=true;	
-	for (int i=1;i<6;i++) {
-		while (true) {
-			check=true;
-			//getting input values
-	        x =getInputx("Pick your x coordinate for ship"+(i)); //place in the order 2,3,4,5,3
-	        y =getInputy("Pick your y coordinate for ship"+(i));
-			boolean vertical;
-			System.out.println("Please enter 1 for vertical, and anything else for horizontal");
-			int temp=sc.nextInt();
-			if (temp==1) {
-				vertical=true;
-			}
-			else {
-				vertical=false;
-			}
-			
-			//assigning input values
-			Coordinate coords=new Coordinate (y,x);	
-			shipPositions.set(i-1, coords); //home coord value for ship number i
-			if (i==1||i==2||i==3||i==4) {
-				size=i+1;
-				if (vertical==true) {
-					for (int j=0;j<size;j++) {
-						coorb[y+j][x].setIsShip(true); //if vertical extend size tiles
+		boolean check=true;	
+		for (int i=1;i<6;i++) {
+			while (true) {
+				check=true;
+				//getting input values
+		        x =getInputxs("Pick your x coordinate for ship"+(i)); //place in the order 2,3,4,5,3
+		        y =getInputys("Pick your y coordinate for ship"+(i));
+				boolean vertical;
+				System.out.println("Please enter 1 for vertical, and anything else for horizontal");
+				int temp=sc.nextInt();
+				if (temp==1) {
+					vertical=true;
+				}
+				else {
+					vertical=false;
+				}
+				
+				//assigning input values
+				Coordinate coords=new Coordinate (y,x);	
+				shipPositions.set(i-1, coords); //home coord value for ship number i
+				if (i==1||i==2||i==3||i==4) {
+					size=i+1;
+					if (vertical==true) {
+						for (int j=0;j<size;j++) {
+							coorb[y+j][x].setIsShip(true); //if vertical extend size tiles
+						}
+					}
+					if (vertical==false) {
+						for (int j=0;j<size;j++) {
+							coorb[y][x+j].setIsShip(true);
+						}
 					}
 				}
-				if (vertical==false) {
-					for (int j=0;j<size;j++) {
-						coorb[y][x+j].setIsShip(true);
+				else if (i==5)  {  //for the last ship, since there are 2 ships with 3 tiles 
+					size=3;
+					if (vertical==true) {
+						for (int j=0;j<size;j++) {
+							coorb[y+j][x].setIsShip(true); //if vertical extend size tiles down
+						}
+					}
+					if (vertical==false) {
+						for (int j=0;j<size;j++) { 
+							coorb[y][x+j].setIsShip(true); //if horizontal extend size tiles right
+						}
 					}
 				}
-			}
-			else if (i==5)  {  //for the last ship, since there are 2 ships with 3 tiles 
-				size=3;
-				if (vertical==true) {
-					for (int j=0;j<size;j++) {
-						coorb[y+j][x].setIsShip(true); //if vertical extend size tiles
-					}
+				
+				
+				//check
+				if (isOccupied(coords, vertical,size)) {
+					check=true; //if overlapping, while loop keeps running
 				}
-				if (vertical==false) {
-					for (int j=0;j<size;j++) {
-						coorb[y][x+j].setIsShip(true);
-					}
+				else {
+					check=false;//if not, while loop ends and next iteration of for loop runs
 				}
+				
 			}
-			
-			
-			//check
-			if (isOccupied(coords, vertical,size)) {
-				check=true; //if overlapping, while loop keeps running
-			}
-			else {
-				check=false;//if not, while loop ends and next iteration of for loop runs
-			}
+		}
+		return (shipPositions.get(1));
+		}
+	
+	
+	public static boolean inBounds(Coordinate homeCoord, boolean isV, int size ) {
+		
+		if (isV) {
 			
 		}
+		
+		return true;
 	}
-	return (Coordinate.x_coor==x);
-	}
-	
 	
 	public static boolean isOccupied(Coordinate homeCoord, boolean isV, int size ) {
 		homeCoord.getX();
@@ -107,7 +117,7 @@ public class playerStuff {
 	
 	
 	
-	 public static int getInputx(String output) {
+	 public static int getInputxs(String output) {
 	    	String input;
 	    	int coord=-1;
 	    	while (true) {  //keeps on running until user makes a valid input
@@ -128,7 +138,7 @@ public class playerStuff {
 	    	}
 	    }
 	    	
-	    public static int getInputy(String output) {
+	    public static int getInputys(String output) {
 	    	String input;
 	    	char c;
 	    	int coord=-1;
