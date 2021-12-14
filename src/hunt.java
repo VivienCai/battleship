@@ -47,55 +47,45 @@ public class hunt extends AI{
     	nearby(false, false);                  //initialise range values. find nearby occupied spots
     	nearby(false,true);
     	
+    	    	
     	
-    	int totalRange = rangeL+rangeR+1;
-        for (int i = 1; i <= totalRange; i++) {
-            for (int j = 1; j <= 10 - shipSize + 1; j++) {
-                // int shipsize = 3;
-                boolean ok = true;
-                for (int g = j; g < j + shipSize; g++) {
-                    if (board[i][g] == 'x') { // if missed point
-                        ok = false;
-                    }
-                }
-                if (ok) {
-                    if (shipSize == 3) {
-                        for (int g = j; g < j + shipSize; g++) {
-                            sum[i][g] += 2;
-                        }
-                    } else {
-                        for (int g = j; g < j + shipSize; g++) {
-                            sum[i][g]++;
-                        }
-                    }
-                }
-            }
-        }
+    	for(int j=hitPoint.getX()-rangeL;j<(hitPoint.getX()+rangeR)-size;j++) {  //runs for the number of open squares 
+    		if(size==3) {
+    			for (int g=j;g<j;g++) {
+        			sum[g][hitPoint.getY()] +=2;  //i have no clue what this does it was copied from sarinas code and its supposed to sum stuff
+        		}
+    		}
+    		else{
+    			for (int g=j;g<j;g++) {
+        			sum[g][hitPoint.getY()] +=1;
+        		}
+    		}
+    		
+    	}
+    	
+    	
+
+    	    
     }
 
     public static void sumY(int shipSize) {
-    	int totalRange = rangeU+rangeD+1;
-        for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 10 - shipSize + 1; j++) {
-                boolean ok = true;
-                for (int g = j; g < j + shipSize; g++) {
-                    if (board[g][i] == 'x') {
-                        ok = false;
-                    }
-                }
-                if (ok) {
-                    if (shipSize == 3) {
-                        for (int g = j; g < j + shipSize; g++) {
-                            sum[g][i] += 2;
-                        }
-                    } else {
-                        for (int g = j; g < j + shipSize; g++) {
-                            sum[g][i]++;
-                        }
-                    }
-                }
-            }
-        }
+    	nearby(true, false);                
+    	nearby(true,true);
+    	
+    	       
+    	for(int j=hitPoint.getY()-rangeU;j<(hitPoint.getY()+rangeD)-size;j++) {  //runs for the number of open squares 
+    		if(size==3) {
+    			for (int g=j;g<j;g++) {
+        			sum[hitPoint.getX()][g] +=2;  //i have no clue what this does it was copied from sarinas code and its supposed to sum stuff
+        		}
+    		}
+    		else{
+    			for (int g=j;g<j;g++) {
+        			sum[hitPoint.getX()][g] +=1;
+        		}
+    		}
+    		
+    	}
     }
 	
 	
