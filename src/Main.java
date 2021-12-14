@@ -12,12 +12,7 @@ public class Main {
     public static Coordinate AIAttackBoard[][] = new Coordinate[11][11];
     
     public static void main(String[] args) {
-        // ask player to place ships
-        System.out.println("Please place your ships. "); //INSERT JIAAN LI CODE
-
-
-
-        // generate a random placement
+        
         //instantiating Coordinate for boards
         for (int i = 0; i <= 10; i++) {
             for (int j = 0; j <= 10; j++) {
@@ -27,41 +22,49 @@ public class Main {
                 AIAttackBoard[i][j] = new Coordinate(i, j);
             }
         }
+        // ask player to place ships
+        System.out.println("Please place your ships. "); //INSERT JIAAN LI CODE
+        Game.placeShip();
+
+        // generate a random placement
+        
         //generating random placement for AI PlacementBoard
         AI.place(AIPlacementBoard);
-        AI.printBoard(AIPlacementBoard);
+        Game.printPlacementArray(AIPlacementBoard);
         // initliaze the player board and ai board (should have 2?)
         while (gamestate) {
+            // check if all ships are alive 
+            
             // ask player for coordinate to attack
 
             //print the placement array of the player and the hit array of the player
-            // System.out.println("Your placement board: ");
-            // Game.printPlacementArray(playerPlacementBoard);
-            // System.out.println("AI's board: ");
-            // Game.printPlacementArray(playerAttackBoard);
+            System.out.println("Your placement board: ");
+            Game.printPlacementArray(playerPlacementBoard);
+            System.out.println("AI's board: ");
+            Game.printPlacementArray(playerAttackBoard);
             
-            // System.out.println("Please enter a letter from A-J for the vertical part of your coordinate: ");
-            // char inputy = Hit.getInputY();
-            // System.out.println("Please enter a number from 1-10 for the horizontal part of your coordinate: ");
-            // int inputx = Hit.getInputX();
+            System.out.println("Please enter a letter from A-J for the vertical part of your coordinate: ");
+            char inputy = Hit.getInputY();
+            System.out.println("Please enter a number from 1-10 for the horizontal part of your coordinate: ");
+            int inputx = Hit.getInputX();
 
-            // if (playerAttackBoard[inputy][inputx].getIsHit()) {
-            //     continue;
-            // }
+            if (playerAttackBoard[inputy][inputx].getIsHit()) {
+                continue;
+            }
             
-            // // check if the players hit hits a ship and mark it on the ai placement board 
-            // // if 
+            // check if the players hit hits a ship and mark it on the ai placement board 
+            // if 
             
-            // if (AIPlacementBoard[inputy][inputx].getIsShip()) {
-            //     System.out.println("You hit a ship point!");
-            //     AIPlacementBoard[inputy][inputx].setIsHit(true);
-            //     playerAttackBoard[inputy][inputx].setIsHit(true);
-            //     playerAttackBoard[inputy][inputx].setIsShip(true);
-            // } else {
-            //     System.out.println("You did not hit a ship point.");
-            //     playerAttackBoard[inputy][inputx].setIsHit(true);
-            // }
-            playerStuff.getCoords(playerPlacementBoard);
+            if (AIPlacementBoard[inputy][inputx].getIsShip()) {
+                System.out.println("You hit a ship point!");
+                AIPlacementBoard[inputy][inputx].setIsHit(true);
+                playerAttackBoard[inputy][inputx].setIsHit(true);
+                playerAttackBoard[inputy][inputx].setIsShip(true);
+            } else {
+                System.out.println("You did not hit a ship point.");
+                playerAttackBoard[inputy][inputx].setIsHit(true);
+
+            }
 
             
             // ai generate a hit using hit or hunt

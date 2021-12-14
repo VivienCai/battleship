@@ -42,16 +42,8 @@ public class Ship {
         isVertical = isV;
         size = s;
         homeCoor = p;
-        // coorsOccupied.add(p);
-        // for (int i = 0; i < size; i++) {
-        // if (isVertical) {
-        // coorsOccupied.add(coorBoard[homeCoor.getY() + i][homeCoor.getX()]);
-        // } else {
-        // coorsOccupied.add(coorBoard[homeCoor.getY()][homeCoor.getX() + i]);
-        // }
-        // }
-    }
 
+    }
     public String getName() {
         return name;
     }
