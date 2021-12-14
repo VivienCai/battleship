@@ -1,8 +1,6 @@
 import java.util.*;
 
 public class AI {
-    boolean isHunting;
-    Coordinate test;
     static char board[][] = new char[11][11];
     static Coordinate coorBoard[][] = new Coordinate[11][11];
 
@@ -33,6 +31,7 @@ public class AI {
 
     }
 
+    // generates the home coordinate for ship
     public static Coordinate generatePoint(int shipSize, boolean orientationV) {
         int x;
         int y;
@@ -49,14 +48,16 @@ public class AI {
         return new Coordinate(y, x);
     }
 
-    public static boolean anyGeneratedIsShip(Coordinate generate, boolean orientationV, int shipSize) {
+    // checks if the ship will overlap any other coordinates that are already
+    // occupied
+    public static boolean anyGeneratedIsShip(Coordinate home, boolean orientationV, int shipSize) {
         for (int j = 0; j < shipSize; j++) {
             if (orientationV) {
-                if (coorBoard[generate.getY() + j][generate.getX()].getIsShip()) {
+                if (coorBoard[home.getY() + j][home.getX()].getIsShip()) {
                     return true;
                 }
             } else {
-                if (coorBoard[generate.getY()][generate.getX() + j].getIsShip()) {
+                if (coorBoard[home.getY()][home.getX() + j].getIsShip()) {
                     return true;
                 }
             }
@@ -64,49 +65,46 @@ public class AI {
         return false;
     }
 
-    // placing algorithm
+    // PLACING ALGORITHM
     public static void place() {
         // loops from 2 - 6 since there are 2 ships of length 3
         for (int i = 2; i <= 6; i++) {
-
             int shipSize = i;
             if (i == 6) {
-
                 shipSize = 3;
             }
 
             // instantiating
             boolean orientationV = (int) ((Math.random() * 2) + 1) == 1 ? true : false;
-            Coordinate generate = new Coordinate(0, 0);
             boolean isCoorUnique = false;
-            generate = generatePoint(shipSize, orientationV);
+
+            // generating a new point (home coordinate of ship)
+            Coordinate home = generatePoint(shipSize, orientationV);
 
             // while the coordinate isnt unique
             while (!isCoorUnique) {
-                if (anyGeneratedIsShip(generate, orientationV, shipSize)) {
-
-                    generate = generatePoint(shipSize, orientationV);
+                // if the ship intersects with any other ship that already occupied with another
+                // ship, generate a new point
+                if (anyGeneratedIsShip(home, orientationV, shipSize)) {
+                    home = generatePoint(shipSize, orientationV);
                 } else {
                     isCoorUnique = true;
                 }
             }
-            Ship ship = new Ship(orientationV, shipSize, generate);
+            Ship ship = new Ship(orientationV, shipSize, home);
 
+            // once ship is placeable
             for (int j = 1; j < shipSize; j++) {
-                generate.setIsShip(true);
-                coorBoard[generate.getY()][generate.getX()].setIsShip(true);
-                board[generate.getY()][generate.getX()] = 'x';
+                home.setIsShip(true);
+                coorBoard[home.getY()][home.getX()].setIsShip(true);
+                board[home.getY()][home.getX()] = 'x';
                 // if the orientation is vertical
                 if (orientationV) {
-                    // Coordinate nextShip = new Coordinate(generate.getY() + j, generate.getX());
-                    // nextShip.setIsShip(true);
-                    // listOfShip.add(nextShip);
-                    coorBoard[generate.getY() + j][generate.getX()].setIsShip(true);
-                    board[generate.getY() + j][generate.getX()] = 'x';
+                    coorBoard[home.getY() + j][home.getX()].setIsShip(true);
+                    board[home.getY() + j][home.getX()] = 'x';
                 } else {
-                    coorBoard[generate.getY()][generate.getX() + j].setIsShip(true);
-                    board[generate.getY()][generate.getX() + j] = 'x';
-                    // listOfShip.add(nextShip);
+                    coorBoard[home.getY()][home.getX() + j].setIsShip(true);
+                    board[home.getY()][home.getX() + j] = 'x';
 
                 }
             }
@@ -119,5 +117,5 @@ public class AI {
         place();
         printBoard();
     }
-    
+
 }

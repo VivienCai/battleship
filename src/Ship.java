@@ -7,6 +7,7 @@ public class Ship {
     private int size;
     private int timesHit;
     private Coordinate placement;
+    private ArrayList<Coordinate> coorsOccupied;
 
     private static ArrayList<Ship> listOfShips = new ArrayList<Ship>();
 
