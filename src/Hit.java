@@ -4,7 +4,7 @@ public class Hit extends AI{
     static Scanner sc = new Scanner(System.in);
 
     static int sum[][] = new int[11][11];
-    static char board[][] = new char[11][11];
+    // static char board[][] = new char[11][11];
     static int max = 0;
     static ArrayList<Coordinate> possibleHits = new ArrayList<Coordinate>(), isParity = new ArrayList<Coordinate>();
     static boolean initialIsOdd = false;
