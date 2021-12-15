@@ -1,5 +1,5 @@
-// import java.util.ArrayList;
-// import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class hunt extends AI{
    private static int sum[][] = new int[11][11];
@@ -45,7 +45,6 @@ public class hunt extends AI{
 			if (shipExists[i]) {
 				if (i==4) {
 					size=3;              //sums the possible ship locations
-
 					sumX(size);
 					sumY(size);
 				}
@@ -61,7 +60,6 @@ public class hunt extends AI{
 		for (int i = 1; i <= 10; i++) {     //find the max number of the array
 			for (int j = 1; j <= 10; j++) {
 				max = Math.max(max, sum[i][j]);
-				System.out.println(max);
 				}
 			}
 		  for (int i = 1; i <= 10; i++) {
@@ -72,7 +70,6 @@ public class hunt extends AI{
 			  }
 		  }	
       int randIndex = (int) (Math.random() * possibleHits.size());
-      System.out.println(randIndex);
       Coordinate hit = possibleHits.get(randIndex);
       System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(hit.getY()), hit.getX()); //displaying hit place
       
@@ -86,11 +83,8 @@ public class hunt extends AI{
 	  }
 	  
 	  //start of 2nd or more time hitting
-	  while (!sunk) {  //will keep on hitting until ship is sunk
-		  
-		  
-		  
-	  }
+//	  while (!sunk) {  //will keep on hitting until ship is sunk  
+//	  }
 	  
 }
 	
@@ -98,9 +92,9 @@ public class hunt extends AI{
 	
 	
 
-//     public static void sumX(int shipSize) {
-//     	nearby(false, false);                  //initialise range values. find nearby occupied spots
-//     	nearby(false,true);
+    public static void sumX(int shipSize) {
+    	nearby(false, false);                  //initialise range values. find nearby occupied spots
+    	nearby(false,true);
     	
     //	 System.out.println(rangeL+" "+rangeR);   	
     //	rangeR=0;
@@ -217,29 +211,29 @@ public class hunt extends AI{
 		}	
 	}
 	
-//     public static void printArray() {
-//         System.out.print("   ");
+    public static void printArray() {
+        System.out.print("   ");
 
-//         for (int i = 1; i < 11; i++) { // for the bar at the top
-//             System.out.print(i + ("  "));
-//         }
-//         System.out.println();
-//         System.out.println("_______________________________");
-//         char c = 'a';
-//         for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i < 11; i++) { // for the bar at the top
+            System.out.print(i + ("  "));
+        }
+        System.out.println();
+        System.out.println("_______________________________");
+        char c = 'a';
+        for (int i = 1; i <= 10; i++) {
 
-//             System.out.print(c + " ");
-//             c++;
-//             for (int j = 1; j <= 10; j++) {
-//                 if (sum[i][j] < 10) {
-//                     System.out.print("0" + sum[i][j] + " ");
-//                 } else {
-//                     System.out.print(sum[i][j] + " ");
-//                 }
-//             }
-//             System.out.println();
-//         }
-//     }
+            System.out.print(c + " ");
+            c++;
+            for (int j = 1; j <= 10; j++) {
+                if (sum[i][j] < 10) {
+                    System.out.print("0" + sum[i][j] + " ");
+                } else {
+                    System.out.print(sum[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+    }
     
     
     public static void exist() {
@@ -275,4 +269,4 @@ public class hunt extends AI{
     	}
     }
 
-// }
+}
