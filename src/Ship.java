@@ -7,8 +7,9 @@ public class Ship {
     private int size;
     private int timesHit;
     private Coordinate homeCoor;
-    private ArrayList<Coordinate> coorsOccupied;
     static Coordinate coorBoard[][] = new Coordinate[11][11];
+
+    HashMap<Ship, ArrayList<Coordinate>> shipCoor = new HashMap<Ship, ArrayList<Coordinate>>();
 
     private static ArrayList<Ship> listOfShips = new ArrayList<Ship>();
 
@@ -42,8 +43,12 @@ public class Ship {
         isVertical = isV;
         size = s;
         homeCoor = p;
-
     }
+
+    // public void addCoordinates(Coordinate home, boolean isV)
+
+    // }
+
     public String getName() {
         return name;
     }
