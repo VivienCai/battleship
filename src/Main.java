@@ -30,6 +30,7 @@ public class Main {
         
         // generating random placement for AI PlacementBoard
         AI.place(AIPlacementBoard);
+        System.out.println("AI Placement Board: ");
         Game.printPlacementArray(AIPlacementBoard);
         // initliaze the player board and ai board (should have 2?)
         while (gamestate) {
@@ -40,7 +41,7 @@ public class Main {
             //print the placement array of the player and the hit array of the player
             System.out.println("Your placement board: ");
             Game.printPlacementArray(playerPlacementBoard);
-            System.out.println("AI's board: ");
+            System.out.println("Your attack board: ");
             Game.printPlacementArray(playerAttackBoard);
             
             System.out.println("Please enter a letter from A-J for the vertical part of your coordinate: ");

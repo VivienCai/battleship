@@ -1,9 +1,17 @@
-public class Coordinate {
+public class Coordinate implements Comparable<Coordinate> {
     private int x_coor;
     private int y_coor;
     private boolean isShip = false;
     private boolean isHit = false;
+    private int probability = 0;
 
+    public int getProbability() {
+        return probability;
+    }
+    
+    public void setProbability(int newProbability) {
+        probability = newProbability;
+    }
     public Coordinate(int y, int x) {
         x_coor = x;
         y_coor = y;
@@ -53,5 +61,21 @@ public class Coordinate {
     public void setIsShip(boolean newIsShip) {
         isShip = newIsShip;
     }
+    
 
+    @Override
+    public int compareTo(Coordinate cur) {
+        if (this.probability > cur.probability) {
+            // if current object is greater,then return 1
+            return 1;
+        }
+        else if (this.probability < cur.probability) {
+            // if current object is greater,then return -1
+            return -1;
+        }
+        else {
+            // if current object is equal to o,then return 0
+            return 0;
+        }
+    }
 }
