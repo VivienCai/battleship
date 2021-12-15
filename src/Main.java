@@ -19,25 +19,29 @@ public class Main {
         // instantiating Coordinate for boards
         for (int i = 0; i <= 10; i++) {
             for (int j = 0; j <= 10; j++) {
-                Game.playerMapOfCoor.put(new Coordinate(i,j), "empty");
-                playerPlacementBoard[i][j] = new Coordinate(i,j);
+                Game.playerMapOfCoor.put(new Coordinate(i, j), "empty");
+                playerPlacementBoard[i][j] = new Coordinate(i, j);
                 playerAttackBoard[i][j] = new Coordinate(i, j);
-                AIPlacementBoard[i][j] = new Coordinate(i,j);
-                AIAttackBoard[i][j] = new Coordinate(i,j);
+                AIPlacementBoard[i][j] = new Coordinate(i, j);
+                AIAttackBoard[i][j] = new Coordinate(i, j);
             }
         }
         // ask player to place ships
         System.out.println("Hello, welcome to Sarina, Vivien, and Jiaan's battleship game.");
         System.out.println("Please place your ships. ");
-        // Game.placeShip();
+        // initliaze the player board and ai board (should have 2?)
+        // Prompting user to place ships
+        Game.placeShip();
 
-        // generate a random placement
-        AI.place(AIAttackBoard);
+        // temp... getting AI to place players ship bc we are lazy
+        // AI.place(playerPlacementBoard);
+        // Game.printPlacementArray(playerPlacementBoard);
+
         // generating random placement for AI PlacementBoard
-        // AI.place(AIPlacementBoard);
+        AI.place(AIPlacementBoard);
         System.out.println("AI Placement Board: ");
         Game.printPlacementArray(playerPlacementBoard);
-        // initliaze the player board and ai board (should have 2?)
+
         // while (gamestate) {
         // // check if all ships are alive
 
@@ -49,19 +53,17 @@ public class Main {
         // System.out.println("Your attack board: ");
         // Game.printPlacementArray(playerAttackBoard);
 
-        // System.out.println("Enter a y (A-J) coordinate to check if there is a ship
-        // there.");
-        // int inputy = AI.getInputY();
-        // System.out.println("Enter an x (1-10) coordinate to chekc if there is a ship
-        // there.");
-        // int inputx = AI.getInputX();
+        // testing. pretend u are the AI
+        System.out.println("Enter a y (A-J) coordinate to check if there is a ship there.");
+        int inputy = AI.getInputY();
+        System.out.println("Enter an x (1-10) coordinate to check if there is a ship there.");
+        int inputx = AI.getInputX();
 
-        // if(playerPlacementBoard[inputy][inputx].getIsShip()){
-        // System.out.println("You hit a ship. The ship you hit was:");
-        // String shipHit =
-        // Game.playerMapOfCoor.get(playerPlacementBoard[inputy][inputx]);
-        // System.out.println(shipHit);
-        // }
+        if (playerPlacementBoard[inputy][inputx].getIsShip()) {
+            System.out.println("You hit a ship. The ship you hit was:");
+            String shipHit = Game.playerMapOfCoor.get(playerPlacementBoard[inputy][inputx]);
+            System.out.println(shipHit);
+        }
 
         // System.out.println("Please enter a letter from A-J for the vertical part of
         // your coordinate: ");

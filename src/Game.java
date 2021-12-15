@@ -56,8 +56,7 @@ public class Game {
                 shipSize = 3;
             }
             System.out.printf("You are currently placing a ship that is %d units long.\n", shipSize);
-            System.out.println(
-                    "What orientation do you want the ship to be? Write 1 for vertical and anything else for horizontal.");
+            System.out.println("What orientation do you want the ship to be? Write 1 for vertical and anything else for horizontal.");
             boolean isV;
             char input = sc.next().charAt(0);
             if (input == '1') {
@@ -86,11 +85,11 @@ public class Game {
 
                 Coordinate home = Main.playerPlacementBoard[y][x];
                 if (AI.anyGeneratedIsShip(home, isV, shipSize, Main.playerPlacementBoard)) {
-                    System.out.println(
-                            "Your ship overlaps a previous placed ship. Please choose another point to place your ship.");
+                    System.out.println("Your ship overlaps a previous placed ship. Please choose another point to place your ship.");
                     i--;
                 } else {
                     Ship ship = new Ship(isV, shipSize, home);
+                    System.out.println("You placed a: " + ship.getName());
                     playerPlaceShip(home, shipSize, isV, ship);
                     for (int j = 1; j < shipSize; j++) {
                         home.setIsShip(true);

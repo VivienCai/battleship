@@ -8,6 +8,7 @@ public class Ship {
     private int timesHit;
     private Coordinate homeCoor;
     static Coordinate coorBoard[][] = new Coordinate[11][11];
+    private static int count = 0;
 
     HashMap<Ship, ArrayList<Coordinate>> shipCoor = new HashMap<Ship, ArrayList<Coordinate>>();
 
@@ -19,7 +20,6 @@ public class Ship {
                 coorBoard[i][j] = new Coordinate(j, i);
             }
         }
-        int count = 0;
         switch (s) {
             case 2:
                 name = "destroyer";
@@ -37,6 +37,7 @@ public class Ship {
                 break;
             case 5:
                 name = "carrier";
+                break;
             default:
                 name = "default";
         }
