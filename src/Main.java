@@ -23,6 +23,7 @@ public class Main {
             }
         }
         // ask player to place ships
+        System.out.println("Hello, welcome to Sarina, Vivien, and Jiaan's battleship game.");
         System.out.println("Please place your ships. "); 
         Game.placeShip();
 

@@ -20,7 +20,7 @@ public class hunt extends AI{
    private static boolean didHit;
    private static boolean sunk=false;
     	public static void main(String args[]) {  //testing stuff
-		Coordinate hitTest=new Coordinate(3,2);                              //CHANGE THIS TO FIND WHICH POINT YOU WANT TO HIT
+		Coordinate hitTest=new Coordinate(4,4);                              //CHANGE THIS TO FIND WHICH POINT YOU WANT TO HIT
 		initBoard();
 		board[5][4]='y';                                                       //CHANGE THIS TO SIMULATE ALREADY HIT OR MISSED POINTS
 

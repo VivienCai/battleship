@@ -61,9 +61,9 @@ public class Game {
                 isV = false;
             }
             
-            System.out.println("Please enter your y coordinate.");
+            System.out.println("Please enter an uppercase letter from A-J for your y coordinate. ");
             int y = AI.getInputY();
-            System.out.println("Please enter your x coordinate. ");
+            System.out.println("Please enter a number from 1-10 for your x coordinate. ");
             int x = AI.getInputX();
             boolean inBounds = false;
             
