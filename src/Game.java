@@ -6,7 +6,7 @@ public class Game {
     // M - not occupied by a ship, hit
     // S - occupied by a ship, not hit
 
-    public static HashMap<String, String> playerMapOfCoor = new HashMap<String, String>();
+    public static HashMap<String, Ship> playerMapOfCoor = new HashMap<String, Ship>();
 
     public static void printPlacementArray(Coordinate array[][]) {
         for (int i = 0; i <= 10; i++) {
@@ -91,9 +91,9 @@ public class Game {
                     i--;
                 } else {
                     Ship ship = new Ship(isV, shipSize, home);
-                    System.out.println("You placed a: " + ship.getName());
+                    System.out.println("You placed a: " + ship);
                     playerPlaceShip(home, shipSize, isV, ship);
-                    playerMapOfCoor.replace(home, ship.getName());
+                    playerMapOfCoor.replace(home.toString(), ship);
 
                     for (int j = 1; j < shipSize; j++) {
                         home.setIsShip(true);
@@ -102,12 +102,12 @@ public class Game {
                         // if the orientation is vertical
                         if (isV) {
                             Coordinate cur = Main.playerPlacementBoard[home.getY() + j][home.getX()];
-                            playerMapOfCoor.replace(cur, ship.getName());
+                            playerMapOfCoor.replace(cur.toString(), ship);
                             cur.setIsShip(true);
 
                         } else {
                             Coordinate cur = Main.playerPlacementBoard[home.getY()][home.getX() + j];
-                            playerMapOfCoor.replace(cur, ship.getName());
+                            playerMapOfCoor.replace(cur.toString(), ship);
                             cur.setIsShip(true);
                         }
                     }
@@ -131,6 +131,12 @@ public class Game {
     public static void playerPlaceShip(Coordinate homeCoord, int size, boolean isV, Ship ship) {
         Ship.getList().add(ship);
 
+    }
+
+    public static String getAccessKey(int y, int x) {
+        char keyChar = Coordinate.convertIntToChar(y);
+        String accessKey = String.valueOf(keyChar) + String.valueOf(x);
+        return accessKey;
     }
 
 }

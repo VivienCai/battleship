@@ -93,6 +93,7 @@ public class AI {
             sumColumns(i);
             sumRows(i);
         }
+        // printArray();
         AIhit();
         printArray();
         resetArray();
@@ -144,12 +145,12 @@ public class AI {
                 }
                 if (ok) {
                     if (shipSize == 3) {
-                        for (int g = j; g < j + shipSize; g++) {
-                            Main.AIAttackBoard[i][g].setProbability(Main.AIAttackBoard[g][i].getProbability() + 2);
+                        for (int g = j; g < j + shipSize; g ++) {
+                            Main.AIAttackBoard[i][g].setProbability(Main.AIAttackBoard[i][g].getProbability() + 2);
                         }
                     } else {
                         for (int g = j; g < j + shipSize; g++) {
-                            Main.AIAttackBoard[i][g].setProbability(Main.AIAttackBoard[g][i].getProbability() + 1);
+                            Main.AIAttackBoard[i][g].setProbability(Main.AIAttackBoard[i][g].getProbability() + 1);
                         }
                     }
                 }
@@ -265,10 +266,18 @@ public class AI {
         if (isParity.size() > 0) {
             int randIndex = (int) (Math.random() * isParity.size());
             Coordinate hit = isParity.get(randIndex);
-            Main.AIAttackBoard[hit.getY()][hit.getX()].setIsHit(true);
-            System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(hit.getY()), hit.getX());
-            if (Main.playerPlacementBoard[hit.getY()][hit.getX()].getIsShip()) {
-                System.out.println("The AI hit one of your ships.");
+            int y = hit.getY(), x = hit.getX();
+            Main.AIAttackBoard[y][x].setIsHit(true);
+            System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(y), x);
+            
+            if (Main.playerPlacementBoard[y][x].getIsShip()) {
+                String accessKey = Game.getAccessKey(y, x);
+
+                Ship shipHit = Game.playerMapOfCoor.get(accessKey);
+                shipHit.addTimesHit();
+
+                System.out.println("The AI hit one of your ships. It hit your: " + shipHit);
+                System.out.println("Your " + shipHit + " has been hit " + shipHit.getTimesHit() + " times.");
             }
             else {
                 System.out.println("The AI missed.");
@@ -277,14 +286,21 @@ public class AI {
         } else {
             int randIndex = (int) (Math.random() * possibleHits.size());
             Coordinate hit = possibleHits.get(randIndex);
-            Main.AIAttackBoard[hit.getY()][hit.getX()].setIsHit(true);
-            System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(hit.getY()), hit.getX());
-            if (Main.playerPlacementBoard[hit.getY()][hit.getX()].getIsShip()) {
-                System.out.println("The AI hit one of your ships.");
-            } else {
+            int y = hit.getY(), x = hit.getX();
+            Main.AIAttackBoard[y][x].setIsHit(true);
+            System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(y), x);
+            if (Main.playerPlacementBoard[y][x].getIsShip()) {
+                String accessKey = Game.getAccessKey(y, x);
+
+                Ship shipHit = Game.playerMapOfCoor.get(accessKey);
+                shipHit.addTimesHit();
+
+                System.out.println("The AI hit one of your ships. It hit your: " + shipHit);
+                System.out.println("Your " + shipHit + " has been hit " + shipHit.getTimesHit() + " times.");
+            }
+            else {
                 System.out.println("The AI missed.");
             }
         }
     }
-    
 }

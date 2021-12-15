@@ -78,4 +78,13 @@ public class Coordinate implements Comparable<Coordinate> {
             return 0;
         }
     }
+
+
+    public static char convertIntToChar(int ind) {
+        return (char)(ind+'A'-1);
+    }
+
+    public String toString() { 
+        return String.valueOf(convertIntToChar(y_coor)) + String.valueOf(x_coor);
+    } 
 }

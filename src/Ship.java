@@ -21,6 +21,9 @@ public class Ship {
             }
         }
         switch (s) {
+            case 0:
+                name = "empty";
+                break;
             case 2:
                 name = "destroyer";
                 break;
@@ -76,5 +79,17 @@ public class Ship {
 
     public Coordinate getHomeCoord() {
         return homeCoor;
+    }
+
+    public String toString() {
+        return name;
+    }
+    
+    public void addTimesHit(){
+        timesHit++;
+    }
+
+    public int getTimesHit() {
+        return timesHit;
     }
 }
