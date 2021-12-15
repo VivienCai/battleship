@@ -86,7 +86,7 @@ public class Hunting {
                     maxP = temp.get(j);
                 }
             }
-            temp.remove(maxIndex);
+  //          temp.remove(maxIndex);
             
         }
 
