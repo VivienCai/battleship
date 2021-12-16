@@ -65,6 +65,7 @@ public class AI {
                 }
             }
             Ship ship = new Ship(orientationV, shipSize, home);
+            AIPlaceShip(ship);
 
             // once ship is placeable
             int y = home.getY();
@@ -77,19 +78,24 @@ public class AI {
                 // if the orientation is vertical
                 if (orientationV) {
                     coorBoard[y + j][x].setIsShip(true);
-                    int newY = y+j;
+                    int newY = y + j;
                     String key = Game.getAccessKey(newY, x);
                     Game.AIMapOfCoor.replace(key, ship);
 
                 } else {
                     coorBoard[y][x + j].setIsShip(true);
-                    int newX= x+j;
+                    int newX = x + j;
                     String key = Game.getAccessKey(y, newX);
                     Game.AIMapOfCoor.replace(key, ship);
 
                 }
             }
         }
+
+    }
+    
+    public static void AIPlaceShip(Ship ship) {
+        Ship.getList().add(ship);
 
     }
     //HITTING ALGORITHM

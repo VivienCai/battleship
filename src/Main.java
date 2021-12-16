@@ -11,6 +11,7 @@ public class Main {
     public static Coordinate AIAttackBoard[][] = new Coordinate[11][11];
 
     public static void main(String[] args) {
+        
         // instantiate each coordinate in the hashmap with empty for now
         // when plaueer places the ship assign each occupied coordinate with the ship
         // name
@@ -31,7 +32,7 @@ public class Main {
         }
         // ask player to place ships
         System.out.println("Hello, welcome to Sarina, Vivien, and Jiaan's battleship game.");
-        System.out.println("Please place your ships. ");
+        // System.out.println("Please place your ships. ");
 
         // generating random placement for AI PlacementBoard
         AI.place(AIPlacementBoard);
@@ -39,6 +40,9 @@ public class Main {
         Game.printPlacementArray(AIPlacementBoard);
 
         while (gamestate) {
+            for (Ship aliveShip : Ship.getList()) {
+                System.out.println(aliveShip);
+            }
 
             //print the placement array of the player and the hit array of the player
             System.out.println("Your attack board: ");
@@ -60,7 +64,17 @@ public class Main {
                 String key = Game.getAccessKey(inputy, inputx);
                 Ship shipHit = Game.AIMapOfCoor.get(key);
                 shipHit.addTimesHit();
+                String shipHitName = shipHit.getName();
+                
                 if (shipHit.getTimesHit() == shipHit.getSize()) {
+                    Ship remove = new Ship();
+                    // Ship.getList().
+                    for (Ship aliveShip : Ship.getList()) {
+                        if (aliveShip.getName().equals(shipHitName)) {
+                            remove = aliveShip;
+                        }
+                    }
+                    Ship.getList().remove(remove);
                     System.out.printf("SUNK, %s\n", shipHit.getName());
                 } else {
                     System.out.printf("HIT, %s\n", shipHit.getName());

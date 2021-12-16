@@ -52,11 +52,6 @@ public class Game {
 
     }
 
-    public static void playerPlaceShip(Coordinate homeCoord, int size, boolean isV, Ship ship) {
-        Ship.getList().add(ship);
-
-    }
-
     public static String getAccessKey(int y, int x) {
         char keyChar = Coordinate.convertIntToChar(y);
         String accessKey = String.valueOf(keyChar) + String.valueOf(x);
