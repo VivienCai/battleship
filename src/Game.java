@@ -41,6 +41,12 @@ public class Game {
         }
     }
 
+    public static void removeShipFromGrid(Ship shipHit) {
+        int y = shipHit.getHomeCoord().getY();
+        int x = shipHit.getHomeCoord().getX();
+        Main.AIPlacementBoard[y][x]
+    }
+
     
 
     public static boolean boundsCheck(int n, boolean isV, int size) {

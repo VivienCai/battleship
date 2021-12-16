@@ -72,6 +72,8 @@ public class Main {
                     for (Ship aliveShip : Ship.getList()) {
                         if (aliveShip.getName().equals(shipHitName)) {
                             remove = aliveShip;
+                            Game.removeShipFromGrid(shipHit);
+
                         }
                     }
                     Ship.getList().remove(remove);
