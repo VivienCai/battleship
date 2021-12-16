@@ -85,13 +85,13 @@ public class Main {
             System.out.println("AI's turn");
             // generate a hit
             AI.findProbability();
-            AI.findProbability();
-            AI.findProbability();
-            AI.findProbability();
-            AI.findProbability();
-            AI.findProbability();
-            AI.findProbability();
-            AI.findProbability();
+//            AI.findProbability();
+//            AI.findProbability();
+//            AI.findProbability();
+//            AI.findProbability();
+//            AI.findProbability();
+//            AI.findProbability();
+//            AI.findProbability();
             // verify if hit or not
             // print the probability board and AIATtackBoard
 
