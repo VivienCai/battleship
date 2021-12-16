@@ -7,8 +7,7 @@ public class hunt extends AI{
    private static int sum[][] = new int[11][11];
    private static int max,timesMissed, counter = 0;
    private static ArrayList<Coordinate> possibleHits = new ArrayList<Coordinate>();
-   private static ArrayList<Coordinate> hitPoints = new ArrayList<Coordinate>();
-
+   private static Coordinate hitPoints[]=new Coordinate[10];
    private static int size;
   //  static Coordinate board[][];
    private static Coordinate hitPoint;
@@ -26,15 +25,16 @@ public class hunt extends AI{
 
 
 		printBoard();
-		hunt1(hitTest, board);
+		hunt1(hitTest, board, 5);
 		printArray();
 	}
 
 	
     //actual hunt code
-	public static void hunt1(Coordinate hitPoint1, char board [][]) {
-		hitPoints.add(counter, hitPoint1);
-		
+	public static void hunt1(Coordinate hitPoint1, char board [][],int size1) {
+	//	System.out.println(hitPoints.size());
+		hitPoints[0]= hitPoint1;
+		size=size1;
 		initSum();
 		  max=0;
 		  possibleHits.clear();
@@ -45,20 +45,11 @@ public class hunt extends AI{
 	    // S - occupied by a ship, not hit
 	//	Coordinate board[][]=board1.clone();
 		exist();  //sets all ships to exist
-		for (int i=0;i<5;i++) {
-			if (shipExists[i]) {
-				if (i==4) {
-					size=3;              //sums the possible ship locations
-					sumX(size);
-					sumY(size);
-				}
-				else {
-					size=i+2;
-					sumX(size);
-					sumY(size);
-				}	
-			}
-		}
+		sumX(size);
+		sumY(size);
+		
+		
+		
 		sum[hitPoint.getY()][hitPoint.getX()]=0;   //makes the value of hit point=0 so ai wont hit there again
 		for (int i = 1; i <= 10; i++) {     //find the max number of the array
 			for (int j = 1; j <= 10; j++) {
@@ -84,14 +75,15 @@ public class hunt extends AI{
 	  if (temp.equals("yes")) { //stores either hit or miss
 		  didHit=true;
 		  board[hit.getY()][hit.getX()]='X';
+		  System.out.println(counter+"gay");
 		  counter++;
-		  hitPoints.add(counter, hitPoint1); 
-		  hunt2(hitPoint,board);
+		  hitPoints[counter]= hit; 
+		  hunt2(hitPoint,board, size);
 	  }
 	  else {
 		  didHit=false;
 		  board[hit.getY()][hit.getX()]='S';
-		  hunt1(hitPoint,board);
+		  hunt1(hitPoint,board, size);
 	  }
 	  
 	  //Below code should only be reached when ship is sunk
@@ -104,47 +96,23 @@ public class hunt extends AI{
 	  
 }
 
-	public static void hunt2(Coordinate hitPoint1, char board [][]) {
+	public static void hunt2(Coordinate hitPoint1, char board [][], int size1) {
 		initSum();
 		possibleHits.clear();
-		  if(hitPoints.get(0).getX()==hitPoints.get(1).getX()) {  //if ship horizontal
-			  for (int i=0;i<5;i++) {
-					if (shipExists[i]) {
-						if (i==4) {
-							size=3;              //sums the possible ship locations
-							sumX(size-1);
-						}
-						else {
-							size=i+2;
-							sumX(size-1);
-						}	
-					}
-				}
+		  if(hitPoints[0].getX()==hitPoints[1].getX()) {  //if ship horizontal
+			  sumY(size-1);
 			  printArray();
 			  System.out.println("^^ right after sum");
 		  }
 		  
-		  else if (hitPoints.get(0).getY()==hitPoints.get(1).getY());{
-			  
-			  System.out.println(hitPoints.get(0).getY()+"Y2"+hitPoints.get(1).getY() );
-			  for (int i=0;i<5;i++) {
-					if (shipExists[i]) {
-						if (i==4) {
-							size=3;              //sums the possible ship locations
-							sumY(size-1);
-						}
-						else {
-							size=i+2;
-							sumY(size-1);
-						}	
-					}
-				}
-			  
+		  else if (hitPoints[0].getY()==hitPoints[1].getY());{
+			  System.out.println(hitPoints[0].getY()+" hi "+hitPoints[1].getY());
+			  sumX(size-1);
 			  
 		  }
-		  printArray();
-		 for (int i=0;i<hitPoints.size();i++) {
-			 sum[hitPoints.get(i).getY()][hitPoints.get(i).getX()]=0;
+		  
+		 for (int i=0;i<counter;i++) {
+			 sum[hitPoints[i].getY()][hitPoints[i].getX()]=0;
 		 }                                          //makes the value of hit point=0 so ai wont hit there again
 		  printArray();
 
@@ -178,7 +146,7 @@ public class hunt extends AI{
 		      else {
 				  board[hit.getY()][hit.getX()]='X';
 
-		    	  hunt2(hitPoint, board);                           //call program again
+		    	  hunt2(hitPoint, board, size);                           //call program again
 		      }
 	      }
 	      
