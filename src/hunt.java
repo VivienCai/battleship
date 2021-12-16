@@ -101,7 +101,6 @@ public class hunt extends AI{
 		possibleHits.clear();
 		  if(hitPoints[0].getX()==hitPoints[1].getX()) {  //if ship horizontal
 			  sumY(size-1);
-			  printArray();
 			  System.out.println("^^ right after sum");
 		  }
 		  
