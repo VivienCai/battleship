@@ -3,6 +3,7 @@ import java.util.*;
 public class AI {
     static Scanner sc = new Scanner(System.in);
     static ArrayList<Coordinate> listOfShip = new ArrayList<Coordinate>();
+    static boolean isHunting = false;
 
     // generates the home coordinate for ship
     public static Coordinate generatePoint(int shipSize, boolean orientationV) {
@@ -66,21 +67,31 @@ public class AI {
             Ship ship = new Ship(orientationV, shipSize, home);
 
             // once ship is placeable
+            int y = home.getY();
+            int x = home.getX();
             for (int j = 1; j < shipSize; j++) {
                 home.setIsShip(true);
-                coorBoard[home.getY()][home.getX()].setIsShip(true);
+                coorBoard[y][x].setIsShip(true);
+                Game.AIMapOfCoor.replace(coorBoard[y][x].toString(), ship);
+                // cur.setIsShip(true);
                 // if the orientation is vertical
                 if (orientationV) {
-                    coorBoard[home.getY() + j][home.getX()].setIsShip(true);
+                    coorBoard[y + j][x].setIsShip(true);
+                    int newY = y+j;
+                    String key = Game.getAccessKey(newY, x);
+                    Game.AIMapOfCoor.replace(key, ship);
+
                 } else {
-                    coorBoard[home.getY()][home.getX() + j].setIsShip(true);
+                    coorBoard[y][x + j].setIsShip(true);
+                    int newX= x+j;
+                    String key = Game.getAccessKey(y, newX);
+                    Game.AIMapOfCoor.replace(key, ship);
 
                 }
             }
         }
 
     }
-
     //HITTING ALGORITHM
     // static int sum[][] = new int[11][11];
     static int max = 0;
@@ -269,19 +280,8 @@ public class AI {
             int y = hit.getY(), x = hit.getX();
             Main.AIAttackBoard[y][x].setIsHit(true);
             System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(y), x);
-            
-            if (Main.playerPlacementBoard[y][x].getIsShip()) {
-                String accessKey = Game.getAccessKey(y, x);
-
-                Ship shipHit = Game.playerMapOfCoor.get(accessKey);
-                shipHit.addTimesHit();
-
-                System.out.println("The AI hit one of your ships. It hit your: " + shipHit);
-                System.out.println("Your " + shipHit + " has been hit " + shipHit.getTimesHit() + " times.");
-            }
-            else {
-                System.out.println("The AI missed.");
-            }
+            System.out.println("Is it a hit or miss?");
+            getInput();
 
         } else {
             int randIndex = (int) (Math.random() * possibleHits.size());
@@ -289,18 +289,39 @@ public class AI {
             int y = hit.getY(), x = hit.getX();
             Main.AIAttackBoard[y][x].setIsHit(true);
             System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(y), x);
-            if (Main.playerPlacementBoard[y][x].getIsShip()) {
-                String accessKey = Game.getAccessKey(y, x);
-
-                Ship shipHit = Game.playerMapOfCoor.get(accessKey);
-                shipHit.addTimesHit();
-
-                System.out.println("The AI hit one of your ships. It hit your: " + shipHit);
-                System.out.println("Your " + shipHit + " has been hit " + shipHit.getTimesHit() + " times.");
+            System.out.println("Is it a hit or miss?");
+            getInput();
+        }
+    }
+    public static void getInput(){
+        while (true) {
+            
+            String input = sc.nextLine();
+            String ship = input.substring(4);
+            
+            if (input.equals("MISS")) {
+                isHunting = false;
+                break;
             }
-            else {
-                System.out.println("The AI missed.");
+            else if (input.substring(0, 3).equals("HIT")) {
+                if (checkValidShip(ship)) {
+                   isHunting = true;
+                }
+                break;
+            }
+            else{
+                System.out.println("that is not a valid input. Is it a hit or miss?");
             }
         }
     }
+
+    private static boolean checkValidShip(String ship) {
+        if (ship.equals("BATTLESHIP")|| ship.equals("CARRIER") || ship.equals("SUBMARINE") || ship.equals("DESTROYER") || ship.equals("CRUISER") ){
+            return true;
+        } 
+        return false;
+    }
+
+
+
 }
