@@ -265,6 +265,7 @@ public class AI {
             for (int j = 1; j <= 10; j++) {
                 Coordinate cur = Main.AIAttackBoard[i][j];
                 max = Math.max(max, cur.getProbability());
+                
             }
         }
         for (int i = 1; i <= 10; i++) {
@@ -286,7 +287,7 @@ public class AI {
             int y = hit.getY(), x = hit.getX();
             Main.AIAttackBoard[y][x].setIsHit(true);
             System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(y), x);
-            System.out.println("Is it a hit or miss?");
+            System.out.println("Is it a hit or miss or sink?");
             getInput();
 
         } else {
@@ -295,11 +296,12 @@ public class AI {
             int y = hit.getY(), x = hit.getX();
             Main.AIAttackBoard[y][x].setIsHit(true);
             System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(y), x);
-            System.out.println("Is it a hit or miss?");
+            System.out.println("Is it a hit or miss or sink?");
             getInput();
         }
     }
     public static void getInput(){
+        ArrayList<Ship> shipsAlive = Ship.getList();
         while (true) {
             
             String input = sc.nextLine();
@@ -314,8 +316,15 @@ public class AI {
                    isHunting = true;
                 }
                 break;
-            }
-            else{
+            } else if (input.substring(0, 4).equals("SUNK")){
+                // SUNK, CARRIER
+                String shipName = input.substring(5);
+                if (checkValidShip(shipName)){
+                    System.out.println(shipName);
+                    Ship.getPlayerListOfShipsAlive().remove(shipName);
+                }
+                break;
+            } else{
                 System.out.println("that is not a valid input. Is it a hit or miss?");
             }
         }

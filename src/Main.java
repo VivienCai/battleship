@@ -40,7 +40,21 @@ public class Main {
         Game.printPlacementArray(AIPlacementBoard);
 
         while (gamestate) {
-            for (Ship aliveShip : Ship.getList()) {
+            ArrayList<Ship> shipsAlive = Ship.getList();
+            ArrayList<String> playerShipsAlive = Ship.getPlayerListOfShipsAlive();
+            if (shipsAlive.size() == 0) {
+                break;
+            }
+            if (playerShipsAlive.size() == 0) {
+                break;
+            }
+
+            System.out.println("AI ships alive: ");
+            for (Ship aliveShip : shipsAlive) {
+                System.out.println(aliveShip);
+            }
+            System.out.println("Player ships alive: ");
+            for (String aliveShip : playerShipsAlive) {
                 System.out.println(aliveShip);
             }
 
@@ -60,7 +74,7 @@ public class Main {
             // if
             Coordinate cur = AIPlacementBoard[inputy][inputx];
             Coordinate curPlayer = playerAttackBoard[inputy][inputx];
-            if (cur.getIsShip()) {
+            if (cur.getIsShip() && !cur.getIsHit()) {
                 String key = Game.getAccessKey(inputy, inputx);
                 Ship shipHit = Game.AIMapOfCoor.get(key);
                 shipHit.addTimesHit();
@@ -69,14 +83,14 @@ public class Main {
                 if (shipHit.getTimesHit() == shipHit.getSize()) {
                     Ship remove = new Ship();
                     // Ship.getList().
-                    for (Ship aliveShip : Ship.getList()) {
+                    for (Ship aliveShip : shipsAlive) {
                         if (aliveShip.getName().equals(shipHitName)) {
                             remove = aliveShip;
                             Game.removeShipFromGrid(shipHit);
 
                         }
                     }
-                    Ship.getList().remove(remove);
+                    shipsAlive.remove(remove);
                     System.out.printf("SUNK, %s\n", shipHit.getName());
                 } else {
                     System.out.printf("HIT, %s\n", shipHit.getName());

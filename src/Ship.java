@@ -14,8 +14,15 @@ public class Ship {
 
     private static ArrayList<Ship> listOfShips = new ArrayList<Ship>();
 
+    private static ArrayList<String> playerListOfShipsAlive = new ArrayList<String>(
+        Arrays.asList("SUBMARINE", "DESTROYER", "BATTLESHIP", "CARRIER",
+            "CRUISER" ));
+
     public Ship() {
-        
+    }
+
+    public static ArrayList<String> getPlayerListOfShipsAlive(){
+        return playerListOfShipsAlive;
     }
     public Ship(boolean isV, int s, Coordinate p) {
         for (int i = 1; i <= 10; i++) {
