@@ -29,7 +29,6 @@ public class hunt extends AI{
 		printArray();
 	}
 
-	
     //actual hunt code
 	public static void hunt1(Coordinate hitPoint1, char board [][],int size1) {
 	//	System.out.println(hitPoints.size());
@@ -43,7 +42,7 @@ public class hunt extends AI{
 	    // X - occupied by a ship, hit
 	    // M - not occupied by a ship, hit
 	    // S - occupied by a ship, not hit
-	//	Coordinate board[][]=board1.clone();
+		//	Coordinate board[][]=board1.clone();
 		exist();  //sets all ships to exist
 		sumX(size);
 		sumY(size);

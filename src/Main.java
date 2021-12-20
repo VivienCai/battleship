@@ -1,5 +1,10 @@
 import java.util.*;
 
+/* Sarina Li, Vivien Cai, Jiaan Li
+* Mon December 20
+* ICS4U1
+* Main Class
+*/
 
 public class Main {
     static Scanner sc = new Scanner(System.in);
@@ -17,19 +22,8 @@ public class Main {
         // name
 
         // instantiating Coordinate for boards
-        Ship emptyShip = new Ship(false, 0, new Coordinate(0,0));
-
-        for (int i = 0; i <= 10; i++) {
-            for (int j = 0; j <= 10; j++) {
-                char keyChar = Coordinate.convertIntToChar(i);
-                String key = String.valueOf(keyChar) + String.valueOf(j);
-                Game.AIMapOfCoor.put(key, emptyShip);
-                // playerPlacementBoard[i][j] = new Coordinate(i, j);
-                playerAttackBoard[i][j] = new Coordinate(i, j);
-                AIPlacementBoard[i][j] = new Coordinate(i, j);
-                AIAttackBoard[i][j] = new Coordinate(i, j);
-            }
-        }
+        initArrays();
+        
         // ask player to place ships
         System.out.println("Hello, welcome to Sarina, Vivien, and Jiaan's battleship game.");
         // System.out.println("Please place your ships. ");
@@ -43,9 +37,11 @@ public class Main {
             ArrayList<Ship> shipsAlive = Ship.getList();
             ArrayList<String> playerShipsAlive = Ship.getPlayerListOfShipsAlive();
             if (shipsAlive.size() == 0) {
+                System.out.println("AI lost, player wins");
                 break;
             }
             if (playerShipsAlive.size() == 0) {
+                System.out.println("AI won, player lost");
                 break;
             }
 
@@ -67,11 +63,7 @@ public class Main {
             System.out.println("Please enter a number from 1-10 for the horizontal part of your coordinate: ");
             int inputx = AI.getInputX();
 
-            if (playerAttackBoard[inputy][inputx].getIsHit()) {
-                continue;
-            }
             // check if the players hit hits a ship and mark it on the ai placement board
-            // if
             Coordinate cur = AIPlacementBoard[inputy][inputx];
             Coordinate curPlayer = playerAttackBoard[inputy][inputx];
             if (cur.getIsShip() && !cur.getIsHit()) {
@@ -79,7 +71,7 @@ public class Main {
                 Ship shipHit = Game.AIMapOfCoor.get(key);
                 shipHit.addTimesHit();
                 String shipHitName = shipHit.getName();
-                
+
                 if (shipHit.getTimesHit() == shipHit.getSize()) {
                     Ship remove = new Ship();
                     // Ship.getList().
@@ -94,13 +86,14 @@ public class Main {
                     System.out.printf("SUNK, %s\n", shipHit.getName());
                 } else {
                     System.out.printf("HIT, %s\n", shipHit.getName());
+
                 }
                 cur.setIsHit(true);
                 curPlayer.setIsHit(true);
                 curPlayer.setIsShip(true);
-            } else {
+            } else if (cur.getIsShip() && cur.getIsHit() || !cur.getIsShip()) {
+                cur.setIsHit(true);
                 System.out.println("MISS");
-                curPlayer.setIsHit(true);
 
             }
 
@@ -125,6 +118,21 @@ public class Main {
         // there are any ships where it is trying to be placed
         // create the ship class and put it in the arraylist
 
+    }
+    public static void initArrays() {
+        Ship emptyShip = new Ship(false, 0, new Coordinate(0,0));
+
+        for (int i = 0; i <= 10; i++) {
+            for (int j = 0; j <= 10; j++) {
+                char keyChar = Coordinate.convertIntToChar(i);
+                String key = String.valueOf(keyChar) + String.valueOf(j);
+                Game.AIMapOfCoor.put(key, emptyShip);
+                // playerPlacementBoard[i][j] = new Coordinate(i, j);
+                playerAttackBoard[i][j] = new Coordinate(i, j);
+                AIPlacementBoard[i][j] = new Coordinate(i, j);
+                AIAttackBoard[i][j] = new Coordinate(i, j);
+            }
+        }
     }
 
 }

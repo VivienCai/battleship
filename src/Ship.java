@@ -1,5 +1,11 @@
 import java.util.*;
 
+/* Sarina Li, Vivien Cai, Jiaan Li
+* Mon December 20
+* ICS4U1
+* Ship Class
+*/
+
 public class Ship {
     private String name;
     private boolean isSunk;
@@ -35,30 +41,49 @@ public class Ship {
                 name = "empty";
                 break;
             case 2:
-                name = "destroyer";
+                name = "DESTROYER";
                 break;
             case 3:
                 if (count == 0) {
-                    name = "submarine";
+                    name = "SUBMARINE";
                     count++;
                 } else {
-                    name = "cruiser";
+                    name = "CRUISER";
                 }
                 break;
             case 4:
-                name = "battleship";
+                name = "BATTLESHIP";
                 break;
             case 5:
-                name = "carrier";
+                name = "CARRIER";
                 break;
             default:
-                name = "default";
+                name = "DEFAULT";
         }
         isVertical = isV;
         size = s;
         homeCoor = p;
     }
 
+    public static int getSize(String name) {
+        switch (name) {
+            case "DESTROYER":
+                return 2;
+                
+            case "SUBMARINE":
+                return 3;
+                
+            case "CRUISER":
+                return 3;
+                
+            case "BATTLESHIP":
+                return 4;
+            case "CARRIER":
+                return 5;
+                
+            }
+        return 0;
+    }
     // public void addCoordinates(Coordinate home, boolean isV)
 
     // }

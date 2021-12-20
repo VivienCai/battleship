@@ -119,6 +119,10 @@ public class testingfile {
     //         }
     //         System.out.println("Your placement board:");
     //         printPlacementArray(Main.playerPlacementBoard);
+
+                // if (playerAttackBoard[inputy][inputx].getIsHit()) {
+            //     continue;
+            // }
     //     }
 
     // }

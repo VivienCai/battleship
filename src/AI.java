@@ -1,5 +1,11 @@
 import java.util.*;
 
+/* Sarina Li, Vivien Cai, Jiaan Li
+* Mon December 20
+* ICS4U1
+* Battleship AI Class
+*/
+
 public class AI {
     static Scanner sc = new Scanner(System.in);
     static ArrayList<Coordinate> listOfShip = new ArrayList<Coordinate>();
@@ -112,7 +118,7 @@ public class AI {
         }
         // printArray();
         AIhit();
-        printArray();
+        printArray(Main.AIAttackBoard);
         resetArray();
     }
 
@@ -124,7 +130,7 @@ public class AI {
         }
     }
 
-    public static void printArray() {
+    public static void printArray(Coordinate array[][]) {
         System.out.print("   ");
 
         for (int i = 1; i < 11; i++) { // for the bar at the top
@@ -138,7 +144,7 @@ public class AI {
             System.out.print(c + " ");
             c++;
             for (int j = 1; j <= 10; j++) {
-                Coordinate cur = Main.AIAttackBoard[i][j];
+                Coordinate cur = array[i][j];
                 if (cur.getProbability() < 10) {
                     System.out.print("0" + cur.getProbability() + " ");
                 } else {
