@@ -126,6 +126,15 @@ public class testingfile {
     //     }
 
     // }
-
+    // public static void hitNextPoint(){
+    //     Coordinate hit = hitPointQueue.get(0);
+    //     int y = hit.getY(), x = hit.getX();
+    //     Main.AIAttackBoard[y][x].setIsHit(true);
+        
+        
+    //     System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(y), x);
+    //     System.out.println("Is it a hit or miss or sink?");
+    //     getInput();
+    // }
     }
 }

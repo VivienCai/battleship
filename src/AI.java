@@ -306,15 +306,16 @@ public class AI {
             getInput();
         }
     }
+
     public static void getInput(){
-        ArrayList<Ship> shipsAlive = Ship.getList();
+        // ArrayList<Ship> shipsAlive = Ship.getList();
         while (true) {
             
             String input = sc.nextLine();
             String ship = input.substring(4);
             
             if (input.equals("MISS")) {
-                isHunting = false;
+                // isHunting = false;
                 break;
             }
             else if (input.substring(0, 3).equals("HIT")) {
@@ -323,6 +324,7 @@ public class AI {
                 }
                 break;
             } else if (input.substring(0, 4).equals("SUNK")){
+                isHunting = false;
                 // SUNK, CARRIER
                 String shipName = input.substring(5);
                 if (checkValidShip(shipName)){
@@ -336,7 +338,7 @@ public class AI {
         }
     }
 
-    private static boolean checkValidShip(String ship) {
+    public static boolean checkValidShip(String ship) {
         if (ship.equals("BATTLESHIP")|| ship.equals("CARRIER") || ship.equals("SUBMARINE") || ship.equals("DESTROYER") || ship.equals("CRUISER") ){
             return true;
         } 

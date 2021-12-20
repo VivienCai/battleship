@@ -28,6 +28,11 @@ public class Main {
         System.out.println("Hello, welcome to Sarina, Vivien, and Jiaan's battleship game.");
         // System.out.println("Please place your ships. ");
 
+        //Determining who goes first
+        System.out.println("Please enter a number, 1 for head and anything else for tails.");
+        
+
+
         // generating random placement for AI PlacementBoard
         AI.place(AIPlacementBoard);
         System.out.println("AI Placement Board: ");
@@ -102,7 +107,7 @@ public class Main {
             // generate a hit
 
             if (AI.isHunting) {
-                // call hunt
+                Hunting.hunt(h, ship);
             } else {
                 AI.findProbability();
             }
