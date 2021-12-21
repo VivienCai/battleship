@@ -16,20 +16,28 @@ public class Hunting {
     static Coordinate huntingProbability[][] = new Coordinate[11][11];
     static ArrayList<Coordinate> hitPointQueue = new ArrayList<Coordinate>();
     static ArrayList<String> shipsHit = new ArrayList<String>();
+    static boolean directionConfirmed = false;
     
     
     public static void hunt(Coordinate h, String ship) {
         int shipSize = Ship.getSize(ship);
         System.out.println(shipSize);
-        sumArray(h, shipSize);
+        if (!directionConfirmed) {
+            sumArray(h, shipSize);
+            Coordinate nextHit = max(h.getY(), h.getX(), shipSize);
+            getInput(nextHit);
+        } else {
+            Coordinate nextHit = max(h.getY(), h.getX(), shipSize);
+            getInput(nextHit);
+        }
+        if (!directionConfirmed) {
+            AI.resetArray();
+        }
         // hit max (set the coordinate as hit)
-        Coordinate nextHit = max(h.getY(), h.getX());
-        getInput(nextHit);
         // Main.AIAttackBoard[nextHit.getY()][nextHit.getX()].setIsHit(true);
         // ask user if this point is hit miss sunk
         // clear the arraylist and continue until sunk, if sunk set ishunting as false 
         
-        AI.resetArray();
     }
 
     public static void getInput(Coordinate hit) {
@@ -62,6 +70,7 @@ public class Hunting {
                 }
                 break;
             } else if (input.substring(0, 4).equals("SUNK")) {
+                directionConfirmed = false;
                 String ship = input.substring(6);
                 if (AI.checkValidShip(ship)) {
                     Main.AIAttackBoard[y][x].setIsHit(true);
@@ -137,7 +146,7 @@ public class Hunting {
         AI.printArray(huntingProbability);
     }
 
-    public static Coordinate max(int y, int x) {  
+    public static Coordinate max(int y, int x, int shipSize) {  
         // horizontal add possible hits to arraylist
         for (int i = 1; i <= 10; i++) {
             if(huntingProbability[y][i].getProbability()>0){
@@ -153,13 +162,17 @@ public class Hunting {
         }
         Collections.sort(hitPointQueue,Collections.reverseOrder());
         
+        if (hitPointQueue.size() == shipSize - 1) {
+            
+            directionConfirmed = true;
+            // only hit what is left in the hitpoint queue, don't call hunt again (dont sum the array)
+
+
+        }
         for (Coordinate i : hitPointQueue) {
             System.out.print(i.getProbability() + " ");
         }
         System.out.println();
-
-        System.out.println(hitPointQueue.get(0).getY());
-        System.out.println(hitPointQueue.get(0).getX());
         return hitPointQueue.remove(0);
 
     }
