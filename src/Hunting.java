@@ -16,23 +16,30 @@ public class Hunting {
     static Coordinate huntingProbability[][] = new Coordinate[11][11];
     static ArrayList<Coordinate> hitPointQueue = new ArrayList<Coordinate>();
     static ArrayList<String> shipsHit = new ArrayList<String>();
-    static boolean directionConfirmed = false;
+    // static boolean directionConfirmed = false;
     
     
     public static void hunt(Coordinate h, String ship) {
         int shipSize = Ship.getSize(ship);
         System.out.println(shipSize);
-        if (!directionConfirmed) {
-            sumArray(h, shipSize);
-            Coordinate nextHit = max(h.getY(), h.getX(), shipSize);
-            getInput(nextHit);
-        } else {
-            Coordinate nextHit = max(h.getY(), h.getX(), shipSize);
-            getInput(nextHit);
-        }
-        if (!directionConfirmed) {
-            AI.resetArray();
-        }
+        
+        sumArray(h, shipSize);
+        Coordinate nextHit = max(h.getY(), h.getX(), shipSize);
+        getInput(nextHit);
+
+        AI.resetArray();
+
+        // if (!directionConfirmed) {
+        //     sumArray(h, shipSize);
+        //     Coordinate nextHit = max(h.getY(), h.getX(), shipSize);
+        //     getInput(nextHit);
+        // } else {
+        //     Coordinate nextHit = max(h.getY(), h.getX(), shipSize);
+        //     getInput(nextHit);
+        // }
+        // if (!directionConfirmed) {
+        //     AI.resetArray();
+        // }
         // hit max (set the coordinate as hit)
         // Main.AIAttackBoard[nextHit.getY()][nextHit.getX()].setIsHit(true);
         // ask user if this point is hit miss sunk
@@ -70,7 +77,7 @@ public class Hunting {
                 }
                 break;
             } else if (input.substring(0, 4).equals("SUNK")) {
-                directionConfirmed = false;
+                // directionConfirmed = false;
                 String ship = input.substring(6);
                 if (AI.checkValidShip(ship)) {
                     Main.AIAttackBoard[y][x].setIsHit(true);
@@ -103,13 +110,14 @@ public class Hunting {
                 continue;
             }
             for (int j = i; j < i + shipSize; j++) {
-                if (j > 10 || Main.AIAttackBoard[j][x].getIsHit() && j != y) {
+                if (j > 10 || (Main.AIAttackBoard[j][x].getIsHit() && !Main.AIAttackBoard[j][x].getIsShip() && j != y)) {
                     ok = false;
                 }
             }
+            
             if (ok) {
                 for (int j = i; j < i + shipSize; j++) {
-                    if (j == y) {
+                    if (j == y || Main.AIAttackBoard[j][x].getIsShip()) {
                         continue;
                     }
                     int currentProbability = huntingProbability[j][x].getProbability();
@@ -126,13 +134,13 @@ public class Hunting {
                 continue;
             }
             for (int j = i; j < i + shipSize; j++) {
-                if (j > 10 || Main.AIAttackBoard[y][j].getIsHit() && j != x) {
-                    ok = false;
+                if (j > 10 ||(Main.AIAttackBoard[y][j].getIsHit() && !Main.AIAttackBoard[y][j].getIsShip() && j != x)) {
+                    ok = false;        
                 }
             }
             if (ok) {
                 for (int j = i; j < i + shipSize; j++) {
-                    if (j == x) {
+                    if (j == x || Main.AIAttackBoard[y][j].getIsShip()) {
                         continue;
                     }
                     int currentProbability = huntingProbability[y][j].getProbability();
@@ -162,13 +170,13 @@ public class Hunting {
         }
         Collections.sort(hitPointQueue,Collections.reverseOrder());
         
-        if (hitPointQueue.size() == shipSize - 1) {
+        // if (hitPointQueue.size() == shipSize - 1) {
             
-            directionConfirmed = true;
-            // only hit what is left in the hitpoint queue, don't call hunt again (dont sum the array)
+        //     directionConfirmed = true;
+        //     // only hit what is left in the hitpoint queue, don't call hunt again (dont sum the array)
 
 
-        }
+        // }
         for (Coordinate i : hitPointQueue) {
             System.out.print(i.getProbability() + " ");
         }
