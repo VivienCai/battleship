@@ -209,9 +209,11 @@ public class AI {
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 10; j++) {
                 Main.AIAttackBoard[i][j].setProbability(0);
+                Hunting.huntingProbability[i][j].setProbability(0);
             }
         }
         isParity = new ArrayList<Coordinate>();
+        Hunting.hitPointQueue = new ArrayList<Coordinate>();
         possibleHits = new ArrayList<Coordinate>();
         max = 0;
     }
@@ -294,7 +296,7 @@ public class AI {
             Main.AIAttackBoard[y][x].setIsHit(true);
             System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(y), x);
             System.out.println("Is it a hit or miss or sink?");
-            getInput();
+            getInput(hit);
 
         } else {
             int randIndex = (int) (Math.random() * possibleHits.size());
@@ -303,33 +305,39 @@ public class AI {
             Main.AIAttackBoard[y][x].setIsHit(true);
             System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(y), x);
             System.out.println("Is it a hit or miss or sink?");
-            getInput();
+            getInput(hit);
         }
     }
 
-    public static void getInput(){
+    public static void getInput(Coordinate hit){
         // ArrayList<Ship> shipsAlive = Ship.getList();
         while (true) {
             
             String input = sc.nextLine();
-            String ship = input.substring(4);
             
             if (input.equals("MISS")) {
                 // isHunting = false;
                 break;
             }
             else if (input.substring(0, 3).equals("HIT")) {
+                String ship = input.substring(5);
                 if (checkValidShip(ship)) {
-                   isHunting = true;
+                    isHunting = true;
+                    // #J_Favourites
+                    Main.AIAttackBoard[hit.getY()][hit.getX()].setIsShip(true);
+                    Hunting.uniqueHitPoints.add(hit);
+                    Hunting.shipsHit.add(ship);
                 }
                 break;
             } else if (input.substring(0, 4).equals("SUNK")){
                 isHunting = false;
+                Main.AIAttackBoard[hit.getY()][hit.getX()].setIsShip(true);
                 // SUNK, CARRIER
                 String shipName = input.substring(5);
                 if (checkValidShip(shipName)){
                     System.out.println(shipName);
                     Ship.getPlayerListOfShipsAlive().remove(shipName);
+                    
                 }
                 break;
             } else{

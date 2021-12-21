@@ -12,29 +12,76 @@ public class Hunting {
 
     static Scanner sc = new Scanner(System.in);
     //end when initial ship  + any other found sunk (when both queues are empty)
-    ArrayList<Coordinate> uniqueHitPoints = new ArrayList<Coordinate>();
+    static ArrayList<Coordinate> uniqueHitPoints = new ArrayList<Coordinate>();
     static Coordinate huntingProbability[][] = new Coordinate[11][11];
     static ArrayList<Coordinate> hitPointQueue = new ArrayList<Coordinate>();
+    static ArrayList<String> shipsHit = new ArrayList<String>();
     
     
     public static void hunt(Coordinate h, String ship) {
         int shipSize = Ship.getSize(ship);
+        System.out.println(shipSize);
         sumArray(h, shipSize);
-        
-        // get input
-        
-        // sum accordingly
-        
-        // while(!isSunk){
-            
-        // }
-        Coordinate nextHit = max(h.getY(), h.getX()); 
+        // hit max (set the coordinate as hit)
+        Coordinate nextHit = max(h.getY(), h.getX());
+        getInput(nextHit);
+        // Main.AIAttackBoard[nextHit.getY()][nextHit.getX()].setIsHit(true);
         // ask user if this point is hit miss sunk
-        AI.getInput();
-        // AI.resetArray();
+        // clear the arraylist and continue until sunk, if sunk set ishunting as false 
         
+        AI.resetArray();
     }
 
+    public static void getInput(Coordinate hit) {
+        // ArrayList<Ship> shipsAlive = Ship.getList();
+        while (true) {
+            
+            int y = hit.getY();
+            int x = hit.getX();
+            System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(y), x);
+            System.out.println("Is it a hit or miss or sink?");
+            String input = sc.nextLine();
+            if (input.equals("MISS")) {
+                Main.AIAttackBoard[y][x].setIsHit(true);
+                // isHunting = false;
+                break;
+            } else if (input.substring(0, 3).equals("HIT")) {
+                String ship = input.substring(5);
+                //if we hit a new ship point, add new ship to list
+                if (AI.checkValidShip(ship) && !ship.equals(shipsHit.get(0))) {
+                    // isHunting = true;
+                    Main.AIAttackBoard[y][x].setIsShip(true);
+                    Main.AIAttackBoard[y][x].setIsHit(true);
+                    Hunting.uniqueHitPoints.add(hit);
+                    Hunting.shipsHit.add(ship);
+                //same ship point, set is hit
+            } else if (AI.checkValidShip(ship)) {
+                    Main.AIAttackBoard[y][x].setIsHit(true);
+                    Main.AIAttackBoard[y][x].setIsShip(true);
+                    
+                }
+                break;
+            } else if (input.substring(0, 4).equals("SUNK")) {
+                String ship = input.substring(6);
+                if (AI.checkValidShip(ship)) {
+                    Main.AIAttackBoard[y][x].setIsHit(true);
+                    Main.AIAttackBoard[y][x].setIsShip(true);
+                    System.out.println(ship);
+                    Ship.getPlayerListOfShipsAlive().remove(ship);
+                    uniqueHitPoints.remove(0);
+                    shipsHit.remove(ship);
+                }
+                if (uniqueHitPoints.size() == 0) {
+                    AI.isHunting = false;
+                }
+                // SUNK, CARRIER
+                break;
+            } else {
+                System.out.println("that is not a valid input. Is it a hit or miss?");
+            }
+        }
+    }
+    
     public static void sumArray(Coordinate h, int shipSize) {
         // sum vertically and horizontally
         // VERTICAL
@@ -93,56 +140,29 @@ public class Hunting {
     public static Coordinate max(int y, int x) {  
         // horizontal add possible hits to arraylist
         for (int i = 1; i <= 10; i++) {
-            if(huntingProbability[y][i].getProbability()==0){
-                continue;
+            if(huntingProbability[y][i].getProbability()>0){
+                hitPointQueue.add(huntingProbability[y][i]);
             }
-            hitPointQueue.add(Main.AIAttackBoard[y][i]);
         }
 
         // vertical add possible hits to arraylist
         for (int i = 1; i <= 10; i++) {
-            if (huntingProbability[i][x].getProbability() == 0) {
-                continue;
+            if (huntingProbability[i][x].getProbability()>0) {
+                hitPointQueue.add(huntingProbability[i][x]);
             }
-            hitPointQueue.add(Main.AIAttackBoard[i][x]);
         }
-        Collections.sort(hitPointQueue);
+        Collections.sort(hitPointQueue,Collections.reverseOrder());
+        
+        for (Coordinate i : hitPointQueue) {
+            System.out.print(i.getProbability() + " ");
+        }
+        System.out.println();
+
+        System.out.println(hitPointQueue.get(0).getY());
+        System.out.println(hitPointQueue.get(0).getX());
         return hitPointQueue.remove(0);
 
     }
-
-    
-
-    //  public static void getInput(){
-    //     // ArrayList<Ship> shipsAlive = Ship.getList();
-    //     while (true) {
-    //         String input = sc.nextLine();
-    //         String ship = input.substring(4);
-            
-    //         if (input.equals("MISS")) {
-    //             // isHunting = false;
-    //             break;
-    //         }
-    //         else if (input.substring(0, 3).equals("HIT")) {
-
-    //             if (AI.checkValidShip(ship)) {
-    //             //    isHunting = true;
-    //             }
-    //             break;
-    //         } else if (input.substring(0, 4).equals("SUNK")){
-    //             // SUNK, CARRIER
-    //             String shipName = input.substring(5);
-    //             if (AI.checkValidShip(shipName)){
-    //                 System.out.println(shipName);
-    //                 Ship.getPlayerListOfShipsAlive().remove(shipName);
-    //             }
-    //             break;
-    //         } else{
-    //             System.out.println("that is not a valid input. Is it a hit or miss?");
-    //         }
-    //     }
-    // }
-
 
     public static void main(String[] args) {
         Main.initArrays();

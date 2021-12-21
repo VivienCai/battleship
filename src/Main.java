@@ -105,12 +105,20 @@ public class Main {
             // ai generate a hit using hit or hunt
             System.out.println("AI's turn");
             // generate a hit
-
             if (AI.isHunting) {
-                Hunting.hunt(h, ship);
+                if (Hunting.uniqueHitPoints.size() > 0) {
+                    System.out.println("Still hunting!!!!");
+                    Coordinate h = Hunting.uniqueHitPoints.get(0);
+                    String ship = Hunting.shipsHit.get(0);
+                    Hunting.hunt(h, ship);
+                } else {
+                    System.out.println("Some error occured ur so fcked hahsldkfjalsdkjf");
+                }
+                // Hunting.hunt(h, ship);
             } else {
                 AI.findProbability();
             }
+            Game.printPlacementArray(AIAttackBoard);
             // verify if hit or not
             // print the probability board and AIATtackBoard
 
@@ -136,6 +144,7 @@ public class Main {
                 playerAttackBoard[i][j] = new Coordinate(i, j);
                 AIPlacementBoard[i][j] = new Coordinate(i, j);
                 AIAttackBoard[i][j] = new Coordinate(i, j);
+                Hunting.huntingProbability[i][j] = new Coordinate(i,j);
             }
         }
     }

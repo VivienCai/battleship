@@ -136,5 +136,10 @@ public class testingfile {
     //     System.out.println("Is it a hit or miss or sink?");
     //     getInput();
     // }
+
+    // for (Coordinate i : hitPointQueue) {
+    //     System.out.print(i.getProbability() + " ");
+    // }
+    // System.out.println();
     }
 }
