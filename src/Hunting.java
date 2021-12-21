@@ -18,6 +18,11 @@ public class Hunting {
     static ArrayList<String> shipsHit = new ArrayList<String>();
     // static boolean directionConfirmed = false;
     
+    public static void printArrayList(ArrayList<Coordinate> array){
+        for (int i = 0; i < array.size(); i++) {
+            System.out.println(array.get(i));
+        }
+    }
     
     public static void hunt(Coordinate h, String ship) {
         int shipSize = Ship.getSize(ship);
@@ -50,7 +55,10 @@ public class Hunting {
     public static void getInput(Coordinate hit) {
         // ArrayList<Ship> shipsAlive = Ship.getList();
         while (true) {
-            
+            printArrayList(uniqueHitPoints);
+            printArrayList(hitPointQueue);
+
+
             int y = hit.getY();
             int x = hit.getX();
             System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(y), x);
@@ -62,6 +70,8 @@ public class Hunting {
                 break;
             } else if (input.substring(0, 3).equals("HIT")) {
                 String ship = input.substring(5);
+                Game.playerSunkShips.put(ship, new ArrayList<String>());
+                Game.playerSunkShips.get(ship).add(hit.toString());
                 //if we hit a new ship point, add new ship to list
                 if (AI.checkValidShip(ship) && !ship.equals(shipsHit.get(0))) {
                     // isHunting = true;
@@ -77,7 +87,6 @@ public class Hunting {
                 }
                 break;
             } else if (input.substring(0, 4).equals("SUNK")) {
-                // directionConfirmed = false;
                 String ship = input.substring(6);
                 if (AI.checkValidShip(ship)) {
                     Main.AIAttackBoard[y][x].setIsHit(true);
@@ -86,11 +95,17 @@ public class Hunting {
                     Ship.getPlayerListOfShipsAlive().remove(ship);
                     uniqueHitPoints.remove(0);
                     shipsHit.remove(ship);
+                    for (String i : Game.playerSunkShips.get(ship)) {
+                        //D3 E4
+                        int columnInd = Coordinate.columnIndexAsInt(i.charAt(0));
+                        int rowInd = Integer.parseInt(i.substring(1));
+                        Main.AIAttackBoard[columnInd][rowInd].setIsShip(false);
+                    }
                 }
                 if (uniqueHitPoints.size() == 0) {
                     AI.isHunting = false;
                 }
-                // SUNK, CARRIER
+
                 break;
             } else {
                 System.out.println("that is not a valid input. Is it a hit or miss?");

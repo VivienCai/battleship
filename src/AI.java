@@ -327,6 +327,7 @@ public class AI {
                     Main.AIAttackBoard[hit.getY()][hit.getX()].setIsShip(true);
                     Hunting.uniqueHitPoints.add(hit);
                     Hunting.shipsHit.add(ship);
+                    Game.playerSunkShips.put(ship, new ArrayList<String>());
                 }
                 break;
             } else if (input.substring(0, 4).equals("SUNK")){

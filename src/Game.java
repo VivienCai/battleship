@@ -7,6 +7,7 @@ public class Game {
     // S - occupied by a ship, not hit
 
     public static HashMap<String, Ship> AIMapOfCoor = new HashMap<String, Ship>();
+    public static HashMap<String, ArrayList<String>> playerSunkShips = new HashMap<>();
 
     public static void printPlacementArray(Coordinate array[][]) {
         for (int i = 0; i <= 10; i++) {

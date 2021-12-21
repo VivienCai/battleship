@@ -46,6 +46,11 @@ public class Coordinate implements Comparable<Coordinate> {
         return asciiVal;
     }
 
+    public static int columnIndexAsInt(char y) {
+        int asciiVal = (int) ((y - 'A'+1));
+        return asciiVal;
+    }
+
     public boolean getIsHit() {
         return isHit;
     }
@@ -87,4 +92,5 @@ public class Coordinate implements Comparable<Coordinate> {
     public String toString() { 
         return String.valueOf(convertIntToChar(y_coor)) + String.valueOf(x_coor);
     } 
+
 }
