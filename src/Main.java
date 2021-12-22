@@ -32,11 +32,14 @@ public class Main {
         System.out.println("Please enter a number, 1 for heads and anything else for tails.");
         
         int temp=sc.nextInt();
+        boolean AIFirst;
         if (temp==1) {
         	System.out.println("You are going first");
+        	AIFirst=false;
         }
         else {
         	System.out.println("The AI is going first");
+        	AIFirst=true;
         }
         
         
@@ -140,6 +143,7 @@ public class Main {
         // create the ship class and put it in the arraylist
 
     }
+    
     public static void initArrays() {
         Ship emptyShip = new Ship(false, 0, new Coordinate(0,0));
 
