@@ -29,9 +29,17 @@ public class Main {
         // System.out.println("Please place your ships. ");
 
         //Determining who goes first
-        System.out.println("Please enter a number, 1 for head and anything else for tails.");
+        System.out.println("Please enter a number, 1 for heads and anything else for tails.");
         
-
+        int temp=sc.nextInt();
+        if (temp==1) {
+        	System.out.println("You are going first");
+        }
+        else {
+        	System.out.println("The AI is going first");
+        }
+        
+        
 
         // generating random placement for AI PlacementBoard
         AI.place(AIPlacementBoard);
