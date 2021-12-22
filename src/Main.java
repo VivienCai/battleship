@@ -47,6 +47,12 @@ public class Main {
         System.out.println("AI Placement Board: ");
         Game.printPlacementArray(AIPlacementBoard);
         
+        System.out.println("When inputting things in the code, make sure to use all capitals. ");
+        System.out.println("If one of your ships were hit, type HIT, [SHIPTYPE]. EX. HIT, BATTLESHIP ");
+        System.out.println("If one of your ships were sunk, type SUNK, [SHIPTYPE]. EX. SUNK, BATTLESHIP ");
+        System.out.println("Enter 1 if you understand");
+        sc.nextInt();
+        
         if (AIFirst==true) {
         	while (gamestate) {
 	        	 ArrayList<Ship> shipsAlive = Ship.getList();
