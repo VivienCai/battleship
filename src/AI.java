@@ -308,7 +308,7 @@ public class AI {
             int y = hit.getY(), x = hit.getX();
             Main.AIAttackBoard[y][x].setIsHit(true);
             System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(y), x);
-            System.out.println("Is it a hit or miss or sink?");
+            System.out.println("Is it a hit, miss, or sink?");
             getInput(hit);
         }
     }
@@ -319,7 +319,7 @@ public class AI {
 
             String input = sc.nextLine();
             if (input.length() < 4) {
-                System.out.println("that is not a valid input. Is it a hit or miss?");
+                System.out.println("that is not a valid input. Is it a hit, miss, or sink?");
             } else if (input.equals("MISS")) {
                 // isHunting = false;
                 break;
@@ -332,8 +332,10 @@ public class AI {
                     Hunting.uniqueHitPoints.add(hit);
                     Hunting.shipsHit.add(ship);
                     Game.playerSunkShips.put(ship, new ArrayList<String>());
+                    break;
+                } else {
+                    System.out.println("That is not a valid ship entered. Please try again.");
                 }
-                break;
             } else if (input.substring(0, 4).equals("SUNK")) {
                 isHunting = false;
                 Main.AIAttackBoard[hit.getY()][hit.getX()].setIsShip(true);
@@ -342,11 +344,12 @@ public class AI {
                 if (checkValidShip(shipName)) {
                     System.out.println(shipName);
                     Ship.getPlayerListOfShipsAlive().remove(shipName);
-
+                    break;
+                } else {
+                    System.out.println("That is not a valid ship entered. Please try again.");
                 }
-                break;
             } else {
-                System.out.println("that is not a valid input. Is it a hit or miss?");
+                System.out.println("that is not a valid input. Is it a hit, miss or sink?");
             }
         }
     }
