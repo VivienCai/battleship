@@ -318,8 +318,9 @@ public class AI {
         while (true) {
 
             String input = sc.nextLine();
-
-            if (input.equals("MISS")) {
+            if (input.length() < 4) {
+                System.out.println("that is not a valid input. Is it a hit or miss?");
+            } else if (input.equals("MISS")) {
                 // isHunting = false;
                 break;
             } else if (input.substring(0, 3).equals("HIT")) {
