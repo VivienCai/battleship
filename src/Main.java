@@ -123,6 +123,8 @@ public class Main {
             curPlayer.setIsShip(true);
         } else if (cur.getIsShip() && cur.getIsHit() || !cur.getIsShip()) {
             cur.setIsHit(true);
+            curPlayer.setIsHit(true);
+            curPlayer.setIsShip(true);
             System.out.println("YOU MISSED.");
 
         }
