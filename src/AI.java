@@ -28,8 +28,10 @@ public class AI {
         return new Coordinate(y, x);
     }
 
-    // checks if the ship will overlap any other coordinates that are already occupied
-    public static boolean anyGeneratedIsShip(Coordinate home, boolean orientationV, int shipSize, Coordinate coorBoard[][]) {
+    // checks if the ship will overlap any other coordinates that are already
+    // occupied
+    public static boolean anyGeneratedIsShip(Coordinate home, boolean orientationV, int shipSize,
+            Coordinate coorBoard[][]) {
         for (int j = 0; j < shipSize; j++) {
             if (orientationV) {
                 if (coorBoard[home.getY() + j][home.getX()].getIsShip()) {
@@ -99,12 +101,13 @@ public class AI {
         }
 
     }
-    
+
     public static void AIPlaceShip(Ship ship) {
         Ship.getList().add(ship);
 
     }
-    //HITTING ALGORITHM
+
+    // HITTING ALGORITHM
     // static int sum[][] = new int[11][11];
     static int max = 0;
     static ArrayList<Coordinate> possibleHits = new ArrayList<Coordinate>(), isParity = new ArrayList<Coordinate>();
@@ -131,7 +134,8 @@ public class AI {
     }
 
     public static void printArray(Coordinate array[][]) {
-        System.out.print("   ");
+        System.out.println("PROBABILITY GRID: ");
+        System.out.print("  ");
 
         for (int i = 1; i < 11; i++) { // for the bar at the top
             System.out.print(i + ("  "));
@@ -168,7 +172,7 @@ public class AI {
                 }
                 if (ok) {
                     if (shipSize == 3) {
-                        for (int g = j; g < j + shipSize; g ++) {
+                        for (int g = j; g < j + shipSize; g++) {
                             Main.AIAttackBoard[i][g].setProbability(Main.AIAttackBoard[i][g].getProbability() + 2);
                         }
                     } else {
@@ -193,11 +197,11 @@ public class AI {
                 if (ok) {
                     if (shipSize == 3) {
                         for (int g = j; g < j + shipSize; g++) {
-                            Main.AIAttackBoard[g][i].setProbability(Main.AIAttackBoard[g][i].getProbability()+2);
+                            Main.AIAttackBoard[g][i].setProbability(Main.AIAttackBoard[g][i].getProbability() + 2);
                         }
                     } else {
                         for (int g = j; g < j + shipSize; g++) {
-                            Main.AIAttackBoard[g][i].setProbability(Main.AIAttackBoard[g][i].getProbability()+1);
+                            Main.AIAttackBoard[g][i].setProbability(Main.AIAttackBoard[g][i].getProbability() + 1);
                         }
                     }
                 }
@@ -273,7 +277,7 @@ public class AI {
             for (int j = 1; j <= 10; j++) {
                 Coordinate cur = Main.AIAttackBoard[i][j];
                 max = Math.max(max, cur.getProbability());
-                
+
             }
         }
         for (int i = 1; i <= 10; i++) {
@@ -309,17 +313,16 @@ public class AI {
         }
     }
 
-    public static void getInput(Coordinate hit){
+    public static void getInput(Coordinate hit) {
         // ArrayList<Ship> shipsAlive = Ship.getList();
         while (true) {
-            
+
             String input = sc.nextLine();
-            
+
             if (input.equals("MISS")) {
                 // isHunting = false;
                 break;
-            }
-            else if (input.substring(0, 3).equals("HIT")) {
+            } else if (input.substring(0, 3).equals("HIT")) {
                 String ship = input.substring(5);
                 if (checkValidShip(ship)) {
                     isHunting = true;
@@ -330,30 +333,29 @@ public class AI {
                     Game.playerSunkShips.put(ship, new ArrayList<String>());
                 }
                 break;
-            } else if (input.substring(0, 4).equals("SUNK")){
+            } else if (input.substring(0, 4).equals("SUNK")) {
                 isHunting = false;
                 Main.AIAttackBoard[hit.getY()][hit.getX()].setIsShip(true);
                 // SUNK, CARRIER
                 String shipName = input.substring(5);
-                if (checkValidShip(shipName)){
+                if (checkValidShip(shipName)) {
                     System.out.println(shipName);
                     Ship.getPlayerListOfShipsAlive().remove(shipName);
-                    
+
                 }
                 break;
-            } else{
+            } else {
                 System.out.println("that is not a valid input. Is it a hit or miss?");
             }
         }
     }
 
     public static boolean checkValidShip(String ship) {
-        if (ship.equals("BATTLESHIP")|| ship.equals("CARRIER") || ship.equals("SUBMARINE") || ship.equals("DESTROYER") || ship.equals("CRUISER") ){
+        if (ship.equals("BATTLESHIP") || ship.equals("CARRIER") || ship.equals("SUBMARINE") || ship.equals("DESTROYER")
+                || ship.equals("CRUISER")) {
             return true;
-        } 
+        }
         return false;
     }
-
-
 
 }

@@ -35,64 +35,42 @@ public class Main {
         Game.printPlacementArray(AIPlacementBoard);
 
         System.out.println("When inputting things in the code, make sure to use all capitals. ");
-        System.out.println("If one of your ships were hit, type HIT, [SHIPTYPE]. EX. HIT, BATTLESHIP ");
-        System.out.println("If one of your ships were sunk, type SUNK, [SHIPTYPE]. EX. SUNK, BATTLESHIP ");
+        System.out.println("If the AI missed, type \"HIT\".");
+        System.out.println("If one of your ships were hit, type \"HIT, [SHIPTYPE]\". EX. HIT, BATTLESHIP ");
+        System.out.println("If one of your ships were sunk, type \"SUNK, [SHIPTYPE]\". EX. SUNK, BATTLESHIP ");
+
         promptEnterKey();
 
-        if (AIFirst == true) {
-            while (gamestate) {
-                ArrayList<Ship> shipsAlive = Ship.getList();
-                ArrayList<String> playerShipsAlive = Ship.getPlayerListOfShipsAlive();
-                if (shipsAlive.size() == 0) {
-                    System.out.println("AI lost, player wins");
-                    break;
-                }
-                if (playerShipsAlive.size() == 0) {
-                    System.out.println("AI won, player lost");
-                    break;
-                }
+        while (gamestate) {
+            ArrayList<Ship> shipsAlive = Ship.getList();
+            ArrayList<String> playerShipsAlive = Ship.getPlayerListOfShipsAlive();
+            if (shipsAlive.size() == 0) {
+                System.out.println("AI lost, player wins");
+                break;
+            }
+            if (playerShipsAlive.size() == 0) {
+                System.out.println("AI won, player lost");
+                break;
+            }
 
-                System.out.println("AI ships alive: ");
-                for (Ship aliveShip : shipsAlive) {
-                    System.out.println(aliveShip);
-                }
-                System.out.println("Player ships alive: ");
-                for (String aliveShip : playerShipsAlive) {
-                    System.out.println(aliveShip);
-                }
+            System.out.println("________________________________");
+            System.out.println("AI ships alive: ");
+            for (Ship aliveShip : shipsAlive) {
+                System.out.println(aliveShip);
+            }
+            System.out.println();
+            System.out.println("Player ships alive: ");
+            for (String aliveShip : playerShipsAlive) {
+                System.out.println(aliveShip);
+            }
+            if (AIFirst == true) {
                 AIMoves(shipsAlive, playerShipsAlive);
                 playerMoves(shipsAlive, playerShipsAlive);
-
-            }
-        }
-
-        else {
-            while (gamestate) {
-                ArrayList<Ship> shipsAlive = Ship.getList();
-                ArrayList<String> playerShipsAlive = Ship.getPlayerListOfShipsAlive();
-                if (shipsAlive.size() == 0) {
-                    System.out.println("AI lost, player wins");
-                    break;
-                }
-                if (playerShipsAlive.size() == 0) {
-                    System.out.println("AI won, player lost");
-                    break;
-                }
-
-                System.out.println("AI ships alive: ");
-                for (Ship aliveShip : shipsAlive) {
-                    System.out.println(aliveShip);
-                }
-                System.out.println("Player ships alive: ");
-                for (String aliveShip : playerShipsAlive) {
-                    System.out.println(aliveShip);
-                }
+            } else {
                 playerMoves(shipsAlive, playerShipsAlive);
                 AIMoves(shipsAlive, playerShipsAlive);
-
             }
         }
-
         // loop through all 5 ships
         // limit the range where they can place the ships based on its size
         // ask for vertical vs horizontal orientation and "home coordinate"
@@ -104,14 +82,17 @@ public class Main {
 
     public static void playerMoves(ArrayList<Ship> shipsAlive, ArrayList<String> playerShipsAlive) {
         // print the placement array of the player and the hit array of the player
+        System.out.println("________________________________");
         System.out.println("Your attack board: ");
         Game.printPlacementArray(playerAttackBoard);
 
+        System.out.println("It is your turn.");
         System.out.println("Please enter a letter from A-J for the vertical part of your coordinate: ");
         char inputy = AI.getInputY();
         System.out.println("Please enter a number from 1-10 for the horizontal part of your coordinate: ");
         int inputx = AI.getInputX();
 
+        System.out.println("You hit coordinate " + inputy + inputx);
         // check if the players hit hits a ship and mark it on the ai placement board
         Coordinate cur = AIPlacementBoard[inputy][inputx];
         Coordinate curPlayer = playerAttackBoard[inputy][inputx];
@@ -132,9 +113,9 @@ public class Main {
                     }
                 }
                 shipsAlive.remove(remove);
-                System.out.printf("SUNK, %s\n", shipHit.getName());
+                System.out.printf("YOU SUNK, %s\n", shipHit.getName());
             } else {
-                System.out.printf("HIT, %s\n", shipHit.getName());
+                System.out.printf("YOU HIT, %s\n", shipHit.getName());
 
             }
             cur.setIsHit(true);
@@ -142,14 +123,15 @@ public class Main {
             curPlayer.setIsShip(true);
         } else if (cur.getIsShip() && cur.getIsHit() || !cur.getIsShip()) {
             cur.setIsHit(true);
-            System.out.println("MISS");
+            System.out.println("YOU MISSED.");
 
         }
     }
 
     public static void AIMoves(ArrayList<Ship> shipsAlive, ArrayList<String> playerShipsAlive) {
         // ai generate a hit using hit or hunt
-        System.out.println("AI's turn");
+        System.out.println("________________________________");
+        System.out.println("It is the AI's turn");
         // generate a hit
         if (AI.isHunting) {
             if (Hunting.uniqueHitPoints.size() > 0) {
@@ -164,6 +146,8 @@ public class Main {
         } else {
             AI.findProbability();
         }
+        System.out.println("________________________________");
+        System.out.println("AI ATTACK BOARD:");
         Game.printPlacementArray(AIAttackBoard);
         // verify if hit or not
         // print the probability board and AIATtackBoard
@@ -213,12 +197,12 @@ public class Main {
                     System.out.println("You are going first!");
                     AIFirst = false;
                 } else if (iCoin == 1) {
-                    System.out.println("You picked heads.");
+                    System.out.print("You picked heads.");
                     System.out.println(" The coin landed on tails.");
                     System.out.println("The AI is going first.");
                     AIFirst = true;
                 } else {
-                    System.out.println("You picked tails.");
+                    System.out.print("You picked tails.");
                     System.out.println(" The coin landed on heads.");
                     System.out.println("The AI is going first.");
                     AIFirst = true;

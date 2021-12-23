@@ -21,15 +21,15 @@ public class Ship {
     private static ArrayList<Ship> listOfShips = new ArrayList<Ship>();
 
     private static ArrayList<String> playerListOfShipsAlive = new ArrayList<String>(
-        Arrays.asList("SUBMARINE", "DESTROYER", "BATTLESHIP", "CARRIER",
-            "CRUISER" ));
+            Arrays.asList("DESTROYER", "SUBMARINE", "CRUISER", "BATTLESHIP", "CARRIER"));
 
     public Ship() {
     }
 
-    public static ArrayList<String> getPlayerListOfShipsAlive(){
+    public static ArrayList<String> getPlayerListOfShipsAlive() {
         return playerListOfShipsAlive;
     }
+
     public Ship(boolean isV, int s, Coordinate p) {
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 10; j++) {
@@ -69,19 +69,19 @@ public class Ship {
         switch (name) {
             case "DESTROYER":
                 return 2;
-                
+
             case "SUBMARINE":
                 return 3;
-                
+
             case "CRUISER":
                 return 3;
-                
+
             case "BATTLESHIP":
                 return 4;
             case "CARRIER":
                 return 5;
-                
-            }
+
+        }
         return 0;
     }
     // public void addCoordinates(Coordinate home, boolean isV)
@@ -119,8 +119,8 @@ public class Ship {
     public String toString() {
         return name;
     }
-    
-    public void addTimesHit(){
+
+    public void addTimesHit() {
         timesHit++;
     }
 
