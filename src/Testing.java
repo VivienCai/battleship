@@ -63,4 +63,8 @@ public class Testing {
     // resetArray();
     // }
 
+    // some comments from main:
+    // instantiate each coordinate in the hashmap with empty for now
+    // when player places the ship assign each occupied coordinate with the ship
+    // name
 }
