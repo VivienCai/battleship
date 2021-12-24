@@ -111,7 +111,7 @@ public class Hunting {
                         //D3 E4
                         int columnInd = Coordinate.columnIndexAsInt(i.charAt(0));
                         int rowInd = Integer.parseInt(i.substring(1));
-                        // Main.AIAttackBoard[columnInd][rowInd].setIsShip(false);
+                        Main.AIAttackBoard[columnInd][rowInd].setIsShip(false);
                     }
                 }
                 if (uniqueHitPoints.size() == 0) {
