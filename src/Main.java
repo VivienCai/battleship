@@ -8,6 +8,7 @@ import java.util.*;
 */
 
 public class Main {
+    // attributes 
     private static boolean gamestate = true;
     protected static Scanner sc = new Scanner(System.in);
     protected static boolean AIFirst = false;
@@ -98,7 +99,7 @@ public class Main {
         Game.coinFlip();
 
         // generating random placement for AI PlacementBoard
-        AI.place(AIPlacementBoard);
+        Placing.place(AIPlacementBoard);
         System.out.println("AI Placement Board: ");
         Game.printPlacementArray(AIPlacementBoard);
 

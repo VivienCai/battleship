@@ -70,12 +70,12 @@ public class Game {
         //prompting for user input of next firing point
         System.out.println("It is your turn.");
         System.out.println("Please enter a letter from A-J for the vertical part of your coordinate: ");
-        int inputy = AI.getInputY();
+        int inputy = Hitting.getInputY();
         // convert coordinate y to character
         char y = Coordinate.columnIndex(inputy);
         // get the x input
         System.out.println("Please enter a number from 1-10 for the horizontal part of your coordinate: ");
-        int inputx = AI.getInputX();
+        int inputx = Hitting.getInputX();
 
         // inform user where they fired
         System.out.printf("You fired at coordinate %c%d\n", y, inputx);
@@ -129,9 +129,9 @@ public class Game {
         // to determine if we have hit a ship point and the AI is to target the points around the hitpoint
         if (AI.isHunting) {
             // to determine if there are "unique" points (points that are of different ships)
-            if (Hunting.uniqueHitPoints.size() > 0) {
-                Coordinate h = Hunting.uniqueHitPoints.get(0);
-                String ship = Hunting.shipsHit.get(0);
+            if (AI.uniqueHitPoints.size() > 0) {
+                Coordinate h = AI.uniqueHitPoints.get(0);
+                String ship = AI.shipsHit.get(0);
                 Hunting.hunt(h, ship);
             } else {
                 System.out.println("Some error occured ur so fcked hahsldkfjalsdkjf");
@@ -139,7 +139,7 @@ public class Game {
         // otherwise run the hit algorithm which is the one that uses probability density
         } else {
             // ai generate a hit using hit or hunt 
-            AI.findProbability();
+            Hitting.findProbability();
         }
         // print the attack board 
         System.out.println("________________________________");

@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Hunting {
+public class Hunting extends AI{
     // queue hit points (only queue if they are different ships)
     // get the coordinate of the hit (and what ship it is)
     // put 4 coordinates around hit into queue
@@ -9,16 +9,7 @@ public class Hunting {
     // if point is same ship, remove points that are not in the orientation
     // queue 2 points on either side and repeat algo
     //if point is hit and not same ship
-
-    static Scanner sc = new Scanner(System.in);
-    //end when initial ship  + any other found sunk (when both queues are empty)
-    static ArrayList<Coordinate> uniqueHitPoints = new ArrayList<Coordinate>();
-    static Coordinate huntingProbability[][] = new Coordinate[11][11];
-    static ArrayList<Coordinate> hitPointQueue = new ArrayList<Coordinate>();
-    static ArrayList<String> shipsHit = new ArrayList<String>();
-    // submarine is index 6
-    static ArrayList<Coordinate> pointsHit[] = new ArrayList[7];
-    // static boolean directionConfirmed = false;
+    
     
     public static void printArrayList(ArrayList<Coordinate> array){
         for (int i = 0; i < array.size(); i++) {
@@ -33,26 +24,9 @@ public class Hunting {
         sumArray(h, shipSize, ship);
         Coordinate nextHit = max(h.getY(), h.getX(), shipSize);
         getInput(nextHit);
-
-        AI.resetArray();
-
-        // if (!directionConfirmed) {
-        //     sumArray(h, shipSize);
-        //     Coordinate nextHit = max(h.getY(), h.getX(), shipSize);
-        //     getInput(nextHit);
-        // } else {
-        //     Coordinate nextHit = max(h.getY(), h.getX(), shipSize);
-        //     getInput(nextHit);
-        // }
-        // if (!directionConfirmed) {
-        //     AI.resetArray();
-        // }
-        // hit max (set the coordinate as hit)
-        // Main.AIAttackBoard[nextHit.getY()][nextHit.getX()].setIsHit(true);
-        // ask user if this point is hit miss sunk
-        // clear the arraylist and continue until sunk, if sunk set ishunting as false 
-        
+        resetArray();     
     }
+
 
     public static void getInput(Coordinate hit) {
         // ArrayList<Ship> shipsAlive = Ship.getList();
@@ -60,15 +34,16 @@ public class Hunting {
             // printArrayList(uniqueHitPoints);
             // printArrayList(hitPointQueue);
 
-
             int y = hit.getY();
             int x = hit.getX();
+
             System.out.printf("The AI hit coordinate %c%d\n", Coordinate.columnIndex(y), x);
             System.out.println("Is it a hit or miss or sink?");
             String input = sc.nextLine();
+
             Coordinate cur = Main.AIAttackBoard[y][x];
+            cur.setIsHit(true);
             if (input.equals("MISS")) {
-                cur.setIsHit(true);
                 // isHunting = false;
                 break;
             } else if (input.substring(0, 3).equals("HIT")) {
@@ -81,27 +56,26 @@ public class Hunting {
                 Game.playerSunkShips.put(ship, new ArrayList<String>());
                 Game.playerSunkShips.get(ship).add(hit.toString());
                 //if we hit a new ship point, add new ship to list
-                if (AI.checkValidShip(ship) && !ship.equals(shipsHit.get(0))) {
+                if (checkValidShip(ship) && !ship.equals(shipsHit.get(0))) {
                     // isHunting = true;
                     // cur.setIsShip(true);
-                    cur.setIsHit(true);
+                    // cur.setIsHit(true);
                     uniqueHitPoints.add(hit);
                     shipsHit.add(ship);
                     
-                    pointsHit[shipIndex].add(cur);
+                    // pointsHit[shipIndex].add(cur);
                 //same ship point, set is hit
-                } else if (AI.checkValidShip(ship)) {
+                } else if (checkValidShip(ship)) {
                     // pointsHit.add(cur);
-                    cur.setIsHit(true);
+                    // cur.setIsHit(true);
                     cur.setIsShip(true);
-                    pointsHit[shipIndex].add(cur);
                 }
+                pointsHit[shipIndex].add(cur);
                 break;
             } else if (input.substring(0, 4).equals("SUNK")) {
-                
                 String ship = input.substring(6);
-                if (AI.checkValidShip(ship)) {
-                    cur.setIsHit(true);
+                if (checkValidShip(ship)) {
+                    // cur.setIsHit(true);
                     cur.setIsShip(true);
                     // System.out.println(ship);
                     Ship.getPlayerListOfShipsAlive().remove(ship);
@@ -115,7 +89,7 @@ public class Hunting {
                     }
                 }
                 if (uniqueHitPoints.size() == 0) {
-                    AI.isHunting = false;
+                    isHunting = false;
                 }
 
                 break;
@@ -163,7 +137,7 @@ public class Hunting {
             sumVertical(shipSize, h);
         }
         
-        AI.printArray(huntingProbability);
+        printArray(huntingProbability);
     }
 
     public static Coordinate max(int y, int x, int shipSize) {  
@@ -182,17 +156,7 @@ public class Hunting {
         }
         Collections.sort(hitPointQueue,Collections.reverseOrder());
         
-        // if (hitPointQueue.size() == shipSize - 1) {
-            
-        //     directionConfirmed = true;
-        //     // only hit what is left in the hitpoint queue, don't call hunt again (dont sum the array)
 
-
-        // }
-        // for (Coordinate i : hitPointQueue) {
-        //     System.out.print(i.getProbability() + " ");
-        // }
-        // System.out.println();
         return hitPointQueue.remove(0);
 
     }
