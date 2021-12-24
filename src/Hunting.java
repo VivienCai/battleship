@@ -16,6 +16,8 @@ public class Hunting {
     static Coordinate huntingProbability[][] = new Coordinate[11][11];
     static ArrayList<Coordinate> hitPointQueue = new ArrayList<Coordinate>();
     static ArrayList<String> shipsHit = new ArrayList<String>();
+    // submarine is index 6
+    static ArrayList<Coordinate> pointsHit[] = new ArrayList[7];
     // static boolean directionConfirmed = false;
     
     public static void printArrayList(ArrayList<Coordinate> array){
@@ -28,7 +30,7 @@ public class Hunting {
         int shipSize = Ship.getSize(ship);
         System.out.println(shipSize);
         
-        sumArray(h, shipSize);
+        sumArray(h, shipSize, ship);
         Coordinate nextHit = max(h.getY(), h.getX(), shipSize);
         getInput(nextHit);
 
@@ -64,33 +66,42 @@ public class Hunting {
             System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(y), x);
             System.out.println("Is it a hit or miss or sink?");
             String input = sc.nextLine();
+            Coordinate cur = Main.AIAttackBoard[y][x];
             if (input.equals("MISS")) {
-                Main.AIAttackBoard[y][x].setIsHit(true);
+                cur.setIsHit(true);
                 // isHunting = false;
                 break;
             } else if (input.substring(0, 3).equals("HIT")) {
                 String ship = input.substring(5);
+                int shipSize = Ship.getSize(ship);
+                int shipIndex = shipSize;
+                if (shipSize == 3) {
+                    shipIndex = Ship.getIndexOfThreeShip(ship);
+                }
                 Game.playerSunkShips.put(ship, new ArrayList<String>());
                 Game.playerSunkShips.get(ship).add(hit.toString());
                 //if we hit a new ship point, add new ship to list
                 if (AI.checkValidShip(ship) && !ship.equals(shipsHit.get(0))) {
                     // isHunting = true;
-                    Main.AIAttackBoard[y][x].setIsShip(true);
-                    Main.AIAttackBoard[y][x].setIsHit(true);
-                    Hunting.uniqueHitPoints.add(hit);
-                    Hunting.shipsHit.add(ship);
+                    cur.setIsShip(true);
+                    cur.setIsHit(true);
+                    uniqueHitPoints.add(hit);
+                    shipsHit.add(ship);
+                    pointsHit[shipIndex].add(cur);
                 //same ship point, set is hit
-            } else if (AI.checkValidShip(ship)) {
-                    Main.AIAttackBoard[y][x].setIsHit(true);
-                    Main.AIAttackBoard[y][x].setIsShip(true);
-                    
+                } else if (AI.checkValidShip(ship)) {
+                    // pointsHit.add(cur);
+                    cur.setIsHit(true);
+                    cur.setIsShip(true);
+                    pointsHit[shipIndex].add(cur);
                 }
                 break;
             } else if (input.substring(0, 4).equals("SUNK")) {
+                
                 String ship = input.substring(6);
                 if (AI.checkValidShip(ship)) {
-                    Main.AIAttackBoard[y][x].setIsHit(true);
-                    Main.AIAttackBoard[y][x].setIsShip(true);
+                    cur.setIsHit(true);
+                    cur.setIsShip(true);
                     System.out.println(ship);
                     Ship.getPlayerListOfShipsAlive().remove(ship);
                     uniqueHitPoints.remove(0);
@@ -99,7 +110,7 @@ public class Hunting {
                         //D3 E4
                         int columnInd = Coordinate.columnIndexAsInt(i.charAt(0));
                         int rowInd = Integer.parseInt(i.substring(1));
-                        Main.AIAttackBoard[columnInd][rowInd].setIsShip(false);
+                        // Main.AIAttackBoard[columnInd][rowInd].setIsShip(false);
                     }
                 }
                 if (uniqueHitPoints.size() == 0) {
@@ -113,57 +124,40 @@ public class Hunting {
         }
     }
     
-    public static void sumArray(Coordinate h, int shipSize) {
-        // sum vertically and horizontally
+    public static void sumArray(Coordinate h, int shipSize, String shipHitName) {
+        int shipIndex = shipSize;
+        if (shipSize == 3){
+            shipIndex = Ship.getIndexOfThreeShip(shipHitName);
+        }
+        // sum vertically and horizontally  
         // VERTICAL
         // start point is hit point + 1 - shipsize (check if in bounds)
-        int y = h.getY();
-        int x = h.getX();
-        for (int i = (y + 1 - shipSize); i <= y; i++) {
-            boolean ok = true;
-            if (i < 1) {
-                continue;
-            }
-            for (int j = i; j < i + shipSize; j++) {
-                if (j > 10 || (Main.AIAttackBoard[j][x].getIsHit() && !Main.AIAttackBoard[j][x].getIsShip() && j != y)) {
-                    ok = false;
-                }
-            }
-            
-            if (ok) {
-                for (int j = i; j < i + shipSize; j++) {
-                    if (j == y || Main.AIAttackBoard[j][x].getIsShip()) {
-                        continue;
-                    }
-                    int currentProbability = huntingProbability[j][x].getProbability();
-                    huntingProbability[j][x].setProbability(currentProbability + 1);
-
-                }
-            }
-
+        int isVertical = 0;
+        System.out.print("Points hit: ");
+        for (Coordinate i : pointsHit[shipIndex]) {
+            System.out.println(i.toString());
         }
-        // HORIZONTAL
-        for (int i = (x + 1 - shipSize); i <= x; i++) {
-            boolean ok = true;
-            if (i < 1) {
-                continue;
+        if (pointsHit[shipIndex].size() >= 2) {
+            // System.out.println("im running");
+            Coordinate cur = pointsHit[shipIndex].get(0);
+            Coordinate next = pointsHit[shipIndex].get(1);
+            if (next.getY() == cur.getY()) {
+                isVertical = 1;
             }
-            for (int j = i; j < i + shipSize; j++) {
-                if (j > 10 ||(Main.AIAttackBoard[y][j].getIsHit() && !Main.AIAttackBoard[y][j].getIsShip() && j != x)) {
-                    ok = false;        
-                }
+            else {
+                isVertical = 2;
             }
-            if (ok) {
-                for (int j = i; j < i + shipSize; j++) {
-                    if (j == x || Main.AIAttackBoard[y][j].getIsShip()) {
-                        continue;
-                    }
-                    int currentProbability = huntingProbability[y][j].getProbability();
-                    huntingProbability[y][j].setProbability(currentProbability + 1);
-
-                }
-            }
-
+        }
+        // undetermined 
+        if (isVertical == 0) {
+            sumVertical(shipSize, h);
+            sumHorizontal(h, shipSize);
+        // vertical
+        } else if (isVertical == 1) {
+            sumHorizontal(h, shipSize);
+            // sumHorizontal(h, shipSize);
+        } else {
+            sumVertical(shipSize, h);
         }
         
         AI.printArray(huntingProbability);
@@ -214,6 +208,59 @@ public class Hunting {
         hunt(test, "CARRIER");
 
     }
+    public static void sumVertical(int shipSize, Coordinate h) {
+        int y = h.getY();
+        int x = h.getX();
+        for (int i = (y + 1 - shipSize); i <= y; i++) {
+            boolean ok = true;
+            if (i < 1) {
+                continue;
+            }
+            for (int j = i; j < i + shipSize; j++) {
+                if (j > 10 || (Main.AIAttackBoard[j][x].getIsHit() && !Main.AIAttackBoard[j][x].getIsShip() && j != y)) {
+                    ok = false;
+                }
+            }
+            
+            if (ok) {
+                for (int j = i; j < i + shipSize; j++) {
+                    if (j == y || Main.AIAttackBoard[j][x].getIsShip()) {
+                        continue;
+                    }
+                    int currentProbability = huntingProbability[j][x].getProbability();
+                    huntingProbability[j][x].setProbability(currentProbability + 1);
 
-    
+                }
+            }
+
+        }
+    }
+
+    public static void sumHorizontal(Coordinate h, int shipSize) {
+        int y = h.getY();
+        int x = h.getX();
+        for (int i = (x + 1 - shipSize); i <= x; i++) {
+            boolean ok = true;
+            if (i < 1) {
+                continue;
+            }
+            for (int j = i; j < i + shipSize; j++) {
+                if (j > 10
+                        || (Main.AIAttackBoard[y][j].getIsHit() && !Main.AIAttackBoard[y][j].getIsShip() && j != x)) {
+                    ok = false;
+                }
+            }
+            if (ok) {
+                for (int j = i; j < i + shipSize; j++) {
+                    if (j == x || Main.AIAttackBoard[y][j].getIsShip()) {
+                        continue;
+                    }
+                    int currentProbability = huntingProbability[y][j].getProbability();
+                    huntingProbability[y][j].setProbability(currentProbability + 1);
+
+                }
+            }
+
+        }
+    }
 }   

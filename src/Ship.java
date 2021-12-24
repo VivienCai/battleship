@@ -127,4 +127,14 @@ public class Ship {
     public int getTimesHit() {
         return timesHit;
     }
+
+    public static int getIndexOfThreeShip(String ship) {
+        // submarine is index 6
+        if (ship.equals("SUBMARINE")) {
+            return 6;
+        // cruiser is index 3
+        } else {
+            return 3;
+        }
+    }
 }

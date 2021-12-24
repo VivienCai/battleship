@@ -241,10 +241,11 @@ public class AI {
         }
     }
 
-    public static char getInputY() {
+    public static int getInputY() {
         // String input;
         char c;
-        char coord = 'x';
+        // char coord = 'x';
+        int coord = 0;
         while (true) { // keeps on running until user makes a valid input
             // System.out.println(output);
             c = sc.nextLine().charAt(0);
@@ -318,6 +319,7 @@ public class AI {
         while (true) {
 
             String input = sc.nextLine();
+            Coordinate cur = Main.AIAttackBoard[hit.getY()][hit.getX()];
             if (input.length() < 4) {
                 System.out.println("that is not a valid input. Is it a hit, miss, or sink?");
             } else if (input.equals("MISS")) {
@@ -328,17 +330,23 @@ public class AI {
                 if (checkValidShip(ship)) {
                     isHunting = true;
                     // #J_Favourites
-                    Main.AIAttackBoard[hit.getY()][hit.getX()].setIsShip(true);
+                    cur.setIsShip(true);
                     Hunting.uniqueHitPoints.add(hit);
                     Hunting.shipsHit.add(ship);
                     Game.playerSunkShips.put(ship, new ArrayList<String>());
+                    int shipSize = Ship.getSize(ship);
+                    if(shipSize == 3){
+                        shipSize = Ship.getIndexOfThreeShip(ship);
+                    }
+                    Hunting.pointsHit[shipSize].add(cur);
                     break;
+
                 } else {
                     System.out.println("That is not a valid ship entered. Please try again.");
                 }
             } else if (input.substring(0, 4).equals("SUNK")) {
                 isHunting = false;
-                Main.AIAttackBoard[hit.getY()][hit.getX()].setIsShip(true);
+                cur.setIsShip(true);
                 // SUNK, CARRIER
                 String shipName = input.substring(5);
                 if (checkValidShip(shipName)) {

@@ -88,11 +88,12 @@ public class Main {
 
         System.out.println("It is your turn.");
         System.out.println("Please enter a letter from A-J for the vertical part of your coordinate: ");
-        char inputy = AI.getInputY();
+        int inputy = AI.getInputY();
         System.out.println("Please enter a number from 1-10 for the horizontal part of your coordinate: ");
         int inputx = AI.getInputX();
 
-        System.out.println("You hit coordinate " + inputy + inputx);
+        char y = Coordinate.convertIntToChar(inputy);
+        System.out.printf("You fired at coordinate %c%d\n", y, inputx);
         // check if the players hit hits a ship and mark it on the ai placement board
         Coordinate cur = AIPlacementBoard[inputy][inputx];
         Coordinate curPlayer = playerAttackBoard[inputy][inputx];
@@ -108,7 +109,7 @@ public class Main {
                 for (Ship aliveShip : shipsAlive) {
                     if (aliveShip.getName().equals(shipHitName)) {
                         remove = aliveShip;
-                        Game.removeShipFromGrid(shipHit);
+                        // Game.removeShipFromGrid(shipHit);
 
                     }
                 }
@@ -124,7 +125,6 @@ public class Main {
         } else if (cur.getIsShip() && cur.getIsHit() || !cur.getIsShip()) {
             cur.setIsHit(true);
             curPlayer.setIsHit(true);
-            curPlayer.setIsShip(true);
             System.out.println("YOU MISSED.");
 
         }
@@ -171,6 +171,10 @@ public class Main {
                 Hunting.huntingProbability[i][j] = new Coordinate(i, j);
             }
         }
+        for (int i = 0; i < 7; i++) {
+            Hunting.pointsHit[i] = new ArrayList<Coordinate>();
+        }   
+        
     }
 
     public static void coinFlip() {
