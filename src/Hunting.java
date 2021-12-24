@@ -83,10 +83,11 @@ public class Hunting {
                 //if we hit a new ship point, add new ship to list
                 if (AI.checkValidShip(ship) && !ship.equals(shipsHit.get(0))) {
                     // isHunting = true;
-                    cur.setIsShip(true);
+                    // cur.setIsShip(true);
                     cur.setIsHit(true);
                     uniqueHitPoints.add(hit);
                     shipsHit.add(ship);
+                    
                     pointsHit[shipIndex].add(cur);
                 //same ship point, set is hit
                 } else if (AI.checkValidShip(ship)) {
@@ -133,9 +134,12 @@ public class Hunting {
         // VERTICAL
         // start point is hit point + 1 - shipsize (check if in bounds)
         int isVertical = 0;
-        System.out.print("Points hit: ");
-        for (Coordinate i : pointsHit[shipIndex]) {
-            System.out.println(i.toString());
+        System.out.print("Points hit for all: ");
+        for (int i = 2; i < 7; i++) {
+            for (Coordinate J : pointsHit[i]) {
+                System.out.print(i + "queue : ");
+                System.out.println(J.toString());
+            }
         }
         if (pointsHit[shipIndex].size() >= 2) {
             // System.out.println("im running");
@@ -155,7 +159,6 @@ public class Hunting {
         // vertical
         } else if (isVertical == 1) {
             sumHorizontal(h, shipSize);
-            // sumHorizontal(h, shipSize);
         } else {
             sumVertical(shipSize, h);
         }
