@@ -7,35 +7,26 @@ import java.util.*;
 */
 
 public class Ship {
+    //Attributes of ship
     private String name;
     private boolean isSunk;
     private boolean isVertical;
     private int size;
     private int timesHit;
     private Coordinate homeCoor;
-    static Coordinate coorBoard[][] = new Coordinate[11][11];
     private static int count = 0;
 
-    HashMap<Ship, ArrayList<Coordinate>> shipCoor = new HashMap<Ship, ArrayList<Coordinate>>();
-
+    // lists of ships alive for user and AI
     private static ArrayList<Ship> listOfShips = new ArrayList<Ship>();
-
     private static ArrayList<String> playerListOfShipsAlive = new ArrayList<String>(
-            Arrays.asList("DESTROYER", "SUBMARINE", "CRUISER", "BATTLESHIP", "CARRIER"));
+  Arrays.asList("DESTROYER", "SUBMARINE", "CRUISER", "BATTLESHIP", "CARRIER"));
 
+    // default constructor 
     public Ship() {
     }
 
-    public static ArrayList<String> getPlayerListOfShipsAlive() {
-        return playerListOfShipsAlive;
-    }
-
+    // constructor 
     public Ship(boolean isV, int s, Coordinate p) {
-        for (int i = 1; i <= 10; i++) {
-            for (int j = 1; j <= 10; j++) {
-                coorBoard[i][j] = new Coordinate(j, i);
-            }
-        }
         switch (s) {
             case 0:
                 name = "empty";
@@ -69,25 +60,19 @@ public class Ship {
         switch (name) {
             case "DESTROYER":
                 return 2;
-
             case "SUBMARINE":
                 return 3;
-
             case "CRUISER":
                 return 3;
-
             case "BATTLESHIP":
                 return 4;
             case "CARRIER":
                 return 5;
-
         }
         return 0;
     }
-    // public void addCoordinates(Coordinate home, boolean isV)
-
-    // }
-
+    
+    // getters 
     public String getName() {
         return name;
     }
@@ -100,10 +85,6 @@ public class Ship {
         return isSunk;
     }
 
-    public static ArrayList<Ship> getList() {
-        return listOfShips;
-    }
-
     public boolean getVertical() {
         return isVertical;
     }
@@ -112,29 +93,38 @@ public class Ship {
         return size;
     }
 
+    public int getTimesHit() {
+        return timesHit;
+    }
+
     public Coordinate getHomeCoord() {
         return homeCoor;
     }
 
+    public static ArrayList<Ship> getList() {
+        return listOfShips;
+    }
+
+    public static ArrayList<String> getPlayerListOfShipsAlive() {
+        return playerListOfShipsAlive;
+    }
+    
+    public static int getIndexOfThreeShip(String ship) {
+        // submarine is index 6
+        if (ship.equals("SUBMARINE")) {
+            return 6;
+            // cruiser is index 3
+        } else {
+            return 3;
+        }
+    }
+
+    // general helper methods
     public String toString() {
         return name;
     }
 
     public void addTimesHit() {
         timesHit++;
-    }
-
-    public int getTimesHit() {
-        return timesHit;
-    }
-
-    public static int getIndexOfThreeShip(String ship) {
-        // submarine is index 6
-        if (ship.equals("SUBMARINE")) {
-            return 6;
-        // cruiser is index 3
-        } else {
-            return 3;
-        }
     }
 }

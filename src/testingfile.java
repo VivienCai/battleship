@@ -6,7 +6,7 @@ public class testingfile {
         System.out.println("Enter an x (1-10) coordinate to check if there is a ship there.");
         int inputx = AI.getInputX();
 
-        char keyChar = Coordinate.convertIntToChar(inputy);
+        char keyChar = Coordinate.columnIndex(inputy);
         String accessKey = String.valueOf(keyChar) + String.valueOf(inputx);
         System.out.println(Game.AIMapOfCoor.get(accessKey));
 
@@ -141,5 +141,31 @@ public class testingfile {
     //     System.out.print(i.getProbability() + " ");
     // }
     // System.out.println();
+
+
+            // for (int i = 1; i <= 10; i++) {
+        //     for (int j = 1; j <= 10; j++) {
+        //         coorBoard[i][j] = new Coordinate(j, i);
+        //     }
+        // }
+            // public void occupyShip() {
+    //     isShip = true;
+    // }
+
+    // public void hitShip() {
+    //     isHit = true;
+    // }
+        
+    // public static char columnIndex(int ind) {
+    //     return (char) (ind + 'A' - 1);
+    // }
+
+    // public static void removeShipFromGrid(Ship shipHit) {
+    // int y = shipHit.getHomeCoord().getY();
+    // int x = shipHit.getHomeCoord().getX();
+    // // Main.AIPlacementBoard[y][x];
+
+    // }
+
     }
 }

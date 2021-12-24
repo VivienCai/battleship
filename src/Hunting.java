@@ -28,7 +28,7 @@ public class Hunting {
     
     public static void hunt(Coordinate h, String ship) {
         int shipSize = Ship.getSize(ship);
-        System.out.println(shipSize);
+        // System.out.println(shipSize);
         
         sumArray(h, shipSize, ship);
         Coordinate nextHit = max(h.getY(), h.getX(), shipSize);
@@ -57,13 +57,13 @@ public class Hunting {
     public static void getInput(Coordinate hit) {
         // ArrayList<Ship> shipsAlive = Ship.getList();
         while (true) {
-            printArrayList(uniqueHitPoints);
-            printArrayList(hitPointQueue);
+            // printArrayList(uniqueHitPoints);
+            // printArrayList(hitPointQueue);
 
 
             int y = hit.getY();
             int x = hit.getX();
-            System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(y), x);
+            System.out.printf("The AI hit coordinate %c%d\n", Coordinate.columnIndex(y), x);
             System.out.println("Is it a hit or miss or sink?");
             String input = sc.nextLine();
             Coordinate cur = Main.AIAttackBoard[y][x];
@@ -103,12 +103,12 @@ public class Hunting {
                 if (AI.checkValidShip(ship)) {
                     cur.setIsHit(true);
                     cur.setIsShip(true);
-                    System.out.println(ship);
+                    // System.out.println(ship);
                     Ship.getPlayerListOfShipsAlive().remove(ship);
                     uniqueHitPoints.remove(0);
                     shipsHit.remove(ship);
                     for (String i : Game.playerSunkShips.get(ship)) {
-                        //D3 E4
+                        System.out.println(i);
                         int columnInd = Coordinate.columnIndexAsInt(i.charAt(0));
                         int rowInd = Integer.parseInt(i.substring(1));
                         Main.AIAttackBoard[columnInd][rowInd].setIsShip(false);
@@ -134,13 +134,13 @@ public class Hunting {
         // VERTICAL
         // start point is hit point + 1 - shipsize (check if in bounds)
         int isVertical = 0;
-        System.out.print("Points hit for all: ");
-        for (int i = 2; i < 7; i++) {
-            for (Coordinate J : pointsHit[i]) {
-                System.out.print(i + "queue : ");
-                System.out.println(J.toString());
-            }
-        }
+        // System.out.print("Points hit for all: ");
+        // for (int i = 2; i < 7; i++) {
+        //     for (Coordinate J : pointsHit[i]) {
+        //         System.out.print(i + "queue : ");
+        //         System.out.println(J.toString());
+        //     }
+        // }
         if (pointsHit[shipIndex].size() >= 2) {
             // System.out.println("im running");
             Coordinate cur = pointsHit[shipIndex].get(0);
@@ -189,10 +189,10 @@ public class Hunting {
 
 
         // }
-        for (Coordinate i : hitPointQueue) {
-            System.out.print(i.getProbability() + " ");
-        }
-        System.out.println();
+        // for (Coordinate i : hitPointQueue) {
+        //     System.out.print(i.getProbability() + " ");
+        // }
+        // System.out.println();
         return hitPointQueue.remove(0);
 
     }

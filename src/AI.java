@@ -299,7 +299,7 @@ public class AI {
             Coordinate hit = isParity.get(randIndex);
             int y = hit.getY(), x = hit.getX();
             Main.AIAttackBoard[y][x].setIsHit(true);
-            System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(y), x);
+            System.out.printf("The AI hit coordinate %c%d\n", Coordinate.columnIndex(y), x);
             System.out.println("Is it a hit or miss or sink?");
             getInput(hit);
 
@@ -308,7 +308,7 @@ public class AI {
             Coordinate hit = possibleHits.get(randIndex);
             int y = hit.getY(), x = hit.getX();
             Main.AIAttackBoard[y][x].setIsHit(true);
-            System.out.printf("The AI hit coordinate %c%d\n", hit.columnIndex(y), x);
+            System.out.printf("The AI hit coordinate %c%d\n", Coordinate.columnIndex(y), x);
             System.out.println("Is it a hit, miss, or sink?");
             getInput(hit);
         }

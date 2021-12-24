@@ -1,38 +1,42 @@
+
+// coordinates need to be sorted by their probability so we implemented a comparator so it can be sorted/compared
 public class Coordinate implements Comparable<Coordinate> {
+   
+    // attributes 
     private int x_coor;
     private int y_coor;
-    private boolean isShip = false;
     private boolean isHit = false;
+    private boolean isShip = false;
     private int probability = 0;
 
-    public int getProbability() {
-        return probability;
-    }
-    
-    public void setProbability(int newProbability) {
-        probability = newProbability;
-    }
+    // constructor
     public Coordinate(int y, int x) {
         x_coor = x;
         y_coor = y;
     }
-
+    
+    // getters 
     public int getX() {
         return x_coor;
     }
-
-    public void occupyShip() {
-        isShip = true;
-    }
-
-    public void hitShip() {
-        isHit = true;
-    }
-
+    
     public int getY() {
         return y_coor;
     }
+    
+    public boolean getIsHit() {
+        return isHit;
+    }
 
+    public boolean getIsShip() {
+        return isShip;
+    }
+
+    public int getProbability() {
+        return probability;
+    }
+
+    //setters
     public void setX(int newX) {
         x_coor = newX;
     }
@@ -41,33 +45,20 @@ public class Coordinate implements Comparable<Coordinate> {
         y_coor = newY;
     }
 
-    public char columnIndex(int y) {
-        char asciiVal = (char) ((y - 1) + 'A');
-        return asciiVal;
-    }
-
-    public static int columnIndexAsInt(char y) {
-        int asciiVal = (int) ((y - 'A'+1));
-        return asciiVal;
-    }
-
-    public boolean getIsHit() {
-        return isHit;
-    }
-
     public void setIsHit(boolean newIsHit) {
         isHit = newIsHit;
-    }
-
-    public boolean getIsShip() {
-        return isShip;
     }
 
     public void setIsShip(boolean newIsShip) {
         isShip = newIsShip;
     }
-    
 
+    public void setProbability(int newProbability) {
+        probability = newProbability;
+    }
+    
+    // general purpose methods 
+    // comparator that compares coordinates based on their probability 
     @Override
     public int compareTo(Coordinate cur) {
         if (this.probability > cur.probability) {
@@ -84,13 +75,22 @@ public class Coordinate implements Comparable<Coordinate> {
         }
     }
 
-
-    public static char convertIntToChar(int ind) {
-        return (char)(ind+'A'-1);
+    //toString method that formats it (ex: G7)
+    public String toString() { 
+        return String.valueOf(columnIndex(y_coor)) + String.valueOf(x_coor);
+    }
+    
+    // returns the column index as a character using ASCII 
+    // adds the ASCII value to convert an integer to its respective character value 
+    public static char columnIndex(int y) {
+        char asciiVal = (char) ((y - 1) + 'A');
+        return asciiVal;
     }
 
-    public String toString() { 
-        return String.valueOf(convertIntToChar(y_coor)) + String.valueOf(x_coor);
-    } 
+    //returns column index as integer
+    public static int columnIndexAsInt(char y) {
+        int asciiVal = (int) ((y - 'A'+1));
+        return asciiVal;
+    }
 
 }
