@@ -143,9 +143,9 @@ public class Main {
     public static void saveGame() throws Exception{
     	PrintWriter text = new PrintWriter("Battleship.txt");
     	text.println(AIShot+" "+AIHit+" "+AIMiss);
-    	text.println(PlayerShot+" "+PlayerHit+" "+PlayerMiss);
+    	text.println(PlayerShot+" "+PlayerHit+" "+PlayerMiss);    
     	
-    	for (int i=0;i<shipsAlive.size();i++) {
+    	for (int i=0;i<shipsAlive.size();i++) {  
     		text.print(shipsAlive.get(i));
     	}
     	
@@ -154,6 +154,7 @@ public class Main {
     	}
     	
     	//ADD FILE PARINT PLACEMENT ARRAY METHOD KMSKMSKMSKMS
+    	
     	
     	
     	
@@ -170,6 +171,41 @@ public class Main {
      * 7th will have AI attack board
     
     */
+    
+ public static void filePlacementArray(Coordinate array[][]) throws Exception{      //USER ATTACK BOARD
+    	
+    	
+        for (int i = 0; i <= 10; i++) {
+            char ind = (char) ('A' + i - 1);
+            if (i == 0) {
+                for (int j = 0; j <= 10; j++) {
+                    System.out.print(j + " ");
+                }
+            }
+            if (i > 0) {
+                System.out.print(ind + " ");
+            }
+            for (int j = 1; j <= 10; j++) {
+                if (i == 0) {
+                    continue;
+                } else {
+                    Coordinate cur = array[i][j];
+                    boolean isShip = cur.getIsShip(), isHit = cur.getIsHit();
+                    if (isHit && isShip) {
+                        System.out.print("X ");
+                    } else if (isHit && !isShip) {
+                        System.out.print("M ");
+                    } else if (!isHit && isShip) {
+                        System.out.print("S ");
+                    } else {
+                        System.out.print("O ");
+                    }
+                }
+
+            }
+            System.out.println();
+        }
+    }
     
     
     public static void printShipsAlive() {
