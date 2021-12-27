@@ -169,7 +169,7 @@ public class Main {
     	}
     	
     	
-    	
+    						 	 	 	 	 	 	 	 	 	 	 	 //ADD STUFF FOR SHIP LOCATION (BASE COORD, ORENITATION SUNK) 
     	
     	
     	text.close();
