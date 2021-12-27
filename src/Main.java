@@ -17,7 +17,7 @@ public class Main {
     protected static Coordinate playerAttackBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIPlacementBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIAttackBoard[][] = new Coordinate[11][11];
-   
+   private static int fileCounter=0;
     //getting ship list of AI and player
     private static ArrayList<Ship> shipsAlive = Ship.getList();
     private static ArrayList<String> playerShipsAlive = Ship.getPlayerListOfShipsAlive();
@@ -29,7 +29,7 @@ public class Main {
         introPrompt();
         // prompt user to "press enter to continue"
         promptEnterKey();
-
+        boolean saved=false;
         // while the player or AI still has ships alive
         while (gamestate) {
         	int counter=0;
@@ -59,12 +59,19 @@ public class Main {
             System.out.println( AIShot +"/ "+ AIMiss+"/ "+AIHit);
             System.out.println("Number of player shots/ Number of player misses/ Number of player hits");
             System.out.println(PlayerShot +" "+ PlayerMiss+" "+PlayerHit);
-            System.out.println("Round number "+counter+" is over. If you would like to stop playing and save, please enter RESUME");
+            System.out.println("Round number "+counter+" is over. If you would like to stop playing and save, please enter SAVE");
             String temp=sc.nextLine();
-            if (temp.equals("RESUME")) {      //sees if the user wants to save the game
+            if (temp.equals("SAVE")) {      //sees if the user wants to save the game
             	saveGame();
+            	saved=true;
+            	break;
             }
         }
+        
+        if (saved==true) {
+        	System.out.println("Thank you for playing our battleship game and we are sorry to see you go. Please come back soon");
+        }
+        
         
     }
 
@@ -141,24 +148,41 @@ public class Main {
     }
     
     public static void saveGame() throws Exception{
-    	PrintWriter text = new PrintWriter("Battleship.txt");
+    	System.out.println("Which save file would you like to save to? Please enter a number greater than 1");
+    	int fileNumber=sc.nextInt();                                                              //ADD SMTG TO STOP CODE FROM CRASHING IF STRING
+    	
+    	
+    	
+    	PrintWriter text = new PrintWriter("info"+fileNumber+".txt");
+    	
+    	
+    	
     	text.println(AIShot+" "+AIHit+" "+AIMiss);
     	text.println(PlayerShot+" "+PlayerHit+" "+PlayerMiss);    
     	
     	for (int i=0;i<shipsAlive.size();i++) {  
-    		text.print(shipsAlive.get(i));
+    		text.print(shipsAlive.get(i)+" ");
+    	}
+    	text.println();
+    	for (int i=0;i<playerShipsAlive.size();i++) {
+    		text.print(playerShipsAlive.get(i)+" ");
     	}
     	
-    	for (int i=0;i<playerShipsAlive.size();i++) {
-    		text.print(playerShipsAlive.get(i));
-    	}
+    	
+    	
+    	
+    	
+    	text.close();
+    	
+    	FileHandling.saveBoards(fileNumber);
+    	// Finish printing to battleship1
+    	
     	
     	//ADD FILE PARINT PLACEMENT ARRAY METHOD KMSKMSKMSKMS
     	
     	
     	
     	
-    	text.close();
     }
     /*
      * Format for saving game
@@ -166,14 +190,24 @@ public class Main {
      * 2nd line will have number of Player shot hit and miss
      * 3rd line will have types of ships alive for AI
      * 4th type of ship alive for player
-     * 5th will have AI home board
-     * 6th will have Player Home board
-     * 7th will have AI attack board
+     * 
+     *            BELOW WILL HAVE A DIFFERENT TEXT FILE
+     * 1st grid is AI home board
+     * 2nd grid is Player Home board
+     * 3rd grid is AI attack board
+    
+    
+    
+    
+    things to save
+    1. ship locations
     
     */
     
  public static void filePlacementArray(Coordinate array[][]) throws Exception{      //USER ATTACK BOARD
-    	
+	 
+ 		PrintWriter text = new PrintWriter("Battleship.txt");
+
     	
         for (int i = 0; i <= 10; i++) {
             char ind = (char) ('A' + i - 1);
