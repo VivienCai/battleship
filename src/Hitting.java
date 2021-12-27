@@ -57,6 +57,9 @@ public class Hitting extends AI{
             if (input.length() < 4) {
                 System.out.println("that is not a valid input. Is it a hit, miss, or sink?");
             } else if (input.equals("MISS")) {
+            	Main.AIMiss++;  
+                Main.AIShot++;
+                		//Adds one
                 break;
             } else if (input.substring(0, 3).equals("HIT")) {
                 String ship = input.substring(5);
@@ -72,7 +75,10 @@ public class Hitting extends AI{
                         shipSize = Ship.getIndexOfThreeShip(ship);
                     }
                     AI.pointsHit[shipSize].add(cur);
+                    Main.AIHit++;
+                    Main.AIShot++;
                     break;
+                    
 
                 } else {
                     System.out.println("That is not a valid ship entered. Please try again.");
@@ -85,6 +91,8 @@ public class Hitting extends AI{
                 if (checkValidShip(shipName)) {
                     System.out.println(shipName);
                     Ship.getPlayerListOfShipsAlive().remove(shipName);
+                    Main.AIHit++;
+                    Main.AIShot++;
                     break;
                 } else {
                     System.out.println("That is not a valid ship entered. Please try again.");
@@ -92,6 +100,7 @@ public class Hitting extends AI{
             } else {
                 System.out.println("that is not a valid input. Is it a hit, miss or sink?");
             }
+            
         }
     }
     public static void findProbability() {

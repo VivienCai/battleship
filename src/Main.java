@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.*;
+import java.io.PrintWriter;
 
 /* Sarina Li, Vivien Cai, Jiaan Li
 * Mon December 20
@@ -12,7 +13,7 @@ public class Main {
     private static boolean gamestate = true;
     protected static Scanner sc = new Scanner(System.in);
     protected static boolean AIFirst = false;
-
+    public static int AIShot, AIHit, AIMiss, PlayerShot, PlayerMiss, PlayerHit=0;
     protected static Coordinate playerAttackBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIPlacementBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIAttackBoard[][] = new Coordinate[11][11];
@@ -21,7 +22,7 @@ public class Main {
     private static ArrayList<Ship> shipsAlive = Ship.getList();
     private static ArrayList<String> playerShipsAlive = Ship.getPlayerListOfShipsAlive();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         // instantiating Coordinate for boards
         initArrays();
         //intro message, coin flip, and instruction for input
@@ -31,6 +32,7 @@ public class Main {
 
         // while the player or AI still has ships alive
         while (gamestate) {
+        	int counter=0;
             if (shipsAlive.size() == 0) {
                 System.out.println("AI lost, player wins");
                 break;
@@ -46,9 +48,21 @@ public class Main {
             if (AIFirst == true) {
                 Game.AIMoves(shipsAlive, playerShipsAlive);
                 Game.playerMoves(shipsAlive, playerShipsAlive);
+                
+
+                
             } else {
                 Game.playerMoves(shipsAlive, playerShipsAlive);
                 Game.AIMoves(shipsAlive, playerShipsAlive);
+            }
+            System.out.println("Number of AI shots/ Number of AI misses/ Number of player hits");
+            System.out.println( AIShot +"/ "+ AIMiss+"/ "+AIHit);
+            System.out.println("Number of player shots/ Number of player misses/ Number of player hits");
+            System.out.println(PlayerShot +" "+ PlayerMiss+" "+PlayerHit);
+            System.out.println("Round number "+counter+" is over. If you would like to stop playing and save, please enter RESUME");
+            String temp=sc.nextLine();
+            if (temp.equals("RESUME")) {      //sees if the user wants to save the game
+            	saveGame();
             }
         }
         
@@ -90,16 +104,27 @@ public class Main {
         }
     }
 
-    public static void introPrompt() {
+    public static void introPrompt() throws Exception {
         System.out.println("Hello, welcome to Sarina, Vivien, and Jiaan's battleship game.");
+        System.out.println("Would you like to start a new game or resume an old one? ");
+        System.out.println("Please enter RESUME if you want to continue and anything else for a new game");
         System.out.println("______________________________________________________________");
+        String input=sc.nextLine();
 
-        // Determining who goes first
-        System.out.println("To determine who goes first, lets do a coin flip!");
-        Game.coinFlip();
+        if (input.equals("RESUME")) {
+        	resumeGame();
+        }
+        else {
+        	// Determining who goes first
+            System.out.println("To determine who goes first, lets do a coin flip!");
+            Game.coinFlip();
+            Placing.place(AIPlacementBoard);
+
+        }
+       
+        
 
         // generating random placement for AI PlacementBoard
-        Placing.place(AIPlacementBoard);
         System.out.println("AI Placement Board: ");
         Game.printPlacementArray(AIPlacementBoard);
 
@@ -109,6 +134,44 @@ public class Main {
         System.out.println("If one of your ships were sunk, type \"SUNK, [SHIPTYPE]\". EX. SUNK, BATTLESHIP ");
     }
 
+    public static void resumeGame() throws Exception{
+    	PrintWriter text = new PrintWriter("Battleship.txt");
+    	
+
+    }
+    
+    public static void saveGame() throws Exception{
+    	PrintWriter text = new PrintWriter("Battleship.txt");
+    	text.println(AIShot+" "+AIHit+" "+AIMiss);
+    	text.println(PlayerShot+" "+PlayerHit+" "+PlayerMiss);
+    	
+    	for (int i=0;i<shipsAlive.size();i++) {
+    		text.print(shipsAlive.get(i));
+    	}
+    	
+    	for (int i=0;i<playerShipsAlive.size();i++) {
+    		text.print(playerShipsAlive.get(i));
+    	}
+    	
+    	//ADD FILE PARINT PLACEMENT ARRAY METHOD KMSKMSKMSKMS
+    	
+    	
+    	
+    	text.close();
+    }
+    /*
+     * Format for saving game
+     * 1st line will have number of AI shot, hit and miss   EX. 10 1 9
+     * 2nd line will have number of Player shot hit and miss
+     * 3rd line will have types of ships alive for AI
+     * 4th type of ship alive for player
+     * 5th will have AI home board
+     * 6th will have Player Home board
+     * 7th will have AI attack board
+    
+    */
+    
+    
     public static void printShipsAlive() {
         System.out.println("________________________________");
         System.out.println("AI ships alive: ");

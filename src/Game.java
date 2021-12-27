@@ -15,6 +15,9 @@ public class Game {
 
     // for printing user and AI displays using the naming conventions 
     public static void printPlacementArray(Coordinate array[][]) {
+    	
+    	System.out.println("TESTING AOERIUFHJAIUEFHAWEUFH");
+    	
         for (int i = 0; i <= 10; i++) {
             char ind = (char) ('A' + i - 1);
             if (i == 0) {
@@ -114,11 +117,14 @@ public class Game {
 
             }
             curPlayer.setIsShip(true);
+            Main.PlayerHit++;
         } 
         // if it has been hit before and is a ship, or is not a ship point
         else if (cur.getIsShip() && cur.getIsHit() || !cur.getIsShip()) {
             System.out.println("YOU MISSED.");
+            Main.PlayerMiss++;
         }
+        Main.PlayerShot++;  //adds one to shot
     }
 
     public static void AIMoves(ArrayList<Ship> shipsAlive, ArrayList<String> playerShipsAlive) {
