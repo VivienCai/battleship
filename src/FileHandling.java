@@ -151,7 +151,8 @@ public class FileHandling {
 			Ship ship=new Ship( vertical, size, coord);
 
 		}
-		
+        System.out.println("It didnt crash yay!");
+
 		
 	//	Ship.getList().add();
 		
@@ -160,8 +161,43 @@ public class FileHandling {
  }
  
 	public static void resumeBoards(int fileNumber) throws Exception {
-		File gridFile = new java.io.File("/Users/ellenzhu/eclipse-workspace/ics4u_battleship/Grids"+fileNumber+".txt ");													//same with this
-		Scanner gridFileScan = new Scanner(gridFile);
+		File gridFile = new java.io.File("/Users/ellenzhu/eclipse-workspace/ics4u_battleship/Grids"+fileNumber+".txt");													//same with this
+	//	File gridFile = new java.io.File("/Users/ellenzhu/eclipse-workspace/ics4u_battleship/Grids2.txt");													//same with this
+
+		Scanner fsc = new Scanner(gridFile);
+		boolean isShip;
+		boolean isHit;
+		for (int i=1;i<11;i++) {
+			for (int j=1;j<11;j++) {
+				if(fsc.next().equals("O")) {
+					isShip=false;
+					isHit=false;
+				} 
+				else if(fsc.next().equals("M")) {
+					isShip=false;
+					isHit=true;
+				}
+				else if(fsc.next().equals("S")) {
+					isShip=true;
+					isHit=false;
+				}
+				else {                          //if hit
+					isShip=true;
+					isHit=true;
+				}
+				
+				Coordinate cur=new Coordinate(i,j);
+				cur.setIsHit(isHit);
+				cur.setIsShip(isShip);
+				Main.playerAttackBoard[i][j]=cur;
+			//	Main.playerAttackBoard;
+				System.out.println(j);
+			}
+		}
+		
+        Game.printPlacementArray(Main.playerAttackBoard);
+
+		
 	}
 	
 }

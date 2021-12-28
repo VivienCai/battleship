@@ -117,8 +117,10 @@ public class Main {
         String input=sc.nextLine();
 
         if (input.equals("RESUME")) {
+        	System.out.println("Which save file would you like to resume from? Please enter a positive number");
         	int temp=sc.nextInt();                                                                                      //add crash prevention
         	FileHandling.resumeGame(temp);
+        	FileHandling.resumeBoards(temp);
         }
         else {
             initArrays();
@@ -132,6 +134,7 @@ public class Main {
         
 
         // generating random placement for AI PlacementBoard
+        
         System.out.println("AI Placement Board: ");
         Game.printPlacementArray(AIPlacementBoard);
 
