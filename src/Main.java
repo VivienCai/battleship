@@ -63,14 +63,11 @@ public class Main {
             String temp=sc.nextLine();
             if (temp.equals("SAVE")) {      //sees if the user wants to save the game
             	saveGame();
-            	saved=true;
             	break;
             }
         }
         
-        if (saved==true) {
-        	System.out.println("Thank you for playing our battleship game and we are sorry to see you go. Please come back soon");
-        }
+        
         
         
     }
@@ -153,20 +150,49 @@ public class Main {
     	
     	
     	
-    	PrintWriter text = new PrintWriter("info"+fileNumber+".txt");
+    	PrintWriter text = new PrintWriter("Info"+fileNumber+".txt");
     	
     	
     	
     	text.println(AIShot+" "+AIHit+" "+AIMiss);
     	text.println(PlayerShot+" "+PlayerHit+" "+PlayerMiss);    
     	
-    	for (int i=0;i<shipsAlive.size();i++) {  
-    		text.print(shipsAlive.get(i)+" ");
-    	}
-    	text.println();
-    	for (int i=0;i<playerShipsAlive.size();i++) {
-    		text.print(playerShipsAlive.get(i)+" ");
-    	}
+//	    	for (int i=0;i<shipsAlive.size();i++) {  
+//	    		text.print(shipsAlive.get(i)+" ");
+//	    	}
+//	    	text.println();                                  DISPLAYS ALIVE SHIPS
+//	    	for (int i=0;i<playerShipsAlive.size();i++) {
+//	    		text.print(playerShipsAlive.get(i)+" ");
+//	    	}
+//    	text.println();
+    	
+    	for (int i=0;i<Ship.getList().size();i++) {
+    		text.print(Ship.getList().get(i).getName()+" ");
+    		if (Ship.getList().get(i).getIsSunk()) {      //If sunk
+    			text.print("SUNK");
+    		}
+    		else {                                         //if not sunk
+    			text.print("ALIVE ");
+        		text.print(Ship.getList().get(i).getHomeCoord().getX()+" ");  
+        		text.print(Ship.getList().get(i).getHomeCoord().getY()+" ");  
+        		text.print(Ship.getList().get(i).getVertical()+" ");
+        		text.print(Ship.getList().get(i).getTimesHit()+" ");
+
+    		}
+    		text.println();
+    		
+    		
+    		
+    		
+    	}  //If dead, print name and then sunk
+    	//   else print name, x value, y value, is vert, 
+    	
+    	
+    	
+    //	2,3,4,5,3
+    	
+    	
+    	
     	
     	
     						 	 	 	 	 	 	 	 	 	 	 	 //ADD STUFF FOR SHIP LOCATION (BASE COORD, ORENITATION SUNK) 
@@ -180,7 +206,9 @@ public class Main {
     	
     	//ADD FILE PARINT PLACEMENT ARRAY METHOD KMSKMSKMSKMS
     	
-    	
+    	System.out.println("Thank you for playing our battleship game and we are sorry to see you go. Please come back soon");
+    	System.out.println("Your files have been saved in a file called Info"+fileNumber+".txt and Grids"+fileNumber+".txt");                                 //add save number
+    
     	
     	
     }

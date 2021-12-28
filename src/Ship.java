@@ -127,4 +127,6 @@ public class Ship {
     public void addTimesHit() {
         timesHit++;
     }
+    
+    
 }
