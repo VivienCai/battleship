@@ -6,7 +6,7 @@ import java.util.ArrayList;
 * Hitting class
 */
 
-public class Hitting extends AI{
+public class Hitting extends AI {
     public static void AIhit() {
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 10; j++) {
@@ -57,9 +57,9 @@ public class Hitting extends AI{
             if (input.length() < 4) {
                 System.out.println("that is not a valid input. Is it a hit, miss, or sink?");
             } else if (input.equals("MISS")) {
-            	Main.AIMiss++;  
+                Main.AIMiss++;
                 Main.AIShot++;
-                		//Adds one
+                // Adds one
                 break;
             } else if (input.substring(0, 3).equals("HIT")) {
                 String ship = input.substring(5);
@@ -71,14 +71,13 @@ public class Hitting extends AI{
                     AI.shipsHit.add(ship);
                     Game.playerSunkShips.put(ship, new ArrayList<String>());
                     int shipSize = Ship.getSize(ship);
-                    if(shipSize == 3){
+                    if (shipSize == 3) {
                         shipSize = Ship.getIndexOfThreeShip(ship);
                     }
                     AI.pointsHit[shipSize].add(cur);
                     Main.AIHit++;
                     Main.AIShot++;
                     break;
-                    
 
                 } else {
                     System.out.println("That is not a valid ship entered. Please try again.");
@@ -100,9 +99,10 @@ public class Hitting extends AI{
             } else {
                 System.out.println("that is not a valid input. Is it a hit, miss or sink?");
             }
-            
+
         }
     }
+
     public static void findProbability() {
         for (int i = 2; i <= 5; i++) {
             sumColumns(i);
@@ -164,8 +164,6 @@ public class Hitting extends AI{
         }
     }
 
-    
-
     public static int getInputX() {
         String input;
         int coord = -1;
@@ -176,11 +174,11 @@ public class Hitting extends AI{
                 if (coord >= 1 && coord <= 10) {
                     return coord;
                 } else {
-                    System.out.println("Please enter a valid input");
+                    System.out.println("Please enter a valid input.");
                 }
 
             } else {
-                System.out.println("Please enter a valid input");
+                System.out.println("Please enter a valid input.");
             }
         }
     }
@@ -197,7 +195,7 @@ public class Hitting extends AI{
             if (coord >= 1 && coord <= 10) {
                 return coord;
             } else {
-                System.out.println("Please enter a valid input");
+                System.out.println("Please enter a valid input.");
             }
         }
     }

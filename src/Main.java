@@ -10,30 +10,30 @@ import java.io.PrintWriter;
 */
 
 public class Main {
-    // attributes 
+    // attributes
     private static boolean gamestate = true;
     protected static Scanner sc = new Scanner(System.in);
     protected static boolean AIFirst = false;
-    public static int AIShot, AIHit, AIMiss, PlayerShot, PlayerMiss, PlayerHit=0;
+    protected static int AIShot, AIHit, AIMiss, PlayerShot, PlayerMiss, PlayerHit = 0;
+    private static int counter = 1;
+    
     protected static Coordinate playerAttackBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIPlacementBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIAttackBoard[][] = new Coordinate[11][11];
-   private static int fileCounter=0;
-    //getting ship list of AI and player
+    private static int fileCounter = 0;
+    // getting ship list of AI and player
     private static ArrayList<Ship> shipsAlive = Ship.getList();
     private static ArrayList<String> playerShipsAlive = Ship.getPlayerListOfShipsAlive();
 
     public static void main(String[] args) throws Exception {
         // instantiating Coordinate for boards
-        //intro message, coin flip, and instruction for input
+        // intro message, coin flip, and instruction for input
         introPrompt();
         // prompt user to "press enter to continue"
         promptEnterKey();
         
-        
         // while the player or AI still has ships alive
         while (gamestate) {
-        	int counter=0;
             if (shipsAlive.size() == 0) {
                 System.out.println("AI lost, player wins");
                 break;
@@ -49,28 +49,24 @@ public class Main {
             if (AIFirst == true) {
                 Game.AIMoves(shipsAlive, playerShipsAlive);
                 Game.playerMoves(shipsAlive, playerShipsAlive);
-                
-
-                
             } else {
                 Game.playerMoves(shipsAlive, playerShipsAlive);
                 Game.AIMoves(shipsAlive, playerShipsAlive);
             }
+
             System.out.println("Number of AI shots/ Number of AI misses/ Number of AI hits");
-            System.out.println( AIShot +"/ "+ AIMiss+"/ "+AIHit);
+            System.out.println(AIShot + " / " + AIMiss + " / " + AIHit);
             System.out.println("Number of player shots/ Number of player misses/ Number of player hits");
-            System.out.println(PlayerShot +" "+ PlayerMiss+" "+PlayerHit);
-            System.out.println("Round number "+counter+" is over. If you would like to stop playing and save, please enter SAVE");
-            String temp=sc.nextLine();
-            if (temp.equals("SAVE")) {      //sees if the user wants to save the game
-            	saveGame();
-            	break;
+            System.out.println(PlayerShot + " / " + PlayerMiss + " / " + PlayerHit);
+            System.out.println("Round" + counter
+                    + " is over. If you would like to stop playing and save, please enter SAVE");
+            String temp = sc.nextLine();
+            if (temp.equals("SAVE")) { // sees if the user wants to save the game
+                saveGame();
+                break;
             }
         }
-        
-        
-        
-        
+
     }
 
     // Method that initilalzies our game boards so they do not have null values
@@ -81,7 +77,8 @@ public class Main {
         // instantiate every object in the 2d arrays
         for (int i = 0; i <= 10; i++) {
             for (int j = 0; j <= 10; j++) {
-                // giving each key a ship value so when we reference E4 we can just check the hashmap for the key E4 and it will 
+                // giving each key a ship value so when we reference E4 we can just check the
+                // hashmap for the key E4 and it will
                 // return the ship name
                 char keyChar = Coordinate.columnIndex(i);
                 String key = String.valueOf(keyChar) + String.valueOf(j);
@@ -93,12 +90,13 @@ public class Main {
                 Hunting.huntingProbability[i][j] = new Coordinate(i, j);
             }
         }
-        //initializing arrays for coordinate that have been hit for each ship
+        // initializing arrays for coordinate that have been hit for each ship
         for (int i = 0; i < 7; i++) {
             Hunting.pointsHit[i] = new ArrayList<Coordinate>();
-        }   
-        
+        }
+
     }
+
     // copied from stack overflow LMAO
     public static void promptEnterKey() {
         System.out.println("Press \"ENTER\" to continue...");
@@ -112,29 +110,26 @@ public class Main {
     public static void introPrompt() throws Exception {
         System.out.println("Hello, welcome to Sarina, Vivien, and Jiaan's battleship game.");
         System.out.println("Would you like to start a new game or resume an old one? ");
-        System.out.println("Please enter RESUME if you want to continue and anything else for a new game");
+        System.out.println("Please enter RESUME if you want to continue and anything else for a new game.");
         System.out.println("______________________________________________________________");
-        String input=sc.nextLine();
+        String input = sc.nextLine();
 
         if (input.equals("RESUME")) {
-        	System.out.println("Which save file would you like to resume from? Please enter a positive number");
-        	int temp=sc.nextInt();                                                                                      //add crash prevention
-        	FileHandling.resumeGame(temp);
-        	FileHandling.resumeBoards(temp);
-        }
-        else {
+            System.out.println("Which save file would you like to resume from? Please enter a positive number");
+            int temp = sc.nextInt(); // add crash prevention
+            FileHandling.resumeGame(temp);
+            FileHandling.resumeBoards(temp);
+        } else {
             initArrays();
-        	// Determining who goes first
+            // Determining who goes first
             System.out.println("To determine who goes first, lets do a coin flip!");
             Game.coinFlip();
             Placing.place(AIPlacementBoard);
 
         }
-       
-        
 
         // generating random placement for AI PlacementBoard
-        
+
         System.out.println("AI Placement Board: ");
         Game.printPlacementArray(AIPlacementBoard);
 
@@ -144,102 +139,83 @@ public class Main {
         System.out.println("If one of your ships were sunk, type \"SUNK, [SHIPTYPE]\". EX. SUNK, BATTLESHIP ");
     }
 
-   
-    
-    public static void saveGame() throws Exception{
-    	System.out.println("Which save file would you like to save to? Please enter a number greater than 1");
-    	int fileNumber=sc.nextInt();                                                              //ADD SMTG TO STOP CODE FROM CRASHING IF STRING
-    	
-    	
-    	
-    	PrintWriter text = new PrintWriter("Info"+fileNumber+".txt");
-    	
-    	
-    	
-    	text.println(AIShot+" "+AIHit+" "+AIMiss);
-    	text.println(PlayerShot+" "+PlayerHit+" "+PlayerMiss);    
-    	
-//	    	for (int i=0;i<shipsAlive.size();i++) {  
-//	    		text.print(shipsAlive.get(i)+" ");
-//	    	}
-//	    	text.println();                                  DISPLAYS ALIVE SHIPS
-//	    	for (int i=0;i<playerShipsAlive.size();i++) {
-//	    		text.print(playerShipsAlive.get(i)+" ");
-//	    	}
-//    	text.println();
-    	
-    	for (int i=0;i<Ship.getList().size();i++) {
-    		text.print(Ship.getList().get(i).getName()+" ");
-    		if (Ship.getList().get(i).getIsSunk()) {      //If sunk
-    			text.print("SUNK ");
-    		}
-    		else {                                         //if not sunk
-    			text.print("ALIVE ");
-    		}	
-    		text.print(Ship.getList().get(i).getSize()+" ");	
-    		text.print(Ship.getList().get(i).getHomeCoord().getX()+" ");  
-    		text.print(Ship.getList().get(i).getHomeCoord().getY()+" ");  
-    		text.print(Ship.getList().get(i).getVertical()+" ");
-    		text.print(Ship.getList().get(i).getTimesHit()+" ");
+    public static void saveGame() throws Exception {
+        System.out.println("Which save file would you like to save to? Please enter a number greater than 1.");
+        int fileNumber = sc.nextInt(); // ADD SMTG TO STOP CODE FROM CRASHING IF STRING
 
-    		
-    		text.println();
-    		
-    		
-    		
-    		
-    	}  //name, dead/alive, size, xcoord, y coord, vertical, timeshit
-    	
-    	
-    	
-    //	2,3,4,5,3
-    	
-    	
-    	
-    	
-    	
-    						 	 	 	 	 	 	 	 	 	 	 	 //ADD STUFF FOR SHIP LOCATION (BASE COORD, ORENITATION SUNK) 
-    	
-    	
-    	text.close();
-    	
-    	FileHandling.saveBoards(fileNumber);
-    	// Finish printing to battleship1
-    	
-    	
-    	//ADD FILE PARINT PLACEMENT ARRAY METHOD KMSKMSKMSKMS
-    	
-    	System.out.println("Thank you for playing our battleship game and we are sorry to see you go. Please come back soon");
-    	System.out.println("Your files have been saved in a file called Info"+fileNumber+".txt and Grids"+fileNumber+".txt");                                 //add save number
-    	System.out.println("Please DO NOT tamper with the two files or your data may be permanently lost");
-    	
-    	
+        PrintWriter text = new PrintWriter("Info" + fileNumber + ".txt");
+
+        text.println(AIShot + " " + AIHit + " " + AIMiss);
+        text.println(PlayerShot + " " + PlayerHit + " " + PlayerMiss);
+
+        // for (int i=0;i<shipsAlive.size();i++) {
+        // text.print(shipsAlive.get(i)+" ");
+        // }
+        // text.println(); DISPLAYS ALIVE SHIPS
+        // for (int i=0;i<playerShipsAlive.size();i++) {
+        // text.print(playerShipsAlive.get(i)+" ");
+        // }
+        // text.println();
+
+        for (int i = 0; i < Ship.getList().size(); i++) {
+            text.print(Ship.getList().get(i).getName() + " ");
+            if (Ship.getList().get(i).getIsSunk()) { // If sunk
+                text.print("SUNK ");
+            } else { // if not sunk
+                text.print("ALIVE ");
+            }
+            text.print(Ship.getList().get(i).getSize() + " ");
+            text.print(Ship.getList().get(i).getHomeCoord().getX() + " ");
+            text.print(Ship.getList().get(i).getHomeCoord().getY() + " ");
+            text.print(Ship.getList().get(i).getVertical() + " ");
+            text.print(Ship.getList().get(i).getTimesHit() + " ");
+
+            text.println();
+
+        } // name, dead/alive, size, xcoord, y coord, vertical, timeshit
+
+        // 2,3,4,5,3
+
+        // ADD STUFF FOR SHIP LOCATION (BASE COORD, ORENITATION SUNK)
+
+        text.close();
+
+        FileHandling.saveBoards(fileNumber);
+        // Finish printing to battleship1
+
+        // ADD FILE PARINT PLACEMENT ARRAY METHOD KMSKMSKMSKMS
+
+        System.out.println(
+                "Thank you for playing our battleship game and we are sorry to see you go. Please come back soon");
+        System.out.println("Your files have been saved in a file called Info" + fileNumber + ".txt and Grids"
+                + fileNumber + ".txt"); // add save number
+        System.out.println("Please DO NOT tamper with the two files or your data may be permanently lost");
+
     }
     /*
      * Format for saving game
-     * 1st line will have number of AI shot, hit and miss   EX. 10 1 9
+     * 1st line will have number of AI shot, hit and miss EX. 10 1 9
      * 2nd line will have number of Player shot hit and miss
      * 3rd line will have types of ships alive for AI
      * 4th type of ship alive for player
      * 
-     *            BELOW WILL HAVE A DIFFERENT TEXT FILE
+     * BELOW WILL HAVE A DIFFERENT TEXT FILE
      * 1st grid is AI home board
      * 2nd grid is Player Home board
      * 3rd grid is AI attack board
-    
-    
-    
-    
-    things to save
-    1. ship locations
-    
-    */
-    
- public static void filePlacementArray(Coordinate array[][]) throws Exception{      //USER ATTACK BOARD
-	 
- 		PrintWriter text = new PrintWriter("Battleship.txt");
+     * 
+     * 
+     * 
+     * 
+     * things to save
+     * 1. ship locations
+     * 
+     */
 
-    	
+    public static void filePlacementArray(Coordinate array[][]) throws Exception { // USER ATTACK BOARD
+
+        PrintWriter text = new PrintWriter("Battleship.txt");
+
         for (int i = 0; i <= 10; i++) {
             char ind = (char) ('A' + i - 1);
             if (i == 0) {
@@ -271,8 +247,7 @@ public class Main {
             System.out.println();
         }
     }
-    
-    
+
     public static void printShipsAlive() {
         System.out.println("________________________________");
         System.out.println("AI ships alive: ");
@@ -285,5 +260,5 @@ public class Main {
             System.out.println(aliveShip);
         }
     }
-    
+
 }
