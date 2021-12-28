@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.io.PrintWriter;
@@ -24,12 +25,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         // instantiating Coordinate for boards
-        initArrays();
         //intro message, coin flip, and instruction for input
         introPrompt();
         // prompt user to "press enter to continue"
         promptEnterKey();
-        boolean saved=false;
+        
+        
         // while the player or AI still has ships alive
         while (gamestate) {
         	int counter=0;
@@ -55,7 +56,7 @@ public class Main {
                 Game.playerMoves(shipsAlive, playerShipsAlive);
                 Game.AIMoves(shipsAlive, playerShipsAlive);
             }
-            System.out.println("Number of AI shots/ Number of AI misses/ Number of player hits");
+            System.out.println("Number of AI shots/ Number of AI misses/ Number of AI hits");
             System.out.println( AIShot +"/ "+ AIMiss+"/ "+AIHit);
             System.out.println("Number of player shots/ Number of player misses/ Number of player hits");
             System.out.println(PlayerShot +" "+ PlayerMiss+" "+PlayerHit);
@@ -116,9 +117,11 @@ public class Main {
         String input=sc.nextLine();
 
         if (input.equals("RESUME")) {
-        	resumeGame();
+        	int temp=sc.nextInt();                                                                                      //add crash prevention
+        	FileHandling.resumeGame(temp);
         }
         else {
+            initArrays();
         	// Determining who goes first
             System.out.println("To determine who goes first, lets do a coin flip!");
             Game.coinFlip();
@@ -138,11 +141,7 @@ public class Main {
         System.out.println("If one of your ships were sunk, type \"SUNK, [SHIPTYPE]\". EX. SUNK, BATTLESHIP ");
     }
 
-    public static void resumeGame() throws Exception{
-    	PrintWriter text = new PrintWriter("Battleship.txt");
-    	
-
-    }
+   
     
     public static void saveGame() throws Exception{
     	System.out.println("Which save file would you like to save to? Please enter a number greater than 1");
@@ -169,23 +168,24 @@ public class Main {
     	for (int i=0;i<Ship.getList().size();i++) {
     		text.print(Ship.getList().get(i).getName()+" ");
     		if (Ship.getList().get(i).getIsSunk()) {      //If sunk
-    			text.print("SUNK");
+    			text.print("SUNK ");
     		}
     		else {                                         //if not sunk
     			text.print("ALIVE ");
-        		text.print(Ship.getList().get(i).getHomeCoord().getX()+" ");  
-        		text.print(Ship.getList().get(i).getHomeCoord().getY()+" ");  
-        		text.print(Ship.getList().get(i).getVertical()+" ");
-        		text.print(Ship.getList().get(i).getTimesHit()+" ");
+    		}	
+    		text.print(Ship.getList().get(i).getSize()+" ");	
+    		text.print(Ship.getList().get(i).getHomeCoord().getX()+" ");  
+    		text.print(Ship.getList().get(i).getHomeCoord().getY()+" ");  
+    		text.print(Ship.getList().get(i).getVertical()+" ");
+    		text.print(Ship.getList().get(i).getTimesHit()+" ");
 
-    		}
+    		
     		text.println();
     		
     		
     		
     		
-    	}  //If dead, print name and then sunk
-    	//   else print name, x value, y value, is vert, 
+    	}  //name, dead/alive, size, xcoord, y coord, vertical, timeshit
     	
     	
     	
@@ -208,7 +208,7 @@ public class Main {
     	
     	System.out.println("Thank you for playing our battleship game and we are sorry to see you go. Please come back soon");
     	System.out.println("Your files have been saved in a file called Info"+fileNumber+".txt and Grids"+fileNumber+".txt");                                 //add save number
-    
+    	System.out.println("Please DO NOT tamper with the two files or your data may be permanently lost");
     	
     	
     }

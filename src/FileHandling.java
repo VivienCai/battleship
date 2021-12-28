@@ -1,4 +1,6 @@
+import java.io.File;
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 public class FileHandling {
 
@@ -118,6 +120,48 @@ public class FileHandling {
         }
     }	
 	
-	
+ public static void resumeGame(int fileNumber) throws Exception{
+ 	System.out.println("Please choose a file number to resume from");
+ 	File infoFile = new java.io.File("/Users/ellenzhu/eclipse-workspace/ics4u_battleship/info"+fileNumber+".txt");                                                   //miht not work for diff comps
+		Scanner fsc = new Scanner(infoFile);
+		Main.AIShot= fsc.nextInt();
+		Main.AIHit=fsc.nextInt();
+		Main.AIMiss=fsc.nextInt();
+		Main.PlayerShot=fsc.nextInt();
+		Main.PlayerHit=fsc.nextInt();
+		Main.PlayerMiss=fsc.nextInt();
+		
+		while(fsc.hasNext()) {
+			String name=fsc.next();
+			boolean alive;
+			if (fsc.next().equals("ALIVE")) {
+				alive=true;
+			}
+			else {
+				alive=false;
+			}
+			int size=fsc.nextInt();
+			int xCoord=fsc.nextInt();
+			int yCoord=fsc.nextInt();
+			boolean vertical=fsc.nextBoolean();
+			int timesHit=fsc.nextInt();
+			
+			Coordinate coord=new Coordinate(xCoord, yCoord);
+			
+			Ship ship=new Ship( vertical, size, coord);
+
+		}
+		
+		
+	//	Ship.getList().add();
+		
+ 	
+
+ }
+ 
+	public static void resumeBoards(int fileNumber) throws Exception {
+		File gridFile = new java.io.File("/Users/ellenzhu/eclipse-workspace/ics4u_battleship/Grids"+fileNumber+".txt ");													//same with this
+		Scanner gridFileScan = new Scanner(gridFile);
+	}
 	
 }

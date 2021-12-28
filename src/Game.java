@@ -16,7 +16,6 @@ public class Game {
     // for printing user and AI displays using the naming conventions 
     public static void printPlacementArray(Coordinate array[][]) {      //USER ATTACK BOARD
     	
-    	System.out.println("TESTING AOERIUFHJAIUEFHAWEUFH");
     	
         for (int i = 0; i <= 10; i++) {
             char ind = (char) ('A' + i - 1);
