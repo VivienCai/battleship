@@ -1,5 +1,6 @@
 public class testingfile {
     public static void main(String[] args) {
+    	System.out.println(Ship.getPlayerListOfShipsAlive());
         // TESTING CODE DUMP
         // System.out.println("Enter a y (A-J) coordinate to check if there is a ship there.");
         // int inputy = AI.getInputY();

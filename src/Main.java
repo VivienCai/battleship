@@ -25,6 +25,8 @@ public class Main {
     private static ArrayList<Ship> shipsAlive = Ship.getList();
     private static ArrayList<String> playerShipsAlive = Ship.getPlayerListOfShipsAlive();
 
+    
+    
     public static void main(String[] args) throws Exception {
         // instantiating Coordinate for boards
         // intro message, coin flip, and instruction for input
@@ -113,6 +115,7 @@ public class Main {
         System.out.println("Please enter RESUME if you want to continue and anything else for a new game.");
         System.out.println("______________________________________________________________");
         String input = sc.nextLine();
+        initArrays();
 
         if (input.equals("RESUME")) {
             System.out.println("Which save file would you like to resume from? Please enter a positive number");
@@ -120,7 +123,6 @@ public class Main {
             FileHandling.resumeGame(temp);
             FileHandling.resumeBoards(temp);
         } else {
-            initArrays();
             // Determining who goes first
             System.out.println("To determine who goes first, lets do a coin flip!");
             Game.coinFlip();
@@ -165,19 +167,22 @@ public class Main {
                 text.print("ALIVE ");
             }
             text.print(Ship.getList().get(i).getSize() + " ");
-            text.print(Ship.getList().get(i).getHomeCoord().getX() + " ");
+            text.print(Ship.getList().get(i).getHomeCoord().getX() + " ");  //Prints AI ships
             text.print(Ship.getList().get(i).getHomeCoord().getY() + " ");
             text.print(Ship.getList().get(i).getVertical() + " ");
             text.print(Ship.getList().get(i).getTimesHit() + " ");
-
             text.println();
 
         } // name, dead/alive, size, xcoord, y coord, vertical, timeshit
 
         // 2,3,4,5,3
+        text.println("PLAYER");
+        
 
-        // ADD STUFF FOR SHIP LOCATION (BASE COORD, ORENITATION SUNK)
-
+        for(int i=0;i<Ship.getPlayerListOfShipsAlive().size();i++) {
+        	text.print(Ship.getPlayerListOfShipsAlive().get(i)+" ");	 	//Prints player ships
+        }
+        
         text.close();
 
         FileHandling.saveBoards(fileNumber);
@@ -248,6 +253,7 @@ public class Main {
         }
     }
 
+    
     public static void printShipsAlive() {
         System.out.println("________________________________");
         System.out.println("AI ships alive: ");
@@ -259,6 +265,13 @@ public class Main {
         for (String aliveShip : playerShipsAlive) {
             System.out.println(aliveShip);
         }
+    }
+    
+    public static ArrayList<Ship> getShipsAlive(){
+    	return shipsAlive;
+    }
+    public static ArrayList<String> getPlayerShipsAlive(){
+    	return playerShipsAlive;
     }
 
 }
