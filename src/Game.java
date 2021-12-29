@@ -41,7 +41,7 @@ public class Game {
                     } else {
                         System.out.print("O ");
                     }
-                    
+
                 }
 
             }
@@ -160,6 +160,16 @@ public class Game {
         printPlacementArray(Main.AIAttackBoard);
     }
 
+    public static void AIMovesEasy(ArrayList<Ship> shipsAlive, ArrayList<String> playerShipsAlive) {
+        System.out.println("________________________________");
+        System.out.println("It is the AI's turn");
+        Hitting.findProbability();
+        // print the attack board
+        System.out.println("________________________________");
+        System.out.println("AI ATTACK BOARD:");
+        printPlacementArray(Main.AIAttackBoard);
+    }
+
     // coin flip method to determines who goes first
     public static void coinFlip() {
         String coin;
@@ -205,4 +215,30 @@ public class Game {
         Main.promptEnterKey();
     }
 
+    //method to determine easy or hard mode
+    public static void easyOrHard() {
+        String input;
+        boolean inputValid = false;
+        while (!inputValid) {
+            System.out.println("Please enter 1 if you want to pick easy mode and 2 if you want to pick hard mode.");
+
+            input = Main.sc.next();
+
+            // if user does not enter 1 or 2
+            if (!input.equals("1") && !input.equals("2")) {
+                System.out.println("You did not enter a valid input. Please try again.");
+            } else {
+                if (input.equals("1")) {
+                    System.out.println("You picked easy mode.");
+                    Main.easyMode = true;
+                } else {
+                    System.out.println("You picked hard mode.");
+                    Main.easyMode = false;
+                }
+                inputValid = true;
+            }
+
+        }
+
+    }
 }

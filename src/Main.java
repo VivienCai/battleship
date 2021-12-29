@@ -16,6 +16,7 @@ public class Main {
     protected static boolean AIFirst = false;
     protected static int AIShot, AIHit, AIMiss, PlayerShot, PlayerMiss, PlayerHit = 0;
     private static int counter = 1;
+    protected static boolean easyMode = false;
     
     protected static Coordinate playerAttackBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIPlacementBoard[][] = new Coordinate[11][11];
@@ -44,24 +45,34 @@ public class Main {
                 System.out.println("AI won, player lost");
                 break;
             }
+            if (shipsAlive.size() == 0 && playerShipsAlive.size() == 0){
+                System.out.println("AI and player tie.");
+                break;
+            }
 
             // prints the ships still alive for AI and user
             printShipsAlive();
-
-            if (AIFirst == true) {
-                Game.AIMoves(shipsAlive, playerShipsAlive);
-                Game.playerMoves(shipsAlive, playerShipsAlive);
+            if (easyMode) {
+                if (AIFirst == true) {
+                    Game.AIMovesEasy(shipsAlive, playerShipsAlive);
+                    Game.playerMoves(shipsAlive, playerShipsAlive);
+                } else {
+                    Game.playerMoves(shipsAlive, playerShipsAlive);
+                    Game.AIMovesEasy(shipsAlive, playerShipsAlive);
+                }
             } else {
-                Game.playerMoves(shipsAlive, playerShipsAlive);
-                Game.AIMoves(shipsAlive, playerShipsAlive);
+                if (AIFirst == true) {
+                    Game.AIMoves(shipsAlive, playerShipsAlive);
+                    Game.playerMoves(shipsAlive, playerShipsAlive);
+                } else {
+                    Game.playerMoves(shipsAlive, playerShipsAlive);
+                    Game.AIMoves(shipsAlive, playerShipsAlive);
+                }
             }
-
-            System.out.println("Number of AI shots/ Number of AI misses/ Number of AI hits");
-            System.out.println(AIShot + " / " + AIMiss + " / " + AIHit);
-            System.out.println("Number of player shots/ Number of player misses/ Number of player hits");
-            System.out.println(PlayerShot + " / " + PlayerMiss + " / " + PlayerHit);
-            System.out.println("Round" + counter
-                    + " is over. If you would like to stop playing and save, please enter SAVE");
+            printHitsMisses();
+            System.out.println("Round " + counter
+                    + " is over. If you would like to stop playing and save, please enter \"SAVE\".");
+            counter++;
             String temp = sc.nextLine();
             if (temp.equals("SAVE")) { // sees if the user wants to save the game
                 saveGame();
@@ -123,15 +134,15 @@ public class Main {
             FileHandling.resumeGame(temp);
             FileHandling.resumeBoards(temp);
         } else {
+            System.out.println("Would you like to play on easy or hard AI mode?");    
+            Game.easyOrHard();
+
             // Determining who goes first
             System.out.println("To determine who goes first, lets do a coin flip!");
             Game.coinFlip();
             Placing.place(AIPlacementBoard);
 
         }
-
-        // generating random placement for AI PlacementBoard
-
         System.out.println("AI Placement Board: ");
         Game.printPlacementArray(AIPlacementBoard);
 
@@ -274,4 +285,10 @@ public class Main {
     	return playerShipsAlive;
     }
 
+    public static void printHitsMisses() {
+        System.out.println("Number of AI shots/ Number of AI misses/ Number of AI hits");
+        System.out.println(AIShot + " / " + AIMiss + " / " + AIHit);
+        System.out.println("Number of player shots/ Number of player misses/ Number of player hits");
+        System.out.println(PlayerShot + " / " + PlayerMiss + " / " + PlayerHit);
+    }
 }
