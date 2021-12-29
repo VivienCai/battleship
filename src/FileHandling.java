@@ -77,7 +77,7 @@ public class FileHandling {
  public static void resumeGame(int fileNumber) throws Exception{
 	 //resumes all info but boards
  	System.out.println("Please choose a file number to resume from");
- 	File infoFile = new java.io.File("/Users/ellenzhu/eclipse-workspace/ics4u_battleship/info"+fileNumber+".txt");                                                   //miht not work for diff comps
+ 	File infoFile = new java.io.File("info" + fileNumber+".txt");              //miht not work for diff comps
 		Scanner fsc = new Scanner(infoFile);
 		Main.AIShot= fsc.nextInt();
 		Main.AIHit=fsc.nextInt();
@@ -147,7 +147,7 @@ public class FileHandling {
  	}
  
 	public static void resumeBoards(int fileNumber) throws Exception {
-		File gridFile = new java.io.File("/Users/ellenzhu/eclipse-workspace/ics4u_battleship/Grids"+fileNumber+".txt");													//same with this
+		File gridFile = new java.io.File("Grids" + fileNumber+".txt");						//same with this
 		String testarr[][]=new String[11][11];
 		Scanner fsc = new Scanner(gridFile);
 		boolean isShip;

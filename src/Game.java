@@ -31,8 +31,8 @@ public class Game {
                     continue;
                 } else {
                     Coordinate cur = array[i][j];
-                    boolean isShip = cur.getIsShip(), isHit = cur.getIsHit();
-                    if (isHit && isShip) {
+                    boolean isShip = cur.getIsShip(), isHit = cur.getIsHit(), isSunk = cur.getIsSunk();
+                    if ((isHit && isShip) || (isHit && isSunk)) {
                         System.out.print("X ");
                     } else if (isHit && !isShip) {
                         System.out.print("M ");
@@ -41,6 +41,7 @@ public class Game {
                     } else {
                         System.out.print("O ");
                     }
+                    
                 }
 
             }

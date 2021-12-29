@@ -7,6 +7,7 @@ public class Coordinate implements Comparable<Coordinate> {
     private int y_coor;
     private boolean isHit = false;
     private boolean isShip = false;
+    private boolean isSunk = false;
     private int probability = 0;
 
     // constructor
@@ -32,6 +33,10 @@ public class Coordinate implements Comparable<Coordinate> {
         return isShip;
     }
 
+    public boolean getIsSunk() {
+        return isSunk;
+    }
+
     public int getProbability() {
         return probability;
     }
@@ -51,6 +56,10 @@ public class Coordinate implements Comparable<Coordinate> {
 
     public void setIsShip(boolean newIsShip) {
         isShip = newIsShip;
+    }
+    
+    public void setIsSunk(boolean newIsSunk) {
+        isSunk = newIsSunk;
     }
 
     public void setProbability(int newProbability) {

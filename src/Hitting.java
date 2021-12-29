@@ -70,6 +70,7 @@ public class Hitting extends AI {
                     AI.uniqueHitPoints.add(hit);
                     AI.shipsHit.add(ship);
                     Game.playerSunkShips.put(ship, new ArrayList<String>());
+                    Game.playerSunkShips.get(ship).add(hit.toString());
                     int shipSize = Ship.getSize(ship);
                     if (shipSize == 3) {
                         shipSize = Ship.getIndexOfThreeShip(ship);
