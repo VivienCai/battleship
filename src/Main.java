@@ -137,8 +137,8 @@ public class Main {
             FileHandling.resumeBoards(temp);
         } else {
             System.out.println("Would you like to play on easy or hard AI mode?");    
-            // Game.easyOrHard();
-            System.out.println("easy mode: " + Main.easyMode);
+            Game.easyOrHard();
+            // System.out.println("easy mode: " + Main.easyMode);
 
             // Determining who goes first
             System.out.println("To determine who goes first, lets do a coin flip!");
