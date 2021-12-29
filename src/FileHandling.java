@@ -72,44 +72,10 @@ public class FileHandling {
     
     */
     
- public static void filePlacementArray(Coordinate array[][]) throws Exception{      //USER ATTACK BOARD
-	 
- 		PrintWriter text = new PrintWriter("Battleship.txt");
-
-    	
-        for (int i = 0; i <= 10; i++) {
-            char ind = (char) ('A' + i - 1);
-            if (i == 0) {
-                for (int j = 0; j <= 10; j++) {
-                    System.out.print(j + " ");
-                }
-            }
-            if (i > 0) {
-                System.out.print(ind + " ");
-            }
-            for (int j = 1; j <= 10; j++) {
-                if (i == 0) {
-                    continue;
-                } else {
-                    Coordinate cur = array[i][j];
-                    boolean isShip = cur.getIsShip(), isHit = cur.getIsHit();
-                    if (isHit && isShip) {
-                        System.out.print("X ");
-                    } else if (isHit && !isShip) {
-                        System.out.print("M ");
-                    } else if (!isHit && isShip) {
-                        System.out.print("S ");
-                    } else {
-                        System.out.print("O ");
-                    }
-                }
-
-            }
-            System.out.println();
-        }
-    }	
+ 
 	
  public static void resumeGame(int fileNumber) throws Exception{
+	 //resumes all info but boards
  	System.out.println("Please choose a file number to resume from");
  	File infoFile = new java.io.File("/Users/ellenzhu/eclipse-workspace/ics4u_battleship/info"+fileNumber+".txt");                                                   //miht not work for diff comps
 		Scanner fsc = new Scanner(infoFile);
@@ -187,6 +153,8 @@ public class FileHandling {
 		boolean isShip;
 		boolean isHit;
 		String next;
+		
+		//Resumes player attack board
 		for (int i=1;i<11;i++) {
 			for (int j=1;j<11;j++) {
 				next =fsc.next();
@@ -222,7 +190,7 @@ public class FileHandling {
 			}
 		}
 		
-		
+		//Converts player attack board to AI placement board
 		for (int i=1;i<11;i++) {
         	for(int j=1;j<11;j++) {
         		if(Main.playerAttackBoard[i][j].getIsShip()) {
@@ -231,7 +199,7 @@ public class FileHandling {
         	}
         }
 		
-		
+		//testing purpouses ignore
 		for (int i=1;i<11;i++) {
 			for (int j=1;j<11;j++) {
 				System.out.print(testarr[i][j]);
