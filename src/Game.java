@@ -1,6 +1,10 @@
 import java.util.*;
 
 public class Game {
+    static String coin;
+    static int iCoin;
+    static int coinToss;
+    static boolean coinValid = false;
     // O - not hit or occupied
     // X - occupied by a ship, hit
     // M - not occupied by a ship, hit
@@ -171,15 +175,65 @@ public class Game {
     }
 
     // coin flip method to determines who goes first
+    public static String coinFlipReturn() {
+        while (!coinValid) {
+            // System.out.println("Please enter 1 if you want to pick heads and 2 if you want to pick tails.");
+
+            // coin = Main.sc.next();
+            if (Main.heads == true) {
+                iCoin = 1;
+            } else {
+                iCoin = 2;
+            }
+            coinToss = (int) (Math.random() * 2 + 1);
+
+            // if user does not enter 1 or 2
+            // if (!coin.equals("1") && !coin.equals("2")) {
+            //     System.out.println("You did not enter a valid input. Please try again.");
+            // } else {
+                // iCoin = Integer.parseInt(coin);
+            if (iCoin == 1 && iCoin == coinToss) {
+                Main.AIFirst = false;
+                return "You picked heads.\nThe coin landed on heads.\nYou are going first!\n";
+                // System.out.print("You picked heads.");
+                // System.out.println(" The coin landed on heads.");
+                // System.out.println("You are going first!");
+            } else if (iCoin == coinToss) {
+                Main.AIFirst = false;
+                return "You picked tails.\nThe coin landed on tails.\nYou are going first!\n";
+                // System.out.print("You picked tails.");
+                // System.out.println(" The coin landed on tails.");
+                // System.out.println("You are going first!");
+            } else if (iCoin == 1) {
+                Main.AIFirst = true;
+                return "You picked heads.\nThe coin landed on tails.\nThe AI is going first.\n";
+                // System.out.print("You picked heads.");
+                // System.out.println(" The coin landed on tails.");
+                // System.out.println("The AI is going first.");
+            } else {
+                Main.AIFirst = true;
+                return "You picked tails.\nThe coin landed on heads.\nThe AI is going first.\n";
+                // System.out.print("You picked tails.");
+                // System.out.println(" The coin landed on heads.");
+                // System.out.println("The AI is going first.");
+            }
+                // coinValid = true;
+            // }
+
+        }
+        Main.promptEnterKey();
+        return coin;
+    }
     public static void coinFlip() {
-        String coin;
-        int iCoin;
-        int coinToss;
-        boolean coinValid = false;
         while (!coinValid) {
             System.out.println("Please enter 1 if you want to pick heads and 2 if you want to pick tails.");
 
             coin = Main.sc.next();
+            // if (Main.heads == true) {
+            //     iCoin = 1;
+            // } else {
+            //     iCoin = 2;
+            // }
             coinToss = (int) (Math.random() * 2 + 1);
 
             // if user does not enter 1 or 2
@@ -214,6 +268,7 @@ public class Game {
         }
         Main.promptEnterKey();
     }
+    
 
     //method to determine easy or hard mode
     public static void easyOrHard() {
@@ -241,4 +296,5 @@ public class Game {
         }
 
     }
+    
 }

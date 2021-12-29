@@ -17,6 +17,7 @@ public class Main {
     protected static int AIShot, AIHit, AIMiss, PlayerShot, PlayerMiss, PlayerHit = 0;
     private static int counter = 1;
     protected static boolean easyMode = false;
+    protected static boolean heads = false;
     
     protected static Coordinate playerAttackBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIPlacementBoard[][] = new Coordinate[11][11];
@@ -28,7 +29,8 @@ public class Main {
 
     
     
-    public static void main(String[] args) throws Exception {
+    // public static void main(String[] args) throws Exception {
+    public static void hello() throws Exception{
         // instantiating Coordinate for boards
         // intro message, coin flip, and instruction for input
         introPrompt();
@@ -135,7 +137,8 @@ public class Main {
             FileHandling.resumeBoards(temp);
         } else {
             System.out.println("Would you like to play on easy or hard AI mode?");    
-            Game.easyOrHard();
+            // Game.easyOrHard();
+            System.out.println("easy mode: " + Main.easyMode);
 
             // Determining who goes first
             System.out.println("To determine who goes first, lets do a coin flip!");
