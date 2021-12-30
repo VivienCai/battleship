@@ -1,6 +1,9 @@
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+
+import javax.swing.*;
 import java.io.PrintWriter;
 
 /* Sarina Li, Vivien Cai, Jiaan Li
@@ -18,7 +21,7 @@ public class Main {
     private static int counter = 1;
     protected static boolean easyMode = false;
     protected static boolean heads = false;
-    
+
     protected static Coordinate playerAttackBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIPlacementBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIAttackBoard[][] = new Coordinate[11][11];
@@ -27,13 +30,28 @@ public class Main {
     private static ArrayList<Ship> shipsAlive = Ship.getList();
     private static ArrayList<String> playerShipsAlive = Ship.getPlayerListOfShipsAlive();
 
-     public static void runMain() throws Exception{
+    public static JFrame mainFrame;
+    // public static JPanel panel = new JPanel();
+
+    public static void setUpMain() throws Exception {
+        mainFrame = new JFrame();
+        mainFrame.getContentPane().setLayout(null);
+        mainFrame.getContentPane().setBackground(Color.WHITE);
+        // mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setPreferredSize(new Dimension(900, 615));
+        mainFrame.setMinimumSize(new Dimension(900, 615));
+        mainFrame.setResizable(false);
+        // mainFrame.pack();
+    }
+
+    public static void runMain() throws Exception {
+        setUpMain();
         // instantiating Coordinate for boards
         // intro message, coin flip, and instruction for input
         introPrompt();
         // prompt user to "press enter to continue"
         promptEnterKey();
-        
+
         // while the player or AI still has ships alive
         while (gamestate) {
             if (shipsAlive.size() == 0) {
@@ -44,7 +62,7 @@ public class Main {
                 System.out.println("AI won, player lost");
                 break;
             }
-            if (shipsAlive.size() == 0 && playerShipsAlive.size() == 0){
+            if (shipsAlive.size() == 0 && playerShipsAlive.size() == 0) {
                 System.out.println("AI and player tie.");
                 break;
             }
@@ -79,16 +97,17 @@ public class Main {
             }
         }
 
-}
-    
-     public static void main(String[] args) throws Exception {
-  //  public static void hello() throws Exception{
+    }
+
+    public static void main(String[] args) throws Exception {
+        runMain();
+        // public static void hello() throws Exception{
         // instantiating Coordinate for boards
         // intro message, coin flip, and instruction for input
         introPrompt();
         // prompt user to "press enter to continue"
         promptEnterKey();
-        
+
         // while the player or AI still has ships alive
         while (gamestate) {
             if (shipsAlive.size() == 0) {
@@ -99,7 +118,7 @@ public class Main {
                 System.out.println("AI won, player lost");
                 break;
             }
-            if (shipsAlive.size() == 0 && playerShipsAlive.size() == 0){
+            if (shipsAlive.size() == 0 && playerShipsAlive.size() == 0) {
                 System.out.println("AI and player tie.");
                 break;
             }
@@ -188,7 +207,7 @@ public class Main {
             FileHandling.resumeGame(temp);
             FileHandling.resumeBoards(temp);
         } else {
-            System.out.println("Would you like to play on easy or hard AI mode?");    
+            System.out.println("Would you like to play on easy or hard AI mode?");
             Game.easyOrHard();
             // System.out.println("easy mode: " + Main.easyMode);
 
@@ -207,10 +226,6 @@ public class Main {
         System.out.println("If one of your ships were sunk, type \"SUNK, [SHIPTYPE]\". EX. SUNK, BATTLESHIP ");
     }
 
-    
-    
-    
-    
     public static void saveGame() throws Exception {
         System.out.println("Which save file would you like to save to? Please enter a number greater than 1.");
         int fileNumber = sc.nextInt(); // ADD SMTG TO STOP CODE FROM CRASHING IF STRING
@@ -222,8 +237,6 @@ public class Main {
         text.println(AIShot + " " + AIHit + " " + AIMiss);
         text.println(PlayerShot + " " + PlayerHit + " " + PlayerMiss);
 
-   
-
         for (int i = 0; i < Ship.getList().size(); i++) {
             text.print(Ship.getList().get(i).getName() + " ");
             if (Ship.getList().get(i).getIsSunk()) { // If sunk
@@ -232,7 +245,7 @@ public class Main {
                 text.print("ALIVE ");
             }
             text.print(Ship.getList().get(i).getSize() + " ");
-            text.print(Ship.getList().get(i).getHomeCoord().getX() + " ");  //Prints AI ships
+            text.print(Ship.getList().get(i).getHomeCoord().getX() + " "); // Prints AI ships
             text.print(Ship.getList().get(i).getHomeCoord().getY() + " ");
             text.print(Ship.getList().get(i).getVertical() + " ");
             text.print(Ship.getList().get(i).getTimesHit() + " ");
@@ -242,14 +255,13 @@ public class Main {
 
         // 2,3,4,5,3
         text.println("PLAYER");
-        
 
-        for(int i=0;i<Ship.getPlayerListOfShipsAlive().size();i++) {
-        	text.print(Ship.getPlayerListOfShipsAlive().get(i)+" ");	 	//Prints player ships
+        for (int i = 0; i < Ship.getPlayerListOfShipsAlive().size(); i++) {
+            text.print(Ship.getPlayerListOfShipsAlive().get(i) + " "); // Prints player ships
         }
-        
+
         text.println("UNIQUEHITPOINTS");
-        
+
         text.close();
 
         FileHandling.saveBoards(fileNumber);
@@ -320,7 +332,6 @@ public class Main {
         }
     }
 
-    
     public static void printShipsAlive() {
         System.out.println("________________________________");
         System.out.println("AI ships alive: ");
@@ -333,12 +344,13 @@ public class Main {
             System.out.println(aliveShip);
         }
     }
-    
-    public static ArrayList<Ship> getShipsAlive(){
-    	return shipsAlive;
+
+    public static ArrayList<Ship> getShipsAlive() {
+        return shipsAlive;
     }
-    public static ArrayList<String> getPlayerShipsAlive(){
-    	return playerShipsAlive;
+
+    public static ArrayList<String> getPlayerShipsAlive() {
+        return playerShipsAlive;
     }
 
     public static void printHitsMisses() {

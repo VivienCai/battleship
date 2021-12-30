@@ -4,7 +4,7 @@ import javax.swing.*;
 public class GUI {
     // private volatile boolean isImageVisible;
     private static JFrame frame;
-    
+
     public GUI() {
 
     }
@@ -23,16 +23,16 @@ public class GUI {
 
     }
 
-    public static void startGame() throws Exception{		
-		MainMenu startMenu = new MainMenu(frame);
+    public static void startGame() throws Exception {
+        MainMenu startMenu = new MainMenu(frame);
         startMenu.loadTitleScreen();
-        
-        // // startMenu.
-		// while(startMenu.isImageVisible()){}
-	}
 
-    public static void displayArray(Coordinate array[][], int yPosition, int xPosition, JFrame window ) {
-        // create an array of buttons 
+        // // startMenu.
+        // while(startMenu.isImageVisible()){}
+    }
+
+    public static void displayArray(Coordinate array[][], int yPosition, int xPosition, JFrame window) {
+        // create an array of buttons
         // red = hit
         // grey = sunk
         // white = miss
@@ -43,32 +43,37 @@ public class GUI {
         // instatiatee
         for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
-                displayedArray[i][j] = new JButton("h");
+                displayedArray[i][j] = new JButton();
             }
         }
-        for (int i = 1; i <= 10; i++) { 
+        for (int i = 1; i <= 10; i++) {
             yPosition += 50;
             for (int j = 1; j <= 10; j++) {
                 Coordinate cur = array[i][j];
                 JButton current = displayedArray[i][j];
                 current.setBounds(xPositionSum, yPosition, sizeOfButton, sizeOfButton);
                 current.setOpaque(true);
-                current.setBackground(Color.RED);
-                current.setForeground(Color.BLACK);
-                // if (cur.getIsHit() && !cur.getIsShip()) {
-                //     // jbutton is white
-                //     current.setBackground(Color.white);
-
-                // } else if (cur.getIsHit() && cur.getIsShip()) {
-                //     current.setBackground(Color.red);
-                // } else if (cur.getIsSunk()) {
-                //     current.setBackground(Color.lightGray);
-                // } else {
-                //     current.setBackground(Color.blue);
-                // }
+                // current.setBackground(Color.RED);
+                // current.setForeground(Color.BLACK);
+                if (cur.getIsHit() && !cur.getIsShip()) {
+                    //miss
+                    current.setBackground(Color.GRAY);
+                   
+                } else if (cur.getIsHit() && cur.getIsShip()) {
+                    // hit
+                    current.setBackground(Color.RED);
+                } else if (cur.getIsHit()) {
+                    //sink
+                    current.setBackground(new Color(0xB80000));
+                } else if (cur.getIsShip()) {
+                    // neutral
+                    current.setBackground(Color.BLUE);
+                } else {
+                    current.setBackground(Color.WHITE);
+                }
                 current.setFocusable(false);
                 current.setVisible(true);
-                window.getContentPane().add(current);   
+                window.getContentPane().add(current);
                 xPositionSum += 50;
 
             }
@@ -80,23 +85,3 @@ public class GUI {
         window.setLocationRelativeTo(null);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
