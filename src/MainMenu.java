@@ -164,10 +164,11 @@ public class MainMenu {
                 window.getContentPane().repaint();
                 window.getContentPane().setBackground(Color.WHITE);
                 isImageVisible = false;
-                Main.initArrays();
-                Placing.place(Main.AIPlacementBoard);
-                Game.printPlacementArray(Main.AIPlacementBoard);
-                GUI.displayArray(Main.AIPlacementBoard, 0, 0, window );
+                GUI.display(window);
+                // Main.initArrays();
+                // Placing.place(Main.AIPlacementBoard);
+                // Game.printPlacementArray(Main.AIPlacementBoard);
+                // GUI.displayArray(Main.AIPlacementBoard, 0, 0, window );
 
             }
         });

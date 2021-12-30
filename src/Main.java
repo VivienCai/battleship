@@ -21,6 +21,7 @@ public class Main {
     private static int counter = 1;
     protected static boolean easyMode = false;
     protected static boolean heads = false;
+    protected static boolean isPlayersTurn;
 
     protected static Coordinate playerAttackBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIPlacementBoard[][] = new Coordinate[11][11];
@@ -71,18 +72,26 @@ public class Main {
             printShipsAlive();
             if (easyMode) {
                 if (AIFirst == true) {
+                    isPlayersTurn = false;
                     Game.AIMovesEasy(shipsAlive, playerShipsAlive);
+                    isPlayersTurn = true;
                     Game.playerMoves(shipsAlive, playerShipsAlive);
                 } else {
+                    isPlayersTurn = true;
                     Game.playerMoves(shipsAlive, playerShipsAlive);
+                    isPlayersTurn = false;
                     Game.AIMovesEasy(shipsAlive, playerShipsAlive);
                 }
             } else {
                 if (AIFirst == true) {
+                    isPlayersTurn = false;
                     Game.AIMoves(shipsAlive, playerShipsAlive);
+                    isPlayersTurn = true;
                     Game.playerMoves(shipsAlive, playerShipsAlive);
                 } else {
+                    isPlayersTurn = true;
                     Game.playerMoves(shipsAlive, playerShipsAlive);
+                    isPlayersTurn = false;
                     Game.AIMoves(shipsAlive, playerShipsAlive);
                 }
             }
