@@ -29,8 +29,8 @@ public class Main {
 
     
     
-    // public static void main(String[] args) throws Exception {
-    public static void hello() throws Exception{
+     public static void main(String[] args) throws Exception {
+  //  public static void hello() throws Exception{
         // instantiating Coordinate for boards
         // intro message, coin flip, and instruction for input
         introPrompt();
@@ -155,23 +155,22 @@ public class Main {
         System.out.println("If one of your ships were sunk, type \"SUNK, [SHIPTYPE]\". EX. SUNK, BATTLESHIP ");
     }
 
+    
+    
+    
+    
     public static void saveGame() throws Exception {
         System.out.println("Which save file would you like to save to? Please enter a number greater than 1.");
         int fileNumber = sc.nextInt(); // ADD SMTG TO STOP CODE FROM CRASHING IF STRING
 
         PrintWriter text = new PrintWriter("Info" + fileNumber + ".txt");
 
+        text.println(AIFirst);
+        text.println(AI.isHunting);
         text.println(AIShot + " " + AIHit + " " + AIMiss);
         text.println(PlayerShot + " " + PlayerHit + " " + PlayerMiss);
 
-        // for (int i=0;i<shipsAlive.size();i++) {
-        // text.print(shipsAlive.get(i)+" ");
-        // }
-        // text.println(); DISPLAYS ALIVE SHIPS
-        // for (int i=0;i<playerShipsAlive.size();i++) {
-        // text.print(playerShipsAlive.get(i)+" ");
-        // }
-        // text.println();
+   
 
         for (int i = 0; i < Ship.getList().size(); i++) {
             text.print(Ship.getList().get(i).getName() + " ");
@@ -196,6 +195,8 @@ public class Main {
         for(int i=0;i<Ship.getPlayerListOfShipsAlive().size();i++) {
         	text.print(Ship.getPlayerListOfShipsAlive().get(i)+" ");	 	//Prints player ships
         }
+        
+        text.println("UNIQUEHITPOINTS");
         
         text.close();
 

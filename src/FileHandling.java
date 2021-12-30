@@ -79,6 +79,8 @@ public class FileHandling {
  	System.out.println("Please choose a file number to resume from");
  	File infoFile = new java.io.File("info" + fileNumber+".txt");              //miht not work for diff comps
 		Scanner fsc = new Scanner(infoFile);
+		Main.AIFirst=fsc.nextBoolean();
+		AI.isHunting=fsc.nextBoolean();
 		Main.AIShot= fsc.nextInt();
 		Main.AIHit=fsc.nextInt();
 		Main.AIMiss=fsc.nextInt();
@@ -137,11 +139,16 @@ public class FileHandling {
 		}
 		                                  //initialise player alive ships
 		int counter=0;
-		while (fsc.hasNext()) {                      
+		while (fsc.hasNext()) {    
 			String ship=fsc.next();
+			if (ship.equals("UNIQUEHITPOINTS")) {
+				break;
+			}
 			Main.getPlayerShipsAlive().set(counter, ship);
 			counter++;
 		}
+		
+		// ADD SOME STUFF FOR UNIQUE HITPOITS
 		
 		
  	}
@@ -149,6 +156,8 @@ public class FileHandling {
 	public static void resumeBoards(int fileNumber) throws Exception {
 		File gridFile = new java.io.File("Grids" + fileNumber+".txt");						//same with this
 		String testarr[][]=new String[11][11];
+		String testarr2[][]=new String[11][11];
+
 		Scanner fsc = new Scanner(gridFile);
 		boolean isShip;
 		boolean isHit;
@@ -199,10 +208,63 @@ public class FileHandling {
         	}
         }
 		
-		//testing purpouses ignore
+		//gets rid of ships on player attack board
+		for (int i=1;i<11;i++) {
+        	for(int j=1;j<11;j++) {
+        		if(Main.playerAttackBoard[i][j].getIsShip()&&!Main.playerAttackBoard[i][j].getIsHit()) {
+        			Main.AIPlacementBoard[i][j].setIsShip(false);
+        		}
+        	}
+        }
+		
+		
+		//testing
 		for (int i=1;i<11;i++) {
 			for (int j=1;j<11;j++) {
 				System.out.print(testarr[i][j]);
+			}
+			System.out.println();
+		}
+		
+		
+		//gets info for AIHit board
+		for (int i=1;i<11;i++) {
+			for (int j=1;j<11;j++) {
+				next =fsc.next();
+				if(next.equals("O")) {
+					isShip=false;
+					isHit=false;
+					testarr2[i][j]="O";
+
+				} 
+				else if(next.equals("M")) {
+					isShip=false;
+					isHit=true;
+					testarr2[i][j]="M";
+
+				
+				}
+				else {                          //if hit
+					isShip=true;
+					isHit=true;
+					testarr2[i][j]="X";
+
+				}
+				Coordinate cur=new Coordinate(i,j);
+				cur.setIsHit(isHit);
+				cur.setIsShip(isShip);
+				Main.AIAttackBoard[i][j]=cur;
+			}
+		}
+		
+		
+		//more testing purpouses ignore
+		
+		System.out.println();
+
+		for (int i=1;i<11;i++) {
+			for (int j=1;j<11;j++) {
+				System.out.print(testarr2[i][j]);
 			}
 			System.out.println();
 		}
@@ -210,5 +272,8 @@ public class FileHandling {
         System.out.println("hi");
 		
 	}
+	
+	
+	
 	
 }

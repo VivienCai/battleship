@@ -32,7 +32,7 @@ public class AI {
             return false;
         }
     }
-
+    
     public static void printArray(Coordinate array[][]) {
         System.out.println("PROBABILITY GRID: ");
         System.out.print("  ");
@@ -96,6 +96,10 @@ public class AI {
         AI.hitPointQueue = new ArrayList<Coordinate>();
         possibleHits = new ArrayList<Coordinate>();
         max = 0;
+    }
+    
+    public static void setIsHunting(boolean input) {
+    	isHunting=input;
     }
 
 }
