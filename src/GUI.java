@@ -3,13 +3,13 @@ import javax.swing.*;
 
 public class GUI {
     // private volatile boolean isImageVisible;
-    private JFrame frame;
-
+    private static JFrame frame;
+    
     public GUI() {
 
     }
 
-    public void setUpWindow() throws Exception {
+    public static void setUpWindow() throws Exception {
         frame = new JFrame();
 
         frame.getContentPane().setLayout(null);
@@ -23,34 +23,62 @@ public class GUI {
 
     }
 
-    public void startGame() throws Exception{		
+    public static void startGame() throws Exception{		
 		MainMenu startMenu = new MainMenu(frame);
         startMenu.loadTitleScreen();
         
-        // startMenu.
-		while(startMenu.isImageVisible()){}
-		
-		// Ship[] p1Ships = initializeShipCreation(true);
-		// Ship[] p2Ships = initializeShipCreation(false);
-		
-		// Grid grid = new Grid(chooseShipPositions(p1Ships));
-		// SmallGrid small = new SmallGrid(chooseShipPositions(p2Ships));
-		// small.setLocation(grid.getWidth()+10, grid.getY());
-		
-		//panel.setLayout(null);
-		
-		// int windowWidth = small.getX() + small.getWidth() + 10;
-		// frame.setPreferredSize(new Dimension(windowWidth, frame.getHeight())); 
-		// frame.setSize(frame.getPreferredSize());
-		// frame.pack();
-		
-		// frame.getContentPane().add(grid); // adds the grids to the window
-		// frame.getContentPane().add(small);
-		// frame.addMouseListener(grid);
-		// frame.setVisible(true);
-
-		// gameLoop(p1Ships, p2Ships, grid, small);
+        // // startMenu.
+		// while(startMenu.isImageVisible()){}
 	}
+
+    public static void displayArray(Coordinate array[][], int yPosition, int xPosition, JFrame window ) {
+        // create an array of buttons 
+        // red = hit
+        // grey = sunk
+        // white = miss
+        // blue = neutral
+        JButton displayedArray[][] = new JButton[11][11];
+        int sizeOfButton = 50;
+        int xPositionSum = xPosition;
+        // instatiatee
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 11; j++) {
+                displayedArray[i][j] = new JButton("h");
+            }
+        }
+        for (int i = 1; i <= 10; i++) { 
+            yPosition += 50;
+            for (int j = 1; j <= 10; j++) {
+                Coordinate cur = array[i][j];
+                JButton current = displayedArray[i][j];
+                current.setBounds(xPositionSum, yPosition, sizeOfButton, sizeOfButton);
+                current.setOpaque(true);
+                current.setBackground(Color.RED);
+                current.setForeground(Color.BLACK);
+                // if (cur.getIsHit() && !cur.getIsShip()) {
+                //     // jbutton is white
+                //     current.setBackground(Color.white);
+
+                // } else if (cur.getIsHit() && cur.getIsShip()) {
+                //     current.setBackground(Color.red);
+                // } else if (cur.getIsSunk()) {
+                //     current.setBackground(Color.lightGray);
+                // } else {
+                //     current.setBackground(Color.blue);
+                // }
+                current.setFocusable(false);
+                current.setVisible(true);
+                window.getContentPane().add(current);   
+                xPositionSum += 50;
+
+            }
+            xPositionSum = xPosition;
+        }
+        window.setVisible(true);
+        window.getContentPane().revalidate();
+        window.getContentPane().repaint();
+        window.setLocationRelativeTo(null);
+    }
 }
 
 

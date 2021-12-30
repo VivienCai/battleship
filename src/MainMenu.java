@@ -36,9 +36,10 @@ public class MainMenu {
         startGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                window.getContentPane().remove(startGame);
-                window.getContentPane().remove(bkgImageContainer);
-                window.getContentPane().remove(easyModeBtn);
+                // window.getContentPane().remove(startGame);
+                // window.getContentPane().remove(bkgImageContainer);
+                // window.getContentPane().remove(easyModeBtn);
+                window.getContentPane().removeAll();
                 window.getContentPane().revalidate();
                 window.getContentPane().repaint();
                 window.getContentPane().setBackground(Color.WHITE);
@@ -113,9 +114,10 @@ public class MainMenu {
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                window.getContentPane().remove(submitBtn);
-                window.getContentPane().remove(bkgImageContainer);
-                window.getContentPane().remove(headsBtn);
+                // window.getContentPane().remove(submitBtn);
+                // window.getContentPane().remove(bkgImageContainer);
+                // window.getContentPane().remove(headsBtn);
+                window.getContentPane().removeAll();
                 window.getContentPane().revalidate();
                 window.getContentPane().repaint();
                 window.getContentPane().setBackground(Color.WHITE);
@@ -146,13 +148,7 @@ public class MainMenu {
         //         window.getContentPane().getHeight());
         // bkgImageContainer.setLocation(0, 0);
         
-        String textSet = Game.coinFlipReturn();
-        results.setText(textSet);
-        // System.out.println(Game.coinFlipReturn());
-        results.setEditable(false);
-        results.setBounds(400, 300, 550, 200);
-        // System.out.println("testing");
-     
+        
         nextBtn = new JButton("Next");
         nextBtn.setSize(600, 100);      
         nextBtn.setLocation(150, 400);
@@ -160,25 +156,36 @@ public class MainMenu {
         nextBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                // window.getContentPane().remove(submitBtn);
-                // window.getContentPane().remove(bkgImageContainer);
+                // window.getContentPane().remove(nextBtn);
+                window.getContentPane().removeAll();
+                // window.getContentPane().remove(results);
                 // window.getContentPane().remove(headsBtn);
                 window.getContentPane().revalidate();
                 window.getContentPane().repaint();
                 window.getContentPane().setBackground(Color.WHITE);
                 isImageVisible = false;
+                Main.initArrays();
+                Placing.place(Main.AIPlacementBoard);
+                Game.printPlacementArray(Main.AIPlacementBoard);
+                GUI.displayArray(Main.AIPlacementBoard, 0, 0, window );
+
             }
         });
-
-        nextBtn.setVisible(true);
-        results.setVisible(true);
+        
+        String textSet = Game.coinFlipReturn();
+        results.setText(textSet);
+        // System.out.println(Game.coinFlipReturn());
+        results.setEditable(false);
+        results.setBounds(370, 200, 200, 100);
+        // System.out.println("testing");
         // bkgImageContainer.setVisible(true);
+        results.setVisible(true);
+        nextBtn.setVisible(true);
 
-        window.getContentPane().add(nextBtn);
         window.getContentPane().add(results);
-        // window.getContentPane().add(bkgImageContainer);
+        window.getContentPane().add(nextBtn);
 
-        window.getContentPane().setBackground(Color.WHITE);
+        window.getContentPane().setBackground(Color.GRAY);
         window.setVisible(true);
         window.getContentPane().revalidate();
         window.getContentPane().repaint();

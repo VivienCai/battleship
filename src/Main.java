@@ -27,7 +27,59 @@ public class Main {
     private static ArrayList<Ship> shipsAlive = Ship.getList();
     private static ArrayList<String> playerShipsAlive = Ship.getPlayerListOfShipsAlive();
 
-    
+     public static void runMain() throws Exception{
+        // instantiating Coordinate for boards
+        // intro message, coin flip, and instruction for input
+        introPrompt();
+        // prompt user to "press enter to continue"
+        promptEnterKey();
+        
+        // while the player or AI still has ships alive
+        while (gamestate) {
+            if (shipsAlive.size() == 0) {
+                System.out.println("AI lost, player wins");
+                break;
+            }
+            if (playerShipsAlive.size() == 0) {
+                System.out.println("AI won, player lost");
+                break;
+            }
+            if (shipsAlive.size() == 0 && playerShipsAlive.size() == 0){
+                System.out.println("AI and player tie.");
+                break;
+            }
+
+            // prints the ships still alive for AI and user
+            printShipsAlive();
+            if (easyMode) {
+                if (AIFirst == true) {
+                    Game.AIMovesEasy(shipsAlive, playerShipsAlive);
+                    Game.playerMoves(shipsAlive, playerShipsAlive);
+                } else {
+                    Game.playerMoves(shipsAlive, playerShipsAlive);
+                    Game.AIMovesEasy(shipsAlive, playerShipsAlive);
+                }
+            } else {
+                if (AIFirst == true) {
+                    Game.AIMoves(shipsAlive, playerShipsAlive);
+                    Game.playerMoves(shipsAlive, playerShipsAlive);
+                } else {
+                    Game.playerMoves(shipsAlive, playerShipsAlive);
+                    Game.AIMoves(shipsAlive, playerShipsAlive);
+                }
+            }
+            printHitsMisses();
+            System.out.println("Round " + counter
+                    + " is over. If you would like to stop playing and save, please enter \"SAVE\".");
+            counter++;
+            String temp = sc.nextLine();
+            if (temp.equals("SAVE")) { // sees if the user wants to save the game
+                saveGame();
+                break;
+            }
+        }
+
+}
     
      public static void main(String[] args) throws Exception {
   //  public static void hello() throws Exception{
