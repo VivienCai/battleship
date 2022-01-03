@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FileHandling {
@@ -137,18 +138,65 @@ public class FileHandling {
                 }
             }
 		}
+		
+		
 		                                  //initialise player alive ships
 		int counter=0;
+		Main.getPlayerShipsAlive().clear();
 		while (fsc.hasNext()) {    
 			String ship=fsc.next();
 			if (ship.equals("UNIQUEHITPOINTS")) {
 				break;
 			}
-			Main.getPlayerShipsAlive().set(counter, ship);
+			Main.getPlayerShipsAlive().add(counter, ship);
 			counter++;
 		}
 		
-		// ADD SOME STUFF FOR UNIQUE HITPOITS
+		
+		AI.isHunting=fsc.nextBoolean(); //hunting algorighm thing
+		int size=fsc.nextInt();
+		
+		for(int i=0;i<size;i++) {
+			int xCoord=fsc.nextInt();
+			int yCoord=fsc.nextInt();
+			Coordinate coord=new Coordinate(xCoord, yCoord);
+			
+			AI.uniqueHitPoints.add(i,coord);
+		}
+		
+		//adding shipsHit
+		while (fsc.hasNext()) {
+			String ship=fsc.next();
+			if (ship.equals("HASHMAP")) {
+				break;
+			}
+			AI.shipsHit.add(ship);
+		}
+		
+		//adding hashmaps
+		while (fsc.hasNext()) {
+			String nextShip=fsc.next();
+			System.out.println(nextShip);
+
+			Game.playerSunkShips.put(nextShip, new ArrayList<String>());
+			
+			while(fsc.hasNext()) {
+				String nextPoint=fsc.next();
+				System.out.println(nextPoint);
+				if (nextPoint.equals("CARRIER")||nextPoint.equals("BATTLESHIP")||nextPoint.equals("DESTROYER")||nextPoint.equals("SUBMARINE")||nextPoint.equals("CRUISER")) {
+					break;   //if the next string is a ship value, move on to the next ship
+				}
+				else {
+					Game.playerSunkShips.get(nextShip).add(nextPoint.toString());
+					
+				}
+
+			}
+		}
+		
+		
+	//	Game.playerSunkShips.put(ship, new ArrayList<String>());
+  //      Game.playerSunkShips.get(ship).add(hit.toString());
 		
 		
  	}
@@ -212,7 +260,7 @@ public class FileHandling {
 		for (int i=1;i<11;i++) {
         	for(int j=1;j<11;j++) {
         		if(Main.playerAttackBoard[i][j].getIsShip()&&!Main.playerAttackBoard[i][j].getIsHit()) {
-        			Main.AIPlacementBoard[i][j].setIsShip(false);
+        			Main.playerAttackBoard[i][j].setIsShip(false);
         		}
         	}
         }
