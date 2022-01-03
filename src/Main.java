@@ -212,7 +212,7 @@ public class Main {
 
         if (input.equals("RESUME")) {
             System.out.println("Which save file would you like to resume from? Please enter a positive number");
-            int temp = sc.nextInt(); // add crash prevention
+            int temp = sc.nextInt();                                                                              // add crash prevention
             FileHandling.resumeGame(temp);
             FileHandling.resumeBoards(temp);
         } else {
@@ -270,23 +270,33 @@ public class Main {
         }
         text.println();
         text.println("UNIQUEHITPOINTS");
-
-        //printing uniquehitpoints
+        //printing isHunting
         text.println(AI.isHunting);
-        text.println(AI.uniqueHitPoints.size());
+        
+        //printing uniquehitpoints
+        text.println(AI.uniqueHitPoints.size() );
         
         for (int i=0;i<AI.uniqueHitPoints.size();i++) {    //uniquiehitpoint in Hitting line 70  ONLY NEED TO STORE X AND Y COORD
-        	
-        	
+        	 text.print(AI.uniqueHitPoints.get(i).getX()+" ");
+        	 text.println(AI.uniqueHitPoints.get(i).getY());
         }
         
-        
-        
-        
-        
-        //isHunting
-        //number of unique hitpoint
-        //
+        //add shipsHit
+        for (int i=0;i<AI.shipsHit.size();i++) {
+        	text.print(AI.shipsHit.get(i)+" ");
+        }
+        text.println();
+        text.println("HASHMAP");
+
+        //Print hasmap of playerShipsAlive
+        for (String i : Game.playerSunkShips.keySet()) {
+            //ship
+            text.print(i+" ");
+            for (String point : Game.playerSunkShips.get(i)) {
+                text.print(point + " ");
+            }
+        text.println();
+        }
         
         
         
