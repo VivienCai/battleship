@@ -149,11 +149,51 @@ public class Hitting extends AI {
         }
     }
 
+    public static void getInputGUI(Coordinate hit, int index, int shipIndex) {
+        // ArrayList<Ship> shipsAlive = Ship.getList();
+        while (true) {
+            Coordinate cur = Main.AIAttackBoard[hit.getY()][hit.getX()];
+
+            // if the point was hit
+            if (index == 0) {
+                String ship = GUI.ships[shipIndex];
+                isHunting = true;
+                cur.setIsShip(true);
+                AI.uniqueHitPoints.add(hit);
+                AI.shipsHit.add(ship);
+                Game.playerSunkShips.put(ship, new ArrayList<String>());
+                Game.playerSunkShips.get(ship).add(hit.toString());
+                int shipSize = Ship.getSize(ship);
+                if (shipSize == 3) {
+                    shipSize = Ship.getIndexOfThreeShip(ship);
+                }
+                AI.pointsHit[shipSize].add(cur);
+                Main.AIHit++;
+                Main.AIShot++;
+                break;
+            } else if (index == 2) {
+                isHunting = false;
+                cur.setIsShip(true);
+                String shipName = GUI.ships[shipIndex];
+                // SUNK, CARRIER
+            
+                System.out.println(shipName);
+                Ship.getPlayerListOfShipsAlive().remove(shipName);
+                Main.AIHit++;
+                Main.AIShot++;
+                break;
+                
+            }
+
+        }
+    }
+
     // no gui dont touch
     public static void findProbability() {
-        for (int i = 2; i <= 5; i++) {
-            sumColumns(i);
-            sumRows(i);
+        for (String i : Main.playerShipsAlive) {
+            int size = Ship.getSize(i);
+            sumColumns(size);
+            sumRows(size);
         }
         // printArray();
         AIhit();
@@ -163,9 +203,11 @@ public class Hitting extends AI {
 
     // gui
     public static Coordinate findProbabilityGUI() {
-        for (int i = 2; i <= 5; i++) {
-            sumColumns(i);
-            sumRows(i);
+        for (String i : Main.playerShipsAlive) {
+            int size = Ship.getSize(i);
+            sumColumns(size);
+            sumRows(size);
+
         }
         // printArray();
         Coordinate h = AIhitGUI();
@@ -186,15 +228,11 @@ public class Hitting extends AI {
                     }
                 }
                 if (ok) {
-                    if (shipSize == 3) {
-                        for (int g = j; g < j + shipSize; g++) {
-                            Main.AIAttackBoard[i][g].setProbability(Main.AIAttackBoard[i][g].getProbability() + 2);
-                        }
-                    } else {
-                        for (int g = j; g < j + shipSize; g++) {
-                            Main.AIAttackBoard[i][g].setProbability(Main.AIAttackBoard[i][g].getProbability() + 1);
-                        }
+
+                    for (int g = j; g < j + shipSize; g++) {
+                        Main.AIAttackBoard[i][g].setProbability(Main.AIAttackBoard[i][g].getProbability() + 1);
                     }
+
                 }
             }
         }
@@ -210,15 +248,11 @@ public class Hitting extends AI {
                     }
                 }
                 if (ok) {
-                    if (shipSize == 3) {
-                        for (int g = j; g < j + shipSize; g++) {
-                            Main.AIAttackBoard[g][i].setProbability(Main.AIAttackBoard[g][i].getProbability() + 2);
-                        }
-                    } else {
-                        for (int g = j; g < j + shipSize; g++) {
-                            Main.AIAttackBoard[g][i].setProbability(Main.AIAttackBoard[g][i].getProbability() + 1);
-                        }
+
+                    for (int g = j; g < j + shipSize; g++) {
+                        Main.AIAttackBoard[g][i].setProbability(Main.AIAttackBoard[g][i].getProbability() + 1);
                     }
+
                 }
             }
         }

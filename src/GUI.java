@@ -1,4 +1,7 @@
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
 import javax.swing.*;
 import java.util.*;
 
@@ -8,6 +11,10 @@ public class GUI {
     private static boolean gamestate = true;
     private static JButton displayArrayAIAttack[][] = new JButton[11][11];
     private static JButton displayArrayPlayerAttack[][] = new JButton[11][11];
+    protected static Font customFont;
+    private static Coordinate h;
+
+    protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER", "SUBMARINE", "DESTROYER" };
 
     static Scanner sc = new Scanner(System.in);
 
@@ -16,6 +23,7 @@ public class GUI {
     }
 
     public static void setUpWindow() throws Exception {
+
         frame = new JFrame();
 
         frame.getContentPane().setLayout(null);
@@ -30,6 +38,20 @@ public class GUI {
     }
 
     public static void startGame() throws Exception {
+
+        try {
+            // create the font to use. Specify the size!
+            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("SF-UI-Display-Bold.ttf")).deriveFont(48f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            // register the font
+            ge.registerFont(customFont);
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        } catch (FontFormatException e) {
+            e.printStackTrace();
+        }
+
         MainMenu startMenu = new MainMenu(frame);
         startMenu.loadTitleScreen();
 
@@ -68,15 +90,6 @@ public class GUI {
 
     // TODO: ORGANIZE AND MAKE IT LESS BAD
     public static void display(JFrame window) {
-        JLabel currentTurn = new JLabel();
-        JLabel AIHit = new JLabel();
-        // displays the player attack and ai
-        currentTurn.setBounds(50, 10, 300, 30);
-
-        JButton nextBtn = new JButton("Next turn?");
-        nextBtn.setBounds(150, 10, 200, 50);
-        // AIHit.setLocation(200, 500);
-        // while (gamestate) {
 
         if (Main.shipsAlive.size() == 0) {
             System.out.println("AI lost, player wins");
@@ -91,22 +104,21 @@ public class GUI {
             // break;
         }
 
-        if (!Main.isPlayersTurn) {
-            currentTurn.setText("AIs turn rn");
-            AIHit.setBounds(300, 500, 300, 30);
-            Coordinate h = Hitting.findProbabilityGUI();
-            int y = h.getY();
-            int x = h.getX();
-            AIHit.setText(JLabelCoordinateString(y, x));
-            // displayArray(Main.AIAttackBoard, 50, 466, window);
+        JLabel currentTurn = new JLabel();
+        JLabel AIHit = new JLabel();
+        currentTurn.setBounds(50, 10, 300, 30);
 
-        } else {
-            currentTurn.setText("Players turn rn");
-        }
+        JButton nextBtn = new JButton("Next turn?");
+        nextBtn.setBounds(150, 10, 200, 50);
 
         displayArray(Main.playerAttackBoard, displayArrayPlayerAttack, 50, 33, window);
         displayArray(Main.AIAttackBoard, displayArrayAIAttack, 50, 466, window);
 
+        if (!Main.isPlayersTurn) {
+            currentTurn.setText("AI turn rn");
+        } else {
+            currentTurn.setText("Players turn rn");
+        }
         AIHit.setVisible(true);
         nextBtn.setVisible(true);
         currentTurn.setVisible(true);
@@ -115,16 +127,61 @@ public class GUI {
         window.getContentPane().add(nextBtn);
         window.getContentPane().add(currentTurn);
 
-        // System.out.println(Main.AIAttackBoard[4][4].getIsHit());
-        // System.out.println(Main.AIAttackBoard[4][4].getIsShip());
+        // AI's TURN
+        if (!Main.isPlayersTurn) {
+
+            if (AI.isHunting) {
+                // to determine if there are "unique" points (points that are of different
+                // ships)
+                if (AI.uniqueHitPoints.size() > 0) {
+                    Coordinate hello = AI.uniqueHitPoints.get(0);
+                    String ship = AI.shipsHit.get(0);
+                    h = Hunting.huntGUI(hello, ship);
+                } else {
+                    System.out.println("Some error occured ur so fcked hahsldkfjalsdkjf");
+                }
+                // otherwise run the hit algorithm which is the one that uses probability
+                // density
+            } else {
+                // ai generate a hit using hit or hunt
+                h = Hitting.findProbabilityGUI();
+            }
+
+            int y = h.getY();
+            int x = h.getX();
+            String AIHitString = JLabelCoordinateString(y, x) + ". Is it a hit, miss, or sunk?";
+            AIHit.setBounds(300, 500, 300, 30);
+            AIHit.setText(AIHitString);
+            String[] hitOrMiss = { "hit", "miss", "sunk" };
+            int index = JOptionPane.showOptionDialog(window, AIHitString, "AI Hit", JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, null, hitOrMiss, hitOrMiss[0]);
+            if (index == 0 || index == 2) {
+                System.out.println("was a hit");
+
+                int shipIndex = JOptionPane.showOptionDialog(window, "What ship did the AI hit?", "What ship?",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE, null, ships, ships[0]);
+
+                if (!AI.isHunting) {
+                    Hitting.getInputGUI(h, index, shipIndex);
+
+                } else {
+                    Hunting.getInputGUI(h, index, shipIndex);
+
+                }
+
+            } else if (index == 1) {
+                Main.AIAttackBoard[y][x].setIsHit(true);
+                Main.AIMiss++;
+                Main.AIShot++;
+                System.out.println("was a miss");
+            }
+        } else {
+
+        }
 
         nextBtn.addActionListener(e -> {
             Main.isPlayersTurn = !Main.isPlayersTurn;
-            if (Main.isPlayersTurn) {
-                currentTurn.setText("Players turn rn");
-            } else {
-                currentTurn.setText("AIs turn rn");
-            }
             window.getContentPane().remove(currentTurn);
             window.getContentPane().remove(AIHit);
             AIHit.setVisible(false);
@@ -180,7 +237,10 @@ public class GUI {
                 current.setOpaque(true);
                 // current.setBackground(Color.RED);
                 // current.setForeground(Color.BLACK);
-                if (cur.getIsHit() && !cur.getIsShip()) {
+                if (cur.getIsSunk()) {
+                    current.setBackground(new Color(0xB80000));
+
+                }else if (cur.getIsHit() && !cur.getIsShip()) {
                     // miss
                     // System.out.println("TESTING HLLOE");
                     current.setBackground(Color.GRAY);
@@ -188,9 +248,6 @@ public class GUI {
                 } else if (cur.getIsHit() && cur.getIsShip()) {
                     // hit
                     current.setBackground(Color.RED);
-                } else if (cur.getIsSunk()) {
-                    // sink
-                    current.setBackground(new Color(0xB80000));
                 } else {
                     current.setBackground(Color.WHITE);
                 }

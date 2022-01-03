@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 
 public class MainMenu {
 
@@ -12,6 +14,7 @@ public class MainMenu {
     private JButton easyModeBtn;
     private JButton headsBtn;
     private JButton submitBtn;
+    private JLabel battleshipTitle;
 
     private JButton nextBtn;
     private JTextPane results = new JTextPane();
@@ -24,9 +27,16 @@ public class MainMenu {
     }
 
     public void loadTitleScreen() throws Exception {
-        bkgImageContainer.setSize(window.getContentPane().getWidth(), window.getContentPane().getHeight() / 2);
-        bkgImageContainer.setLocation(0, 0);
-        bkgImageContainer.setVisible(true);
+        
+        battleshipTitle = new JLabel("Battleship");
+        battleshipTitle.setFont(GUI.customFont);
+        battleshipTitle.setBounds(300, 50, 300, 200);
+
+        
+
+        // bkgImageContainer.setSize(window.getContentPane().getWidth(), window.getContentPane().getHeight() / 2);
+        // bkgImageContainer.setLocation(0, 0);
+        // bkgImageContainer.setVisible(true);
 
         startGame = new JButton("Start Game");
         startGame.setSize(600, 100);
@@ -55,7 +65,8 @@ public class MainMenu {
 
         easyModeBtn = new JButton("Easy Mode is now " + Main.easyMode);
         easyModeBtn.setSize(600, 100);
-        easyModeBtn.setLocation(150, bkgImageContainer.getHeight() + startGame.getHeight() + 50);
+        easyModeBtn.setLocation(150, 300);
+
         easyModeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -67,12 +78,14 @@ public class MainMenu {
 
         startGame.setVisible(true);
         easyModeBtn.setVisible(true);
+        battleshipTitle.setVisible(true);
 
         window.getContentPane().add(startGame);
         window.getContentPane().add(easyModeBtn);
-        window.getContentPane().add(bkgImageContainer);
+        // window.getContentPane().add(bkgImageContainer);
+        window.getContentPane().add(battleshipTitle);
 
-        window.getContentPane().setBackground(Color.BLACK);
+        window.getContentPane().setBackground(Color.WHITE);
         window.setVisible(true);
         window.getContentPane().revalidate();
         window.getContentPane().repaint();
@@ -135,7 +148,7 @@ public class MainMenu {
         window.getContentPane().add(headsBtn);
         window.getContentPane().add(bkgImageContainer);
 
-        window.getContentPane().setBackground(Color.BLACK);
+        window.getContentPane().setBackground(Color.WHITE);
         window.setVisible(true);
         window.getContentPane().revalidate();
         window.getContentPane().repaint();
