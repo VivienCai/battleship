@@ -14,6 +14,8 @@ public class GUI {
     protected static Font customFont;
     private static Coordinate h;
 
+    // protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER", "SUBMARINE", "DESTROYER" };
+
     protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER", "SUBMARINE", "DESTROYER" };
 
     static Scanner sc = new Scanner(System.in);
@@ -21,7 +23,13 @@ public class GUI {
     public GUI() {
 
     }
+    
+    public String[] getShips() {
+        for (int i = 0;i< Main.playerShipsAlive.size();i++){
+            ships[i] = 
+        }
 
+    }
     public static void setUpWindow() throws Exception {
 
         frame = new JFrame();
@@ -207,6 +215,8 @@ public class GUI {
         // white = miss
         // blue = neutral
         // JButton displayedArray[][] = display;
+        JLabel columnIndex[] = new JLabel[10];
+        JLabel rowIndex[] = new JLabel[10];
 
         int sizeOfButton = 40;
         int xPositionSum = xPosition;
@@ -215,6 +225,11 @@ public class GUI {
             for (int j = 0; j < 11; j++) {
                 display[i][j] = new JButton();
             }
+        }
+
+        for (int i = 0; i < 10; i++) {
+            columnIndex[i] = new JLabel();
+            rowIndex[i] = new JLabel();
         }
 
         for (int i = 1; i <= 10; i++) {
