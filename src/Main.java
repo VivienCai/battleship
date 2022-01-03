@@ -268,9 +268,28 @@ public class Main {
         for (int i = 0; i < Ship.getPlayerListOfShipsAlive().size(); i++) {
             text.print(Ship.getPlayerListOfShipsAlive().get(i) + " "); // Prints player ships
         }
-
+        text.println();
         text.println("UNIQUEHITPOINTS");
 
+        //printing uniquehitpoints
+        text.println(AI.isHunting);
+        text.println(AI.uniqueHitPoints.size());
+        
+        for (int i=0;i<AI.uniqueHitPoints.size();i++) {    //uniquiehitpoint in Hitting line 70  ONLY NEED TO STORE X AND Y COORD
+        	
+        	
+        }
+        
+        
+        
+        
+        
+        //isHunting
+        //number of unique hitpoint
+        //
+        
+        
+        
         text.close();
 
         FileHandling.saveBoards(fileNumber);

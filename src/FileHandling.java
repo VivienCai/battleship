@@ -137,14 +137,17 @@ public class FileHandling {
                 }
             }
 		}
+		
+		
 		                                  //initialise player alive ships
 		int counter=0;
+		Main.getPlayerShipsAlive().clear();
 		while (fsc.hasNext()) {    
 			String ship=fsc.next();
 			if (ship.equals("UNIQUEHITPOINTS")) {
 				break;
 			}
-			Main.getPlayerShipsAlive().set(counter, ship);
+			Main.getPlayerShipsAlive().add(counter, ship);
 			counter++;
 		}
 		
@@ -212,7 +215,7 @@ public class FileHandling {
 		for (int i=1;i<11;i++) {
         	for(int j=1;j<11;j++) {
         		if(Main.playerAttackBoard[i][j].getIsShip()&&!Main.playerAttackBoard[i][j].getIsHit()) {
-        			Main.AIPlacementBoard[i][j].setIsShip(false);
+        			Main.playerAttackBoard[i][j].setIsShip(false);
         		}
         	}
         }
