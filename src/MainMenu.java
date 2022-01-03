@@ -3,8 +3,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class MainMenu {
-    
-    private JFrame window;
+
+    protected static JFrame window;
     private ImageIcon backgroundImageIcon;
     private JLabel bkgImageContainer;
     private JButton startGame;
@@ -16,7 +16,6 @@ public class MainMenu {
     private JButton nextBtn;
     private JTextPane results = new JTextPane();
 
-
     public MainMenu(JFrame theWindow) {
         window = theWindow;
         backgroundImageIcon = new ImageIcon("Title.png");
@@ -25,8 +24,7 @@ public class MainMenu {
     }
 
     public void loadTitleScreen() throws Exception {
-        bkgImageContainer.setSize(window.getContentPane().getWidth(),
-                window.getContentPane().getHeight() / 2);
+        bkgImageContainer.setSize(window.getContentPane().getWidth(), window.getContentPane().getHeight() / 2);
         bkgImageContainer.setLocation(0, 0);
         bkgImageContainer.setVisible(true);
 
@@ -47,10 +45,10 @@ public class MainMenu {
                 loadCoinFlip();
                 // // Main main = new Main();
                 // try {
-                //     Main.hello();
+                // Main.hello();
                 // } catch (Exception e) {
-                //     // TODO Auto-generated catch block
-                //     e.printStackTrace();
+                // // TODO Auto-generated catch block
+                // e.printStackTrace();
                 // }
             }
         });
@@ -78,6 +76,7 @@ public class MainMenu {
         window.setVisible(true);
         window.getContentPane().revalidate();
         window.getContentPane().repaint();
+        window.setLocationRelativeTo(null);
 
     }
 
@@ -121,6 +120,7 @@ public class MainMenu {
                 window.getContentPane().revalidate();
                 window.getContentPane().repaint();
                 window.getContentPane().setBackground(Color.WHITE);
+                window.setLocationRelativeTo(null);
                 isImageVisible = false;
                 coinFlipResults();
 
@@ -139,18 +139,18 @@ public class MainMenu {
         window.setVisible(true);
         window.getContentPane().revalidate();
         window.getContentPane().repaint();
+        window.setLocationRelativeTo(null);
     }
-    
+
     public void coinFlipResults() {
         // backgroundImageIcon = new ImageIcon("Title.png");
         // bkgImageContainer = new JLabel(backgroundImageIcon);
         // bkgImageContainer.setSize(window.getContentPane().getWidth(),
-        //         window.getContentPane().getHeight());
+        // window.getContentPane().getHeight());
         // bkgImageContainer.setLocation(0, 0);
-        
-        
+
         nextBtn = new JButton("Next");
-        nextBtn.setSize(600, 100);      
+        nextBtn.setSize(600, 100);
         nextBtn.setLocation(150, 400);
         // System.out.println("testing");
         nextBtn.addActionListener(new ActionListener() {
@@ -163,8 +163,10 @@ public class MainMenu {
                 window.getContentPane().revalidate();
                 window.getContentPane().repaint();
                 window.getContentPane().setBackground(Color.WHITE);
+                window.setLocationRelativeTo(null);
                 isImageVisible = false;
-                GUI.display(window);
+                GUI.display(MainMenu.window);
+                // GUI.display(window);
                 // Main.initArrays();
                 // Placing.place(Main.AIPlacementBoard);
                 // Game.printPlacementArray(Main.AIPlacementBoard);
@@ -172,7 +174,7 @@ public class MainMenu {
 
             }
         });
-        
+
         String textSet = Game.coinFlipReturn();
         results.setText(textSet);
         // System.out.println(Game.coinFlipReturn());
@@ -190,9 +192,10 @@ public class MainMenu {
         window.setVisible(true);
         window.getContentPane().revalidate();
         window.getContentPane().repaint();
+        window.setLocationRelativeTo(null);
     }
 
-    public boolean isImageVisible(){
-		return isImageVisible;
-	}
+    public boolean isImageVisible() {
+        return isImageVisible;
+    }
 }

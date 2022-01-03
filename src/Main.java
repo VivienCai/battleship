@@ -28,8 +28,8 @@ public class Main {
     protected static Coordinate AIAttackBoard[][] = new Coordinate[11][11];
     private static int fileCounter = 0;
     // getting ship list of AI and player
-    private static ArrayList<Ship> shipsAlive = Ship.getList();
-    private static ArrayList<String> playerShipsAlive = Ship.getPlayerListOfShipsAlive();
+    protected static ArrayList<Ship> shipsAlive = Ship.getList();
+    protected static ArrayList<String> playerShipsAlive = Ship.getPlayerListOfShipsAlive();
 
     public static JFrame mainFrame;
     // public static JPanel panel = new JPanel();
@@ -109,7 +109,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-        runMain();
+        // runMain();
         // public static void hello() throws Exception{
         // instantiating Coordinate for boards
         // intro message, coin flip, and instruction for input

@@ -162,10 +162,10 @@ public class Game {
         System.out.println("________________________________");
         System.out.println("AI ATTACK BOARD:");
         printPlacementArray(Main.AIAttackBoard);
-        // replace with GUI
-        Main.mainFrame.getContentPane().removeAll();
-        GUI.displayArray(Main.AIAttackBoard, 0, 0, Main.mainFrame);
-        Main.mainFrame.setVisible(true);
+        // // replace with GUI
+        // Main.mainFrame.getContentPane().removeAll();
+        // GUI.displayArray(Main.AIAttackBoard, 0, 0, Main.mainFrame);
+        // Main.mainFrame.setVisible(true);
         // Main.window.add(Main.panel);
     }
 
@@ -200,24 +200,28 @@ public class Game {
             // iCoin = Integer.parseInt(coin);
             if (iCoin == 1 && iCoin == coinToss) {
                 Main.AIFirst = false;
+                Main.isPlayersTurn = true;
                 return "You picked heads.\nThe coin landed on heads.\nYou are going first!\n";
                 // System.out.print("You picked heads.");
                 // System.out.println(" The coin landed on heads.");
                 // System.out.println("You are going first!");
             } else if (iCoin == coinToss) {
                 Main.AIFirst = false;
+                Main.isPlayersTurn = true;
                 return "You picked tails.\nThe coin landed on tails.\nYou are going first!\n";
                 // System.out.print("You picked tails.");
                 // System.out.println(" The coin landed on tails.");
                 // System.out.println("You are going first!");
             } else if (iCoin == 1) {
                 Main.AIFirst = true;
+                Main.isPlayersTurn = false;
                 return "You picked heads.\nThe coin landed on tails.\nThe AI is going first.\n";
                 // System.out.print("You picked heads.");
                 // System.out.println(" The coin landed on tails.");
                 // System.out.println("The AI is going first.");
             } else {
                 Main.AIFirst = true;
+                Main.isPlayersTurn = false;
                 return "You picked tails.\nThe coin landed on heads.\nThe AI is going first.\n";
                 // System.out.print("You picked tails.");
                 // System.out.println(" The coin landed on heads.");

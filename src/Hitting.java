@@ -7,7 +7,7 @@ import java.util.ArrayList;
 */
 
 public class Hitting extends AI {
-    public static void AIhit() {
+    public static Coordinate AIhit() {
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 10; j++) {
                 Coordinate cur = Main.AIAttackBoard[i][j];
@@ -36,7 +36,7 @@ public class Hitting extends AI {
             System.out.printf("The AI hit coordinate %c%d\n", Coordinate.columnIndex(y), x);
             System.out.println("Is it a hit or miss or sink?");
             getInput(hit);
-
+            return Main.AIAttackBoard[y][x];
         } else {
             int randIndex = (int) (Math.random() * possibleHits.size());
             Coordinate hit = possibleHits.get(randIndex);
@@ -45,6 +45,51 @@ public class Hitting extends AI {
             System.out.printf("The AI hit coordinate %c%d\n", Coordinate.columnIndex(y), x);
             System.out.println("Is it a hit, miss, or sink?");
             getInput(hit);
+            return Main.AIAttackBoard[y][x];
+        }
+    }
+
+    public static Coordinate AIhitGUI() {
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= 10; j++) {
+                Coordinate cur = Main.AIAttackBoard[i][j];
+                max = Math.max(max, cur.getProbability());
+
+            }
+        }
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= 10; j++) {
+                Coordinate cur = Main.AIAttackBoard[i][j];
+                if (cur.getProbability() == max) {
+                    if (isOdd(i, j) == initialIsOdd) {
+                        isParity.add(new Coordinate(i, j));
+                    } else {
+                        possibleHits.add(new Coordinate(i, j));
+                    }
+                }
+            }
+        }
+
+        if (isParity.size() > 0) {
+            int randIndex = (int) (Math.random() * isParity.size());
+            Coordinate hit = isParity.get(randIndex);
+            int y = hit.getY(), x = hit.getX();
+            Main.AIAttackBoard[y][x].setIsHit(true);
+            // System.out.printf("The AI hit coordinate %c%d\n", Coordinate.columnIndex(y),
+            // x);
+            // System.out.println("Is it a hit or miss or sink?");
+            // getInput(hit);
+            return Main.AIAttackBoard[y][x];
+        } else {
+            int randIndex = (int) (Math.random() * possibleHits.size());
+            Coordinate hit = possibleHits.get(randIndex);
+            int y = hit.getY(), x = hit.getX();
+            Main.AIAttackBoard[y][x].setIsHit(true);
+            // System.out.printf("The AI hit coordinate %c%d\n", Coordinate.columnIndex(y),
+            // x);
+            // System.out.println("Is it a hit, miss, or sink?");
+            // getInput(hit);
+            return Main.AIAttackBoard[y][x];
         }
     }
 
@@ -104,6 +149,7 @@ public class Hitting extends AI {
         }
     }
 
+    // no gui dont touch
     public static void findProbability() {
         for (int i = 2; i <= 5; i++) {
             sumColumns(i);
@@ -113,6 +159,19 @@ public class Hitting extends AI {
         AIhit();
         printArray(Main.AIAttackBoard);
         resetArray();
+    }
+
+    // gui
+    public static Coordinate findProbabilityGUI() {
+        for (int i = 2; i <= 5; i++) {
+            sumColumns(i);
+            sumRows(i);
+        }
+        // printArray();
+        Coordinate h = AIhitGUI();
+        // printArray(Main.AIAttackBoard);
+        resetArray();
+        return h;
     }
 
     public static void sumRows(int shipSize) {
