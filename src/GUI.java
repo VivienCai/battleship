@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.io.InputStream;
 
-
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
@@ -135,21 +134,21 @@ public class GUI {
         displayArray(Main.AIAttackBoard, displayArrayAIAttack, 100, 540, window, false, nextBtn);
 
         JLabel AIAttack = new JLabel();
-        initArrayNames(AIAttack, 540, 80, "AI Attack Board");
+        initArrayNames(AIAttack, 540, 45, "Your Home Board");
         JLabel playerAttack = new JLabel();
-        initArrayNames(playerAttack, 20, 80, "Player Attack Board");
-
-        JLabel playerScore = new JLabel();
-        initScore(playerScore, 100, 75, false);
+        initArrayNames(playerAttack, 55, 45, "Your Attack Board");
 
         JLabel AIScore = new JLabel();
-        initScore(AIScore, 540, 75, true);
+        initScore(AIScore, 540, 85, true);
+
+        JLabel playerScore = new JLabel();
+        initScore(playerScore, 55, 85, false);
 
         if (!Main.isPlayersTurn) {
             currentTurn.setText("It is AI's turn.");
         } else {
             currentTurn.setText("It is your turn.");
-            AIHit.setText("Pick a point to fire at.");
+            AIHit.setText("Pick a point to fire at on the attack board.");
         }
 
         currentTurn.setVisible(true);
@@ -258,10 +257,11 @@ public class GUI {
     public static void AIHitInit() {
         AIHit.setFont(customFont[16]);
         AIHit.setVisible(true);
-        // AIHit.setBounds(200, 540, 500, 30);
-        AIHit.setSize(500, 30);
-        AIHit.setVerticalAlignment(530);
-        AIHit.setHorizontalAlignment(JLabel.CENTER);
+        AIHit.setBounds(JLabel.CENTER + 200, 540, 600, 30);
+        // AIHit.setPreferredSize(new Dimension(500, 30));
+        // AIHit.setVerticalAlignment(530);
+        // AIHit.setHorizontalAlignment(JLabel.CENTER);
+
     }
 
     public static void displayArray(Coordinate array[][], JButton display[][], int yPosition, int xPosition,
@@ -340,7 +340,7 @@ public class GUI {
                                                     + bruhman + ". Please press next turn to continue.";
                                             AIHitInit();
                                             AIHit.setText(AIHitString);
-                                            AIHit.setHorizontalAlignment(JLabel.CENTER);
+                                            // AIHit.setHorizontalAlignment(JLabel.CENTER);
                                             // Main.isPlayersTurn = false;
                                         }
                                         nextBtn.setEnabled(true);
@@ -459,7 +459,4 @@ public class GUI {
 
     }
 
-
-
-    
 }
