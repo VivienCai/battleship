@@ -15,7 +15,6 @@ public class GUI {
     private static boolean alreadyFired = false;
     private static Coordinate h;
     private static JLabel AIHit = new JLabel();
-
     // protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER",
     // "SUBMARINE", "DESTROYER" };
 
@@ -122,12 +121,12 @@ public class GUI {
         JLabel currentTurn = new JLabel();
         // JLabel AIHit = new JLabel();
         currentTurn.setBounds(50, 10, 300, 30);
-
+        
         JButton nextBtn = new JButton("Next turn?");
         nextBtn.setBounds(150, 10, 200, 50);
 
-        displayArray(Main.playerAttackBoard, displayArrayPlayerAttack, 50, 33, window, true);
-        displayArray(Main.AIAttackBoard, displayArrayAIAttack, 50, 466, window, false);
+        displayArray(Main.playerAttackBoard, displayArrayPlayerAttack, 50, 33, window, true, nextBtn);
+        displayArray(Main.AIAttackBoard, displayArrayAIAttack, 50, 466, window, false, nextBtn);
 
         if (!Main.isPlayersTurn) {
             currentTurn.setText("AI turn rn");
@@ -141,6 +140,7 @@ public class GUI {
         window.getContentPane().add(AIHit);
         window.getContentPane().add(nextBtn);
         window.getContentPane().add(currentTurn);
+        nextBtn.setEnabled(false);
 
         // AI's TURN
         if (!Main.isPlayersTurn) {
@@ -191,6 +191,7 @@ public class GUI {
                 Main.AIShot++;
                 System.out.println("was a miss");
             }
+            nextBtn.setEnabled(true);
         } else {
 
         }
@@ -215,7 +216,7 @@ public class GUI {
     }
 
     public static void displayArray(Coordinate array[][], JButton display[][], int yPosition, int xPosition,
-            JFrame window, boolean isEnabled) {
+            JFrame window, boolean isEnabled, JButton nextBtn) {
         // create an array of buttons
         // red = hit
         // grey = sunk
@@ -265,13 +266,15 @@ public class GUI {
                                                 JOptionPane.INFORMATION_MESSAGE, null, confirmation, confirmation[0]);
                                         if (index == 0) {
                                             alreadyFired = true;
-                                            String bruhman = Game.firePoint(g, k, Main.shipsAlive, Main.playerShipsAlive);
+                                            String bruhman = Game.firePoint(g, k, Main.shipsAlive,
+                                                    Main.playerShipsAlive);
                                             String AIHitString = "You hit " + JLabelCoordinateString(k, g) + ". "
-                                            + bruhman;
+                                                    + bruhman;
                                             AIHit.setBounds(300, 500, 300, 30);
                                             AIHit.setText(AIHitString);
                                             // Main.isPlayersTurn = false;
                                         }
+                                        nextBtn.setEnabled(true);
                                     } else {
                                         // if already fired
                                         JOptionPane.showMessageDialog(frame,
