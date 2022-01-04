@@ -16,6 +16,12 @@ public class Hunting extends AI {
         }
     }
 
+    public static void initHitPoint() {
+        for (String i : Main.playerShipsAlive) {
+            Game.playerSunkShips.put(i, new ArrayList<String>());
+        }
+    }
+
     public static Coordinate huntGUI(Coordinate h, String ship) {
         int shipSize = Ship.getSize(ship);
         // System.out.println(shipSize);
@@ -49,33 +55,37 @@ public class Hunting extends AI {
 
             if (index == 0) {
                 printHashMap();
-                String ship = GUI.ships[shipGUIIndex];
+                String ship = GUI.getShips()[shipGUIIndex];
                 int shipSize = Ship.getSize(ship);
                 int shipIndex = shipSize;
                 if (shipSize == 3) {
                     shipIndex = Ship.getIndexOfThreeShip(ship);
                 }
-                // Game.playerSunkShips.put(ship, new ArrayList<String>());
                 Main.AIHit++;
                 Main.AIShot++;
                 if (checkValidShip(ship)) {
+                    // Game.playerSunkShips.put(ship, new ArrayList<String>());
                     // if we hit a new ship point, add new ship to list
-                    Game.playerSunkShips.get(ship).add(hit.toString());
                     if (!ship.equals(shipsHit.get(0))) {
+                        // Game.playerSunkShips.get(ship).add(hit.toString());
                         // isHunting = true;
                         // cur.setIsShip(true);
                         // cur.setIsHit(true);
+                        cur.setIsUnique(true);
                         uniqueHitPoints.add(hit);
                         shipsHit.add(ship);
 
                         // pointsHit[shipIndex].add(cur);
                         // same ship point, set is hit
                     } else {
+
                         // pointsHit.add(cur);
                         // cur.setIsHit(true);
                         cur.setIsShip(true);
                     }
+                    cur.setIsHit(true);
                     pointsHit[shipIndex].add(cur);
+                    Game.playerSunkShips.get(ship).add(hit.toString());
                     break;
                 }
                 // }
@@ -84,7 +94,7 @@ public class Hunting extends AI {
                 // } else if (input.substring(0, 4).equals("SUNK")) {
                 Main.AIHit++;
                 Main.AIShot++;
-                String ship = GUI.ships[shipGUIIndex];
+                String ship = GUI.getShips()[shipGUIIndex];
 
                 // cur.setIsHit(true);
                 Game.playerSunkShips.get(ship).add(hit.toString());
@@ -93,7 +103,7 @@ public class Hunting extends AI {
                 Ship.getPlayerListOfShipsAlive().remove(ship);
                 uniqueHitPoints.remove(0);
                 shipsHit.remove(ship);
-                // printHashMap();
+                printHashMap();
                 for (String i : Game.playerSunkShips.get(ship)) {
                     // System.out.println("hello running this loop");
                     // System.out.println(i);
@@ -142,10 +152,10 @@ public class Hunting extends AI {
                 if (shipSize == 3) {
                     shipIndex = Ship.getIndexOfThreeShip(ship);
                 }
-                Game.playerSunkShips.put(ship, new ArrayList<String>());
                 Main.AIHit++;
                 Main.AIShot++;
                 if (checkValidShip(ship)) {
+                    Game.playerSunkShips.put(ship, new ArrayList<String>());
                     // if we hit a new ship point, add new ship to list
                     if (!ship.equals(shipsHit.get(0))) {
                         Game.playerSunkShips.get(ship).add(hit.toString());
@@ -154,7 +164,7 @@ public class Hunting extends AI {
                         // cur.setIsHit(true);
                         uniqueHitPoints.add(hit);
                         shipsHit.add(ship);
-
+                        cur.setIsUnique(true);
                         // pointsHit[shipIndex].add(cur);
                         // same ship point, set is hit
                     } else {

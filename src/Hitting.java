@@ -156,7 +156,7 @@ public class Hitting extends AI {
 
             // if the point was hit
             if (index == 0) {
-                String ship = GUI.ships[shipIndex];
+                String ship = GUI.getShips()[shipIndex];
                 isHunting = true;
                 cur.setIsShip(true);
                 AI.uniqueHitPoints.add(hit);
@@ -174,7 +174,7 @@ public class Hitting extends AI {
             } else if (index == 2) {
                 isHunting = false;
                 cur.setIsShip(true);
-                String shipName = GUI.ships[shipIndex];
+                String shipName = GUI.getShips()[shipIndex];
                 // SUNK, CARRIER
             
                 System.out.println(shipName);

@@ -35,8 +35,9 @@ public class Game {
                     continue;
                 } else {
                     Coordinate cur = array[i][j];
-                    boolean isShip = cur.getIsShip(), isHit = cur.getIsHit(), isSunk = cur.getIsSunk();
-                    if ((isHit && isShip) || (isHit && isSunk)) {
+                    boolean isShip = cur.getIsShip(), isHit = cur.getIsHit(), isSunk = cur.getIsSunk(),
+                            isUnique = cur.getIsUnique();
+                    if ((isHit && isShip) || (isHit && isSunk) || isUnique) {
                         System.out.print("X ");
                     } else if (isHit && !isShip) {
                         System.out.print("M ");
@@ -88,6 +89,47 @@ public class Game {
 
         // check if the players hit hits a ship and mark it on the ai placement board,
         // cur is a placeholder variable name
+        firePoint(inputx, inputy, shipsAlive, playerShipsAlive);
+        // Coordinate cur = Main.AIPlacementBoard[inputy][inputx];
+        // Coordinate curPlayer = Main.playerAttackBoard[inputy][inputx];
+
+        // // check if it is a ship point and if it has not been hit before
+        // if (cur.getIsShip() && !cur.getIsHit()) {
+        // // setting it as hit for both boards
+        // cur.setIsHit(true);
+        // curPlayer.setIsHit(true);
+        // // key is the coordinate we hit (e.g E4 -> CARRIER)
+        // String key = Game.getAccessKey(inputy, inputx);
+        // // getting the ship and adding times hit by 1
+        // Ship shipHit = Game.AIMapOfCoor.get(key);
+        // shipHit.addTimesHit();
+        // String shipHitName = shipHit.toString();
+
+        // // if the ship has been hit the size it is (indicates it to be sunk)
+        // if (shipHit.getTimesHit() == shipHit.getSize()) {
+        // // must have a default constructor so we can remove the name of the ship from
+        // // the list of ships alive
+        // Ship remove = new Ship();
+        // // looping through AI's player
+        // for (Ship aliveShip : shipsAlive) {
+        // if (aliveShip.getName().equals(shipHitName)) {
+        // remove = aliveShip;
+        // }
+        // }
+
+        // shipsAlive.remove(remove);
+        // System.out.printf("YOU SUNK THE AI'S %s.\n", shipHit.getName());
+        // } else {
+        // System.out.printf("YOU HIT THE AI'S %s.\n", shipHit.getName());
+
+        // }
+        // curPlayer.setIsShip(true);
+        // Main.PlayerHit++;
+        // }
+    }
+
+    public static String firePoint(int inputx, int inputy, ArrayList<Ship> shipsAlive, ArrayList<String> playerShipsAlive) {
+
         Coordinate cur = Main.AIPlacementBoard[inputy][inputx];
         Coordinate curPlayer = Main.playerAttackBoard[inputy][inputx];
 
@@ -102,6 +144,11 @@ public class Game {
             Ship shipHit = Game.AIMapOfCoor.get(key);
             shipHit.addTimesHit();
             String shipHitName = shipHit.toString();
+            String shipName = shipHit.getName();
+
+
+            curPlayer.setIsShip(true);
+            Main.PlayerHit++;
 
             // if the ship has been hit the size it is (indicates it to be sunk)
             if (shipHit.getTimesHit() == shipHit.getSize()) {
@@ -116,13 +163,13 @@ public class Game {
                 }
 
                 shipsAlive.remove(remove);
-                System.out.printf("YOU SUNK THE AI'S %s.\n", shipHit.getName());
+                
+                System.out.printf("YOU SUNK THE AI'S %s.\n", shipName);
+                return "YOU SUNK THE AI'S " + shipName + "\n";
             } else {
-                System.out.printf("YOU HIT THE AI'S %s.\n", shipHit.getName());
-
+                System.out.printf("YOU HIT THE AI'S %s.\n", shipName);
+                return "YOU HIT THE AI'S " + shipName + "\n";
             }
-            curPlayer.setIsShip(true);
-            Main.PlayerHit++;
         }
         // if it has been hit before and is a ship, or is not a ship point
         else if (cur.getIsShip() && cur.getIsHit() || !cur.getIsShip()) {
@@ -131,11 +178,13 @@ public class Game {
             curPlayer.setIsHit(true);
             System.out.println("YOU MISSED.");
             Main.PlayerMiss++;
+            return "YOU MISSED" + "\n";
         }
         Main.PlayerShot++; // adds one to shot
+        return "something went wrong";
     }
 
-    public static void AIMoves(ArrayList<Ship> shipsAlive, ArrayList<String> playerShipsAlive) throws Exception{
+    public static void AIMoves(ArrayList<Ship> shipsAlive, ArrayList<String> playerShipsAlive) throws Exception {
 
         System.out.println("________________________________");
         System.out.println("It is the AI's turn");

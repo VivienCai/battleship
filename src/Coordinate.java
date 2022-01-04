@@ -8,6 +8,7 @@ public class Coordinate implements Comparable<Coordinate> {
     private boolean isHit = false;
     private boolean isShip = false;
     private boolean isSunk = false;
+    private boolean isUnique = false;
     private int probability = 0;
 
     // constructor
@@ -41,6 +42,10 @@ public class Coordinate implements Comparable<Coordinate> {
         return probability;
     }
 
+    public boolean getIsUnique() {
+        return isUnique;
+    }
+
     //setters
     public void setX(int newX) {
         x_coor = newX;
@@ -64,6 +69,10 @@ public class Coordinate implements Comparable<Coordinate> {
 
     public void setProbability(int newProbability) {
         probability = newProbability;
+    }
+
+    public void setIsUnique(boolean newIsUnique) {
+        isUnique = newIsUnique;
     }
     
     // general purpose methods 

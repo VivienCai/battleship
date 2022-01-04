@@ -29,7 +29,7 @@ public class MainMenu {
     public void loadTitleScreen() throws Exception {
         
         battleshipTitle = new JLabel("Battleship");
-        battleshipTitle.setFont(GUI.customFont);
+        battleshipTitle.setFont(GUI.customFont[48]);
         battleshipTitle.setBounds(300, 50, 300, 200);
 
         
