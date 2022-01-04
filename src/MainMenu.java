@@ -1,8 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 public class MainMenu {
 
@@ -177,7 +176,12 @@ public class MainMenu {
                 window.getContentPane().setBackground(Color.WHITE);
                 window.setLocationRelativeTo(null);
                 isImageVisible = false;
-                GUI.display(MainMenu.window);
+                try {
+                    GUI.display(MainMenu.window);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
                 // GUI.display(window);
                 // Main.initArrays();
                 // Placing.place(Main.AIPlacementBoard);

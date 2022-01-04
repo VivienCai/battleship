@@ -384,4 +384,8 @@ public class Game {
         }
     }
 
+    public static String shipOf(int shipIndex) {
+        String ship = GUI.getShips()[shipIndex];
+        return ship;
+    }
 }

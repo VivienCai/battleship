@@ -1,10 +1,9 @@
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
 import javax.swing.*;
-import java.io.PrintWriter;
+
 
 /* Sarina Li, Vivien Cai, Jiaan Li
 * Mon December 20
@@ -26,7 +25,7 @@ public class Main {
     protected static Coordinate playerAttackBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIPlacementBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIAttackBoard[][] = new Coordinate[11][11];
-    private static int fileCounter = 0;
+    // private static int fileCounter = 0;
     // getting ship list of AI and player
     protected static ArrayList<Ship> shipsAlive = Ship.getList();
     protected static ArrayList<String> playerShipsAlive = Ship.getPlayerListOfShipsAlive();

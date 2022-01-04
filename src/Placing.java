@@ -4,7 +4,7 @@
 * Placing class for placing ships on AI board
 */
 
-public class Placing{
+public class Placing {
 
     // generates the home coordinate for ship
     public static Coordinate generatePoint(int shipSize, boolean orientationV) {
@@ -23,7 +23,8 @@ public class Placing{
         return new Coordinate(y, x);
     }
 
-    // checks if the ship will overlap any other coordinates that are already occupied
+    // checks if the ship will overlap any other coordinates that are already
+    // occupied
     public static boolean anyGeneratedIsShip(Coordinate home, boolean orientationV, int shipSize,
             Coordinate coorBoard[][]) {
         for (int j = 0; j < shipSize; j++) {
@@ -75,13 +76,12 @@ public class Placing{
             int x = home.getX();
             for (int j = 1; j < shipSize; j++) {
                 Coordinate currentCoordinate = coorBoard[y][x];
-                String coordinateName = currentCoordinate.toString();
                 home.setIsShip(true);
                 currentCoordinate.setIsShip(true);
                 Game.AIMapOfCoor.replace(currentCoordinate.toString(), ship);
                 String shipName = ship.toString();
                 Game.AIMapOfShip.get(shipName).add(currentCoordinate.toString());
-                
+
                 // if the orientation is vertical
                 if (orientationV) {
                     coorBoard[y + j][x].setIsShip(true);
