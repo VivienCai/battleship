@@ -167,11 +167,50 @@ public class FileHandling {
 		//adding shipsHit
 		while (fsc.hasNext()) {
 			String ship=fsc.next();
-			if (ship.equals("HASHMAP")) {
+			if (ship.equals("POINTS")) {
 				break;
 			}
 			AI.shipsHit.add(ship);
 		}
+		fsc.next();   //skip over the first poitns hit
+
+		//adding pointsHit
+		int shipCounter=0;
+		while(true) {
+			String nextX;
+			while (true) {
+				nextX=fsc.next();
+				if (nextX.equals("POINTSHIT")||nextX.equals("HASHMAP")) {
+					break;
+				}
+				int nextY=fsc.nextInt();
+				int nextXInt=Integer.parseInt(nextX);
+				Coordinate cur = new Coordinate(nextY,nextXInt);
+				cur.setIsShip(true);
+				AI.pointsHit[shipCounter].add(cur);	
+			}
+			shipCounter++;
+			if(nextX.equals("HASHMAP")) {
+				break;
+			}
+			else if(nextX.equals("POINTSHIT")) {
+				//fsc.next();
+			}
+			
+		}
+		
+		//testing
+		for(int i=0;i<AI.pointsHit.length;i++) {
+        	System.out.print("POINTSHIT ");
+        	for(int j=0;j<AI.pointsHit[i].size();j++) {
+        		System.out.print(AI.pointsHit[i].get(j).getX()+" ");
+        		System.out.print(AI.pointsHit[i].get(j).getY()+" ");
+        	}
+        	System.out.println();
+        	
+        	
+        }
+		
 		
 		//adding hashmaps
 		while (fsc.hasNext()) {

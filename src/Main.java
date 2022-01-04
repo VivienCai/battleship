@@ -286,6 +286,24 @@ public class Main {
         	text.print(AI.shipsHit.get(i)+" ");
         }
         text.println();
+        text.println("POINTS");
+
+        
+        
+        for(int i=0;i<AI.pointsHit.length;i++) {
+        	text.print("POINTSHIT ");
+        	for(int j=0;j<AI.pointsHit[i].size();j++) {
+        		text.print(AI.pointsHit[i].get(j).getX()+" ");
+        		text.print(AI.pointsHit[i].get(j).getY()+" ");
+        	}
+        	text.println();
+        	
+        	
+        }
+        
+        //add points hit
+        
+        
         text.println("HASHMAP");
 
         //Print hasmap of playerShipsAlive
