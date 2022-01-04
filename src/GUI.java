@@ -125,8 +125,8 @@ public class GUI {
         JButton nextBtn = new JButton("Next turn?");
         nextBtn.setBounds(150, 10, 200, 50);
 
-        displayArray(Main.playerAttackBoard, displayArrayPlayerAttack, 50, 33, window);
-        displayArray(Main.AIAttackBoard, displayArrayAIAttack, 50, 466, window);
+        displayArray(Main.playerAttackBoard, displayArrayPlayerAttack, 50, 33, window, true);
+        displayArray(Main.AIAttackBoard, displayArrayAIAttack, 50, 466, window, false);
 
         if (!Main.isPlayersTurn) {
             currentTurn.setText("AI turn rn");
@@ -214,7 +214,7 @@ public class GUI {
     }
 
     public static void displayArray(Coordinate array[][], JButton display[][], int yPosition, int xPosition,
-            JFrame window) {
+            JFrame window, boolean isEnabled) {
         // create an array of buttons
         // red = hit
         // grey = sunk
@@ -243,6 +243,7 @@ public class GUI {
             for (int j = 1; j <= 10; j++) {
                 Coordinate cur = array[i][j];
                 JButton current = display[i][j];
+                current.setEnabled(isEnabled);
                 current.addActionListener(e -> {
                     Object button = e.getSource();
                     for (int k = 1; k <= 10; k++) {
