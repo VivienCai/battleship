@@ -14,7 +14,8 @@ public class GUI {
     protected static Font customFont;
     private static Coordinate h;
 
-    // protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER", "SUBMARINE", "DESTROYER" };
+    // protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER",
+    // "SUBMARINE", "DESTROYER" };
 
     protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER", "SUBMARINE", "DESTROYER" };
 
@@ -23,13 +24,13 @@ public class GUI {
     public GUI() {
 
     }
-    
-    public String[] getShips() {
-        for (int i = 0;i< Main.playerShipsAlive.size();i++){
-            ships[i] = 
-        }
 
-    }
+    // public String[] getShips() {
+    // for (int i = 0;i< Main.playerShipsAlive.size();i++){
+    // ships[i] =
+    // }
+    // }
+
     public static void setUpWindow() throws Exception {
 
         frame = new JFrame();
@@ -255,7 +256,7 @@ public class GUI {
                 if (cur.getIsSunk()) {
                     current.setBackground(new Color(0xB80000));
 
-                }else if (cur.getIsHit() && !cur.getIsShip()) {
+                } else if (cur.getIsHit() && !cur.getIsShip()) {
                     // miss
                     // System.out.println("TESTING HLLOE");
                     current.setBackground(Color.GRAY);

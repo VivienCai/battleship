@@ -22,7 +22,7 @@ public class Hunting extends AI {
 
         sumArray(h, shipSize, ship);
         Coordinate nextHit = max(h.getY(), h.getX(), shipSize);
-    
+
         resetArray();
         return nextHit;
     }
@@ -38,7 +38,7 @@ public class Hunting extends AI {
     }
 
     public static void getInputGUI(Coordinate hit, int index, int shipGUIIndex) {
-        
+
         while (true) {
 
             int y = hit.getY();
@@ -47,7 +47,7 @@ public class Hunting extends AI {
             Coordinate cur = Main.AIAttackBoard[y][x];
             cur.setIsHit(true);
 
-            if(index == 0){
+            if (index == 0) {
                 printHashMap();
                 String ship = GUI.ships[shipGUIIndex];
                 int shipSize = Ship.getSize(ship);
@@ -67,7 +67,7 @@ public class Hunting extends AI {
                         // cur.setIsHit(true);
                         uniqueHitPoints.add(hit);
                         shipsHit.add(ship);
-    
+
                         // pointsHit[shipIndex].add(cur);
                         // same ship point, set is hit
                     } else {
@@ -78,36 +78,36 @@ public class Hunting extends AI {
                     pointsHit[shipIndex].add(cur);
                     break;
                 }
-            // }
-            
+                // }
+
             } else if (index == 2) {
-            // } else if (input.substring(0, 4).equals("SUNK")) {
+                // } else if (input.substring(0, 4).equals("SUNK")) {
                 Main.AIHit++;
                 Main.AIShot++;
                 String ship = GUI.ships[shipGUIIndex];
 
-                    // cur.setIsHit(true);
-                    Game.playerSunkShips.get(ship).add(hit.toString());
-                    cur.setIsShip(true);
-                    // System.out.println(ship);
-                    Ship.getPlayerListOfShipsAlive().remove(ship);
-                    uniqueHitPoints.remove(0);
-                    shipsHit.remove(ship);
-                    // printHashMap();
-                    for (String i : Game.playerSunkShips.get(ship)) {
-                        // System.out.println("hello running this loop");
-                        // System.out.println(i);
-                        int columnInd = Coordinate.columnIndexAsInt(i.charAt(0));
-                        int rowInd = Integer.parseInt(i.substring(1));
-                        Main.AIAttackBoard[columnInd][rowInd].setIsShip(false);
-                        Main.AIAttackBoard[columnInd][rowInd].setIsSunk(true);
-                    }
-               
+                // cur.setIsHit(true);
+                Game.playerSunkShips.get(ship).add(hit.toString());
+                cur.setIsShip(true);
+                // System.out.println(ship);
+                Ship.getPlayerListOfShipsAlive().remove(ship);
+                uniqueHitPoints.remove(0);
+                shipsHit.remove(ship);
+                // printHashMap();
+                for (String i : Game.playerSunkShips.get(ship)) {
+                    // System.out.println("hello running this loop");
+                    // System.out.println(i);
+                    int columnInd = Coordinate.columnIndexAsInt(i.charAt(0));
+                    int rowInd = Integer.parseInt(i.substring(1));
+                    Main.AIAttackBoard[columnInd][rowInd].setIsShip(false);
+                    Main.AIAttackBoard[columnInd][rowInd].setIsSunk(true);
+                }
+
                 if (uniqueHitPoints.size() == 0) {
                     isHunting = false;
                 }
                 break;
-            } 
+            }
         }
 
     }
@@ -142,13 +142,13 @@ public class Hunting extends AI {
                 if (shipSize == 3) {
                     shipIndex = Ship.getIndexOfThreeShip(ship);
                 }
-                // Game.playerSunkShips.put(ship, new ArrayList<String>());
+                Game.playerSunkShips.put(ship, new ArrayList<String>());
                 Main.AIHit++;
                 Main.AIShot++;
                 if (checkValidShip(ship)) {
                     // if we hit a new ship point, add new ship to list
-                    Game.playerSunkShips.get(ship).add(hit.toString());
                     if (!ship.equals(shipsHit.get(0))) {
+                        Game.playerSunkShips.get(ship).add(hit.toString());
                         // isHunting = true;
                         // cur.setIsShip(true);
                         // cur.setIsHit(true);
