@@ -11,7 +11,8 @@ public class GUI {
     private static boolean gamestate = true;
     private static JButton displayArrayAIAttack[][] = new JButton[11][11];
     private static JButton displayArrayPlayerAttack[][] = new JButton[11][11];
-    protected static Font customFont;
+    protected static Font customFont[] = new Font[49];
+    private static boolean alreadyFired = false;
     private static Coordinate h;
 
     // protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER",
@@ -25,11 +26,13 @@ public class GUI {
 
     }
 
-    // public String[] getShips() {
-    // for (int i = 0;i< Main.playerShipsAlive.size();i++){
-    // ships[i] =
-    // }
-    // }
+    public static String[] getShips() {
+        String[] ships = new String[Main.playerShipsAlive.size()];
+        for (int i = 0; i < Main.playerShipsAlive.size(); i++) {
+            ships[i] = Main.playerShipsAlive.get(i);
+        }
+        return ships;
+    }
 
     public static void setUpWindow() throws Exception {
 
@@ -47,22 +50,24 @@ public class GUI {
     }
 
     public static void startGame() throws Exception {
+        for (int i = 0; i < 49; i++) {
+            try {
+                // create the font to use. Specify the size!
+                Integer x = i;
+                customFont[i] = Font.createFont(Font.TRUETYPE_FONT, new File("SF-UI-Display-Bold.ttf"))
+                        .deriveFont(x.floatValue());
+                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+                // register the font
+                ge.registerFont(customFont[i]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (FontFormatException e) {
+                e.printStackTrace();
+            }
 
-        try {
-            // create the font to use. Specify the size!
-            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("SF-UI-Display-Bold.ttf")).deriveFont(48f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            // register the font
-            ge.registerFont(customFont);
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        } catch (FontFormatException e) {
-            e.printStackTrace();
+            MainMenu startMenu = new MainMenu(frame);
+            startMenu.loadTitleScreen();
         }
-
-        MainMenu startMenu = new MainMenu(frame);
-        startMenu.loadTitleScreen();
 
         // display(MainMenu.window);
         // prints the ships still alive for AI and user
@@ -138,7 +143,7 @@ public class GUI {
 
         // AI's TURN
         if (!Main.isPlayersTurn) {
-
+            alreadyFired = false;
             if (AI.isHunting) {
                 // to determine if there are "unique" points (points that are of different
                 // ships)
@@ -169,7 +174,7 @@ public class GUI {
 
                 int shipIndex = JOptionPane.showOptionDialog(window, "What ship did the AI hit?", "What ship?",
                         JOptionPane.DEFAULT_OPTION,
-                        JOptionPane.INFORMATION_MESSAGE, null, ships, ships[0]);
+                        JOptionPane.INFORMATION_MESSAGE, null, getShips(), getShips()[0]);
 
                 if (!AI.isHunting) {
                     Hitting.getInputGUI(h, index, shipIndex);
@@ -243,7 +248,36 @@ public class GUI {
                     for (int k = 1; k <= 10; k++) {
                         for (int g = 1; g <= 10; g++) {
                             if (display[k][g].equals(button)) {
-                                System.out.println("y: " + k + "x: " + g);
+                                // System.out.println("y: " + k + "x: " + g);
+                                // y = k, x = g
+                                String yInd = String.valueOf(Coordinate.columnIndex(k));
+                                String xInd = String.valueOf(g);
+                                // call player's turn method
+                                if (Main.isPlayersTurn) {
+                                    if (!alreadyFired) {
+                                        // are u sure
+                                        String[] confirmation = { "yes", "no" };
+                                        int index = JOptionPane.showOptionDialog(window,
+                                                "Are you sure you want to hit " + yInd + xInd, "AI Hit",
+                                                JOptionPane.DEFAULT_OPTION,
+                                                JOptionPane.INFORMATION_MESSAGE, null, confirmation, confirmation[0]);
+                                        if (index == 0) {
+                                            alreadyFired = true;
+                                            // String bruhman =
+                                            Game.firePoint(g, k, Main.shipsAlive, Main.playerShipsAlive);
+                                            // String AIHitString = "You hit " + JLabelCoordinateString(k, g) + ". "
+                                            // + bruhman;
+                                            // AIHit.setBounds(300, 500, 300, 30);
+                                            // AIHit.setText(AIHitString);
+                                            // Main.isPlayersTurn = false;
+                                        }
+                                    } else {
+                                        // if already fired
+                                        JOptionPane.showMessageDialog(frame,
+                                                "You already fired! Please press next turn.",
+                                                "Warning", JOptionPane.WARNING_MESSAGE);
+                                    }
+                                }
                             }
                         }
                     }
