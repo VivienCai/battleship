@@ -14,6 +14,7 @@ public class GUI {
     protected static Font customFont[] = new Font[49];
     private static boolean alreadyFired = false;
     private static Coordinate h;
+    private static JLabel AIHit = new JLabel();
 
     // protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER",
     // "SUBMARINE", "DESTROYER" };
@@ -119,7 +120,7 @@ public class GUI {
         }
 
         JLabel currentTurn = new JLabel();
-        JLabel AIHit = new JLabel();
+        // JLabel AIHit = new JLabel();
         currentTurn.setBounds(50, 10, 300, 30);
 
         JButton nextBtn = new JButton("Next turn?");
@@ -264,12 +265,11 @@ public class GUI {
                                                 JOptionPane.INFORMATION_MESSAGE, null, confirmation, confirmation[0]);
                                         if (index == 0) {
                                             alreadyFired = true;
-                                            // String bruhman =
-                                            Game.firePoint(g, k, Main.shipsAlive, Main.playerShipsAlive);
-                                            // String AIHitString = "You hit " + JLabelCoordinateString(k, g) + ". "
-                                            // + bruhman;
-                                            // AIHit.setBounds(300, 500, 300, 30);
-                                            // AIHit.setText(AIHitString);
+                                            String bruhman = Game.firePoint(g, k, Main.shipsAlive, Main.playerShipsAlive);
+                                            String AIHitString = "You hit " + JLabelCoordinateString(k, g) + ". "
+                                            + bruhman;
+                                            AIHit.setBounds(300, 500, 300, 30);
+                                            AIHit.setText(AIHitString);
                                             // Main.isPlayersTurn = false;
                                         }
                                     } else {
