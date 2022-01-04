@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FileHandling {
-
 	public static void saveBoards(int fileNumber) throws Exception{
     	PrintWriter text2 = new PrintWriter("Grids"+fileNumber+".txt");
     	
@@ -49,35 +48,15 @@ public class FileHandling {
                     	text2.print("O ");
                     }
                 }
-
             }
             text2.println();
-    	}
-    	
-    	
-    	
-    	text2.close();
-    	
+    	}    	    	    	
+    	text2.close();    	
     }
-    /*
-     * Format for saving game
-     * 1st line will have number of AI shot, hit and miss   EX. 10 1 9
-     * 2nd line will have number of Player shot hit and miss
-     * 3rd line will have types of ships alive for AI
-     * 4th type of ship alive for player
-     * 
-     *            BELOW WILL HAVE DIFFERENT TEXT FILES CALLED 1 2 3 
-     * 5th will have AI attack board
-     * 6th will have Player Home board
-     * 7th will have AI attack board
-    
-    */
-    
- 
+	
 	
  public static void resumeGame(int fileNumber) throws Exception{
 	 //resumes all info but boards
- 	System.out.println("Please choose a file number to resume from");
  	File infoFile = new java.io.File("info" + fileNumber+".txt");              //miht not work for diff comps
 		Scanner fsc = new Scanner(infoFile);
 		Main.AIFirst=fsc.nextBoolean();
@@ -107,7 +86,6 @@ public class FileHandling {
 			int yCoord=fsc.nextInt();
 			boolean vertical=fsc.nextBoolean();
 			int timesHit=fsc.nextInt();
-			System.out.println(xCoord+" "+yCoord);
 			
 			Coordinate coord=new Coordinate(xCoord, yCoord);
 			Ship ship=new Ship( vertical, size, coord);
@@ -116,12 +94,10 @@ public class FileHandling {
 				Main.getShipsAlive().add(counter2, ship);
 			}
 			
-			
 			for (int j = 1; j < size; j++) {
                 coord.setIsShip(true);
                 Main.AIPlacementBoard[yCoord][xCoord].setIsShip(true);
                 Game.AIMapOfCoor.replace(Main.AIPlacementBoard[yCoord][xCoord].toString(), ship);
-                // cur.setIsShip(true);
                 // if the orientation is vertical
                 if (vertical) {
                     Main.AIPlacementBoard[yCoord + j][xCoord].setIsShip(true);
@@ -139,8 +115,7 @@ public class FileHandling {
             }
 		}
 		
-		
-		                                  //initialise player alive ships
+		                                  //Initialize player alive ships
 		int counter=0;
 		Main.getPlayerShipsAlive().clear();
 		while (fsc.hasNext()) {    
@@ -153,14 +128,13 @@ public class FileHandling {
 		}
 		
 		
-		AI.isHunting=fsc.nextBoolean(); //hunting algorighm thing
+		AI.isHunting=fsc.nextBoolean(); //hunting algorithm thing
 		int size=fsc.nextInt();
 		
 		for(int i=0;i<size;i++) {
 			int xCoord=fsc.nextInt();
 			int yCoord=fsc.nextInt();
 			Coordinate coord=new Coordinate(xCoord, yCoord);
-			
 			AI.uniqueHitPoints.add(i,coord);
 		}
 		
@@ -172,7 +146,7 @@ public class FileHandling {
 			}
 			AI.shipsHit.add(ship);
 		}
-		fsc.next();   //skip over the first poitns hit
+		fsc.next();   //skip over the first point hit
 
 		//adding pointsHit
 		int shipCounter=0;
@@ -195,50 +169,26 @@ public class FileHandling {
 			}
 			else if(nextX.equals("POINTSHIT")) {
 				//fsc.next();
-			}
-			
+			}			
 		}
-		
-		//testing
-		for(int i=0;i<AI.pointsHit.length;i++) {
-        	System.out.print("POINTSHIT ");
-        	for(int j=0;j<AI.pointsHit[i].size();j++) {
-        		System.out.print(AI.pointsHit[i].get(j).getX()+" ");
-        		System.out.print(AI.pointsHit[i].get(j).getY()+" ");
-        	}
-        	System.out.println();
-        	
-        	
-        }
-		
-		
+	
 		//adding hashmaps
 		while (fsc.hasNext()) {
 			String nextShip=fsc.next();
-			System.out.println(nextShip);
-
 			Game.playerSunkShips.put(nextShip, new ArrayList<String>());
 			
 			while(fsc.hasNext()) {
 				String nextPoint=fsc.next();
-				System.out.println(nextPoint);
 				if (nextPoint.equals("CARRIER")||nextPoint.equals("BATTLESHIP")||nextPoint.equals("DESTROYER")||nextPoint.equals("SUBMARINE")||nextPoint.equals("CRUISER")) {
 					break;   //if the next string is a ship value, move on to the next ship
 				}
 				else {
-					Game.playerSunkShips.get(nextShip).add(nextPoint.toString());
-					
+					Game.playerSunkShips.get(nextShip).add(nextPoint.toString());					
 				}
-
 			}
-		}
-		
-		
-	//	Game.playerSunkShips.put(ship, new ArrayList<String>());
-  //      Game.playerSunkShips.get(ship).add(hit.toString());
-		
-		
+		}		
  	}
+ 
  
 	public static void resumeBoards(int fileNumber) throws Exception {
 		File gridFile = new java.io.File("Grids" + fileNumber+".txt");						//same with this
@@ -282,7 +232,6 @@ public class FileHandling {
 				cur.setIsHit(isHit);
 				cur.setIsShip(isShip);
 				Main.playerAttackBoard[i][j]=cur;
-			//	Main.playerAttackBoard;
 			}
 		}
 		
@@ -303,16 +252,6 @@ public class FileHandling {
         		}
         	}
         }
-		
-		
-		//testing
-		for (int i=1;i<11;i++) {
-			for (int j=1;j<11;j++) {
-				System.out.print(testarr[i][j]);
-			}
-			System.out.println();
-		}
-		
 		
 		//gets info for AIHit board
 		for (int i=1;i<11;i++) {
@@ -342,25 +281,92 @@ public class FileHandling {
 				cur.setIsShip(isShip);
 				Main.AIAttackBoard[i][j]=cur;
 			}
-		}
-		
-		
-		//more testing purpouses ignore
-		
+		}	
 		System.out.println();
-
-		for (int i=1;i<11;i++) {
-			for (int j=1;j<11;j++) {
-				System.out.print(testarr2[i][j]);
-			}
-			System.out.println();
-		}
+		System.out.println("Player Attack Board");
         Game.printPlacementArray(Main.playerAttackBoard);
-        System.out.println("hi");
-		
 	}
 	
-	
-	
-	
+	public static void saveGame() throws Exception {
+		Scanner sc = new Scanner(System.in);
+        System.out.println("Which save file would you like to save to? Please enter a number greater than 1.");
+        int fileNumber = sc.nextInt(); 																	// ADD SMTG TO STOP CODE FROM CRASHING IF STRING
+        PrintWriter text = new PrintWriter("Info" + fileNumber + ".txt");
+
+        text.println(Main.AIFirst);
+        text.println(AI.isHunting);
+        text.println(Main.AIShot + " " + Main.AIHit + " " + Main.AIMiss);
+        text.println(Main.PlayerShot + " " + Main.PlayerHit + " " + Main.PlayerMiss);
+
+        for (int i = 0; i < Ship.getList().size(); i++) {
+            text.print(Ship.getList().get(i).getName() + " ");
+            if (Ship.getList().get(i).getIsSunk()) { // If sunk
+                text.print("SUNK ");
+            } else { // if not sunk
+                text.print("ALIVE ");
+            }
+            text.print(Ship.getList().get(i).getSize() + " ");
+            text.print(Ship.getList().get(i).getHomeCoord().getX() + " "); // Prints AI ships
+            text.print(Ship.getList().get(i).getHomeCoord().getY() + " ");
+            text.print(Ship.getList().get(i).getVertical() + " ");
+            text.print(Ship.getList().get(i).getTimesHit() + " ");
+            text.println();
+
+        } 
+        
+        text.println("PLAYER");
+
+        for (int i = 0; i < Ship.getPlayerListOfShipsAlive().size(); i++) {
+            text.print(Ship.getPlayerListOfShipsAlive().get(i) + " "); // Prints player ships
+        }
+        text.println();
+        text.println("UNIQUEHITPOINTS");
+        text.println(AI.isHunting);
+        
+        text.println(AI.uniqueHitPoints.size() );
+        
+        for (int i=0;i<AI.uniqueHitPoints.size();i++) {    //uniquiehitpoint in Hitting line 70  ONLY NEED TO STORE X AND Y COORD
+        	 text.print(AI.uniqueHitPoints.get(i).getX()+" ");
+        	 text.println(AI.uniqueHitPoints.get(i).getY());
+        }
+        
+        //add shipsHit
+        for (int i=0;i<AI.shipsHit.size();i++) {
+        	text.print(AI.shipsHit.get(i)+" ");
+        }
+        text.println();
+        text.println("POINTS");
+
+        
+        for(int i=0;i<AI.pointsHit.length;i++) {
+        	text.print("POINTSHIT ");
+        	for(int j=0;j<AI.pointsHit[i].size();j++) {
+        		text.print(AI.pointsHit[i].get(j).getX()+" ");
+        		text.print(AI.pointsHit[i].get(j).getY()+" ");
+        	}
+        	text.println();
+        }
+        
+        //add points hit
+        text.println("HASHMAP");
+
+        //Print hasHmap of playerShipsAlive
+        for (String i : Game.playerSunkShips.keySet()) {
+            //ship
+            text.print(i+" ");
+            for (String point : Game.playerSunkShips.get(i)) {
+                text.print(point + " ");
+            }
+        text.println();
+        }
+        text.close();
+
+        FileHandling.saveBoards(fileNumber);
+
+        System.out.println(
+                "Thank you for playing our battleship game and we are sorry to see you go. Please come back soon");
+        System.out.println("Your files have been saved in 2 fileS called Info" + fileNumber + ".txt and Grids"
+                + fileNumber + ".txt"); 
+        System.out.println("Please DO NOT tamper with the two files or your data may be permanently lost");
+    }
 }
