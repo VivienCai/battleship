@@ -16,6 +16,15 @@ public class Game {
     public static HashMap<String, Ship> AIMapOfCoor = new HashMap<String, Ship>();
     // (e.g Destroyer -> E4, E5)
     public static HashMap<String, ArrayList<String>> playerSunkShips = new HashMap<>();
+    public static HashMap<String, ArrayList<String>> AIMapOfShip = new HashMap<>();
+
+    //Init hashmap
+    public static void initHitPoint() {
+        for (String i : Main.playerShipsAlive) {
+            Game.playerSunkShips.put(i, new ArrayList<String>());
+            Game.AIMapOfShip.put(i, new ArrayList<String>());
+        }
+    }
 
     // for printing user and AI displays using the naming conventions
     public static void printPlacementArray(Coordinate array[][]) { // USER ATTACK BOARD
@@ -128,7 +137,8 @@ public class Game {
         // }
     }
 
-    public static String firePoint(int inputx, int inputy, ArrayList<Ship> shipsAlive, ArrayList<String> playerShipsAlive) {
+    public static String firePoint(int inputx, int inputy, ArrayList<Ship> shipsAlive,
+            ArrayList<String> playerShipsAlive) {
 
         Coordinate cur = Main.AIPlacementBoard[inputy][inputx];
         Coordinate curPlayer = Main.playerAttackBoard[inputy][inputx];
@@ -144,8 +154,7 @@ public class Game {
             Ship shipHit = Game.AIMapOfCoor.get(key);
             shipHit.addTimesHit();
             String shipHitName = shipHit.toString();
-            String shipName = shipHit.getName();
-
+            // String shipName = shipHit.getName(); 
 
             curPlayer.setIsShip(true);
             Main.PlayerHit++;
@@ -155,6 +164,7 @@ public class Game {
                 // must have a default constructor so we can remove the name of the ship from
                 // the list of ships alive
                 Ship remove = new Ship();
+
                 // looping through AI's player
                 for (Ship aliveShip : shipsAlive) {
                     if (aliveShip.getName().equals(shipHitName)) {
@@ -163,12 +173,19 @@ public class Game {
                 }
 
                 shipsAlive.remove(remove);
+                printHashMap();
+                for (String i : Game.AIMapOfShip.get(shipHitName)) {
+                    int columnInd = Coordinate.columnIndexAsInt(i.charAt(0));
+                    int rowInd = Integer.parseInt(i.substring(1));
+                    Main.playerAttackBoard[columnInd][rowInd].setIsShip(false);
+                    Main.playerAttackBoard[columnInd][rowInd].setIsSunk(true);
+                }
                 
-                System.out.printf("YOU SUNK THE AI'S %s.\n", shipName);
-                return "YOU SUNK THE AI'S " + shipName + "\n";
+                System.out.printf("YOU SUNK THE AI'S %s.\n", shipHitName);
+                return "YOU SUNK THE AI'S " + shipHitName + "\n";
             } else {
-                System.out.printf("YOU HIT THE AI'S %s.\n", shipName);
-                return "YOU HIT THE AI'S " + shipName + "\n";
+                System.out.printf("YOU HIT THE AI'S %s.\n", shipHitName);
+                return "YOU HIT THE AI'S " + shipHitName + "\n";
             }
         }
         // if it has been hit before and is a ship, or is not a ship point
@@ -354,6 +371,17 @@ public class Game {
 
         }
 
+    }
+
+    public static void printHashMap() {
+        for (String i : Game.AIMapOfShip.keySet()) {
+            // ship
+            System.out.print(i);
+            for (String point : Game.AIMapOfShip.get(i)) {
+                System.out.print(point + " ");
+            }
+            System.out.println();
+        }
     }
 
 }

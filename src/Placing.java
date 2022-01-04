@@ -74,22 +74,28 @@ public class Placing{
             int y = home.getY();
             int x = home.getX();
             for (int j = 1; j < shipSize; j++) {
+                Coordinate currentCoordinate = coorBoard[y][x];
+                String coordinateName = currentCoordinate.toString();
                 home.setIsShip(true);
-                coorBoard[y][x].setIsShip(true);
-                Game.AIMapOfCoor.replace(coorBoard[y][x].toString(), ship);
-                // cur.setIsShip(true);
+                currentCoordinate.setIsShip(true);
+                Game.AIMapOfCoor.replace(currentCoordinate.toString(), ship);
+                String shipName = ship.toString();
+                Game.AIMapOfShip.get(shipName).add(currentCoordinate.toString());
+                
                 // if the orientation is vertical
                 if (orientationV) {
                     coorBoard[y + j][x].setIsShip(true);
                     int newY = y + j;
                     String key = Game.getAccessKey(newY, x);
                     Game.AIMapOfCoor.replace(key, ship);
+                    Game.AIMapOfShip.get(shipName).add(key);
 
                 } else {
                     coorBoard[y][x + j].setIsShip(true);
                     int newX = x + j;
                     String key = Game.getAccessKey(y, newX);
                     Game.AIMapOfCoor.replace(key, ship);
+                    Game.AIMapOfShip.get(shipName).add(key);
 
                 }
             }

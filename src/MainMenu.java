@@ -57,7 +57,6 @@ public class MainMenu {
                 // try {
                 // Main.hello();
                 // } catch (Exception e) {
-                // // TODO Auto-generated catch block
                 // e.printStackTrace();
                 // }
             }

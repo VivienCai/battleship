@@ -19,6 +19,7 @@ public class Hunting extends AI {
     public static void initHitPoint() {
         for (String i : Main.playerShipsAlive) {
             Game.playerSunkShips.put(i, new ArrayList<String>());
+            Game.AIMapOfShip.put(i, new ArrayList<String>());
         }
     }
 
