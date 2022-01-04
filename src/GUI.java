@@ -291,14 +291,15 @@ public class GUI {
                 if (cur.getIsSunk()) {
                     current.setBackground(new Color(0xB80000));
 
-                } else if (cur.getIsHit() && !cur.getIsShip()) {
-                    // miss
-                    // System.out.println("TESTING HLLOE");
-                    current.setBackground(Color.GRAY);
-
-                } else if (cur.getIsHit() && cur.getIsShip()) {
+                } else if (cur.getIsHit() && cur.getIsShip() || cur.getIsUnique()) {
                     // hit
                     current.setBackground(Color.RED);
+
+                } else if (cur.getIsHit() && !cur.getIsShip()) {
+                    // miss
+
+                    current.setBackground(Color.GRAY);
+
                 } else {
                     current.setBackground(Color.WHITE);
                 }
@@ -318,7 +319,7 @@ public class GUI {
     }
 
     public static String JLabelCoordinateString(int y, int x) {
-        return "AI hit " + Coordinate.columnIndex(y) + " " + x + "\n";
+        return "AI hit " + Coordinate.columnIndex(y) + "" + x + "\n";
     }
 
     public static void removeArray(JButton displayArray[][], JFrame window) {
