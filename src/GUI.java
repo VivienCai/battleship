@@ -166,7 +166,7 @@ public class GUI {
         // AI's TURN
         if (!Main.isPlayersTurn) {
             alreadyFired = false;
-            if (AI.isHunting) {
+            if (AI.isHunting ) {
                 // to determine if there are "unique" points (points that are of different
                 // ships)
                 if (AI.uniqueHitPoints.size() > 0) {
@@ -180,7 +180,13 @@ public class GUI {
                 // density
             } else {
                 // ai generate a hit using hit or hunt
-                h = Hitting.findProbabilityGUI();
+            	if (Main.easyMode) {
+            		h = Hitting.findProbabilityGUIEasy();
+
+            	}else {
+            		h = Hitting.findProbabilityGUI();
+            	}
+            	
             }
 
             int y = h.getY();
@@ -232,7 +238,49 @@ public class GUI {
         } else {
 
         }
+        
+        //saving game
+        if(!Main.roundOver) {    //save only triggers at the end of each round
+            int inputInt;
+        	int result = JOptionPane.showConfirmDialog(null, "Do you want to save your game?");
+            switch (result) {
+               case JOptionPane.YES_OPTION:
+               System.out.println("Yes");
+               while(true) {
+               String input = JOptionPane.showInputDialog(null, "Please the save file number you want to save to.");
+               		try {
+               			inputInt=Integer.parseInt(input);
+               			break;
+               		}catch(Exception e){
+               			
+               		}
+               }
+               
+               
+				try {
+					FileHandling.saveGame(inputInt);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				Game.printPlacementArray(Main.AIAttackBoard);
+			    JOptionPane.showMessageDialog(frame, "Thank you for playing our battleship game and we are sorry to see you go. Please come back soon");
+			    JOptionPane.showMessageDialog(frame, "Your files have been saved in two files called Info" + inputInt + ".txt and Grids"+inputInt+".txt");
+			    JOptionPane.showMessageDialog(frame, "Please DO NOT tamper with the two files or your data may be PERMANENTLY lost");
 
+               
+               break;
+               case JOptionPane.NO_OPTION:
+               System.out.println("No");
+               break;
+            }        	
+ 	        
+        }
+        
+        Main.roundOver=!Main.roundOver;	
+
+        
+        
         nextBtn.addActionListener(e -> {
             reInitFrame(window, nextBtn, currentTurn, AIAttack, playerAttack, AIScore, playerScore);
         });

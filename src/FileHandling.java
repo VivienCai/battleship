@@ -56,7 +56,7 @@ public class FileHandling {
 	
 	
  public static void resumeGame(int fileNumber) throws Exception{
-	 //resumes all info but boards
+	//resumes all info but boards
  	File infoFile = new java.io.File("info" + fileNumber+".txt");              //miht not work for diff comps
 		Scanner fsc = new Scanner(infoFile);
 		Main.AIFirst=fsc.nextBoolean();
@@ -190,6 +190,10 @@ public class FileHandling {
  	}
  
  
+ 
+ 
+ 
+ 
 	public static void resumeBoards(int fileNumber) throws Exception {
 		File gridFile = new java.io.File("Grids" + fileNumber+".txt");						//same with this
 		String testarr[][]=new String[11][11];
@@ -287,10 +291,12 @@ public class FileHandling {
         Game.printPlacementArray(Main.playerAttackBoard);
 	}
 	
-	public static void saveGame() throws Exception {
+	
+	
+	
+	public static void saveGame(int fileNumber) throws Exception {
 		Scanner sc = new Scanner(System.in);
         System.out.println("Which save file would you like to save to? Please enter a number greater than 1.");
-        int fileNumber = sc.nextInt(); 																	// ADD SMTG TO STOP CODE FROM CRASHING IF STRING
         PrintWriter text = new PrintWriter("Info" + fileNumber + ".txt");
 
         text.println(Main.AIFirst);

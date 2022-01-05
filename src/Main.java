@@ -18,7 +18,7 @@ public class Main {
     protected static boolean AIFirst = false;
     protected static int AIShot, AIHit, AIMiss, PlayerShot, PlayerMiss, PlayerHit = 0;
     private static int counter = 1;
-    protected static boolean easyMode = false;
+    protected static boolean easyMode, roundOver = false;
     protected static boolean heads = false;
     protected static boolean isPlayersTurn;
 
@@ -100,7 +100,9 @@ public class Main {
             counter++;
             String temp = sc.nextLine();
             if (temp.equals("SAVE")) { // sees if the user wants to save the game
-            	FileHandling.saveGame();
+            	System.out.println("enter save game number");
+            	int numb=sc.nextInt();
+            	FileHandling.saveGame(numb);
                 break;
             }
         }
@@ -156,7 +158,9 @@ public class Main {
             counter++;
             String temp = sc.nextLine();
             if (temp.equals("SAVE")) { // sees if the user wants to save the game
-                FileHandling.saveGame();
+            	System.out.println("enter save game number");
+            	int numb=sc.nextInt();
+                FileHandling.saveGame(numb);
                 break;
             }
         }

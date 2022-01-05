@@ -9,6 +9,7 @@ public class MainMenu {
     private ImageIcon backgroundImageIcon;
     private JLabel bkgImageContainer;
     private JButton startGame;
+    private JButton resumeGame;
     private volatile boolean isImageVisible;
     private JButton easyModeBtn;
     private JButton headsBtn;
@@ -29,7 +30,7 @@ public class MainMenu {
         
         battleshipTitle = new JLabel("Battleship");
         battleshipTitle.setFont(GUI.customFont[48]);
-        battleshipTitle.setBounds(300, 50, 300, 200);
+        battleshipTitle.setBounds(300, 150, 300, 200);
 
         
 
@@ -74,12 +75,57 @@ public class MainMenu {
             }
         });
 
+        resumeGame = new JButton("Resume Game");
+        resumeGame.setSize(600, 100);
+        resumeGame.setLocation(150, 500);
+        resumeGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+            	int inputInt;
+            	while (true) {
+            		String input = JOptionPane.showInputDialog(null, "Please the save file number you want to resume from.");
+            		try {
+            			inputInt=Integer.parseInt(input);
+            			break;
+            		}catch(Exception e){
+            		}            	
+            	}
+            	
+            	try {
+            		FileHandling.resumeGame(inputInt);
+                    FileHandling.resumeBoards(inputInt);
+
+            		window.getContentPane().removeAll();
+                    // window.getContentPane().remove(results);
+                    // window.getContentPane().remove(headsBtn);
+                    window.getContentPane().revalidate();
+                    window.getContentPane().repaint();
+                    window.getContentPane().setBackground(Color.WHITE);
+                    window.setLocationRelativeTo(null);
+                    isImageVisible = false;
+            		try {
+            			
+                        GUI.display(MainMenu.window);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+            	} catch (Exception e) {
+				e.printStackTrace();
+			}       
+            }
+        });
+
+        
         startGame.setVisible(true);
         easyModeBtn.setVisible(true);
+        resumeGame.setVisible(true);
         battleshipTitle.setVisible(true);
 
         window.getContentPane().add(startGame);
         window.getContentPane().add(easyModeBtn);
+        window.getContentPane().add(resumeGame);
+
         // window.getContentPane().add(bkgImageContainer);
         window.getContentPane().add(battleshipTitle);
 
@@ -177,6 +223,8 @@ public class MainMenu {
                 window.setLocationRelativeTo(null);
                 isImageVisible = false;
                 try {
+                	Placing.place(Main.AIPlacementBoard);							
+                	Game.printPlacementArray(Main.AIPlacementBoard);
                     GUI.display(MainMenu.window);
                 } catch (IOException e) {
                     // TODO Auto-generated catch block

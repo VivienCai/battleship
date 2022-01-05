@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 /* Sarina Li, Vivien Cai, Jiaan Li
 * Fri December 24
@@ -7,6 +8,9 @@ import java.util.ArrayList;
 */
 
 public class Hitting extends AI {
+	
+	
+	
     public static Coordinate AIhit() {
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 10; j++) {
@@ -49,6 +53,8 @@ public class Hitting extends AI {
         }
     }
 
+    
+    
     public static Coordinate AIhitGUI() {
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 10; j++) {
@@ -149,6 +155,10 @@ public class Hitting extends AI {
         }
     }
 
+    
+    
+    
+    
     public static void getInputGUI(Coordinate hit, int index, int shipIndex) {
         // ArrayList<Ship> shipsAlive = Ship.getList();
         while (true) {
@@ -216,6 +226,22 @@ public class Hitting extends AI {
         return h;
     }
 
+    public static Coordinate findProbabilityGUIEasy() {
+    	Random rand = new Random();
+    	
+    	while(true) {
+    		int xCoord =  rand.nextInt(1+10)+1;
+    		int yCoord =  rand.nextInt(1+10)+1;
+    		
+    		Coordinate c = Main.AIAttackBoard[yCoord][xCoord];
+    		if (!c.getIsHit()) {  //if it is not already hit
+    			Main.AIAttackBoard[yCoord][xCoord].setIsHit(true);
+                return Main.AIAttackBoard[yCoord][xCoord];
+    		} 	
+    	}	
+    }
+    
+    
     public static void sumRows(int shipSize) {
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 10 - shipSize + 1; j++) {
