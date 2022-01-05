@@ -125,7 +125,7 @@ public class GUI {
         // nextBtn = new JButton(new ImageIcon(buttonIcon));
 
         initNextBtn(nextBtn);
-        // AIHitInit();
+        AIHitInit();
         // nextBtn.setBorderPainted(false);
 
         displayArray(Main.playerAttackBoard, displayArrayPlayerAttack, 100, 55, window, true, nextBtn);
@@ -147,7 +147,7 @@ public class GUI {
         } else {
             currentTurn.setText("It is your turn.");
             AIHit.setText("Pick a point to fire at on the attack board.");
-            AIHitInit();
+            // AIHitInit();
         }
 
         currentTurn.setVisible(true);
@@ -236,7 +236,7 @@ public class GUI {
             nextBtn.setEnabled(true);
             // AIHitInit();
         } else {
-
+            AIHit.setHorizontalAlignment(JLabel.CENTER);
         }
         saveGame = new JButton("Save Game");
 
