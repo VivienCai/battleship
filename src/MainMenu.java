@@ -19,6 +19,11 @@ public class MainMenu {
     private JButton nextBtn;
     private JTextPane results = new JTextPane();
 
+    private JButton AIFirst = new JButton("AI First");;
+    private JButton playerFirst = new JButton("Player First");
+
+    private boolean selected = false;
+
     public MainMenu(JFrame theWindow) {
         window = theWindow;
         backgroundImageIcon = new ImageIcon("Title.png");
@@ -27,14 +32,13 @@ public class MainMenu {
     }
 
     public void loadTitleScreen() throws Exception {
-        
+
         battleshipTitle = new JLabel("Battleship");
         battleshipTitle.setFont(GUI.customFont[48]);
         battleshipTitle.setBounds(300, 150, 300, 200);
 
-        
-
-        // bkgImageContainer.setSize(window.getContentPane().getWidth(), window.getContentPane().getHeight() / 2);
+        // bkgImageContainer.setSize(window.getContentPane().getWidth(),
+        // window.getContentPane().getHeight() / 2);
         // bkgImageContainer.setLocation(0, 0);
         // bkgImageContainer.setVisible(true);
 
@@ -81,21 +85,22 @@ public class MainMenu {
         resumeGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-            	int inputInt;
-            	while (true) {
-            		String input = JOptionPane.showInputDialog(null, "Please the save file number you want to resume from.");
-            		try {
-            			inputInt=Integer.parseInt(input);
-            			break;
-            		}catch(Exception e){
-            		}            	
-            	}
-            	
-            	try {
-            		FileHandling.resumeGame(inputInt);
+                int inputInt;
+                while (true) {
+                    String input = JOptionPane.showInputDialog(null,
+                            "Please the save file number you want to resume from.");
+                    try {
+                        inputInt = Integer.parseInt(input);
+                        break;
+                    } catch (Exception e) {
+                    }
+                }
+
+                try {
+                    FileHandling.resumeGame(inputInt);
                     FileHandling.resumeBoards(inputInt);
 
-            		window.getContentPane().removeAll();
+                    window.getContentPane().removeAll();
                     // window.getContentPane().remove(results);
                     // window.getContentPane().remove(headsBtn);
                     window.getContentPane().revalidate();
@@ -103,20 +108,19 @@ public class MainMenu {
                     window.getContentPane().setBackground(Color.WHITE);
                     window.setLocationRelativeTo(null);
                     isImageVisible = false;
-            		try {
-            			
+                    try {
+
                         GUI.display(MainMenu.window);
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-            	} catch (Exception e) {
-				e.printStackTrace();
-			}       
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
-        
         startGame.setVisible(true);
         easyModeBtn.setVisible(true);
         resumeGame.setVisible(true);
@@ -138,6 +142,7 @@ public class MainMenu {
     }
 
     public void loadCoinFlip() {
+        
         backgroundImageIcon = new ImageIcon("coinflip.jpeg");
 
         // backgroundImageIcon = new ImageIcon("Title.png");
@@ -146,50 +151,82 @@ public class MainMenu {
                 window.getContentPane().getHeight());
         bkgImageContainer.setLocation(0, 0);
 
-        headsBtn = new JButton("Heads or Tails?");
-        headsBtn.setSize(600, 100);
-        headsBtn.setLocation(150, 150);
-        System.out.println("testing");
-        headsBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                Main.heads = !Main.heads;
-                if (!Main.heads) {
-                    headsBtn.setText("You have selected tails");
-                } else {
-                    headsBtn.setText("You have selected heads");
-                }
-                System.out.println(Main.heads);
-            }
+        AIFirst.setBounds(10, 10, 100, 100);
+        AIFirst.setFont(GUI.customFont[12]);
+        AIFirst.addActionListener(e -> {
+            submitBtn.setEnabled(true);
+            selected = true;
+            AIFirst.setEnabled(false);
+            playerFirst.setEnabled(true);
+            Main.AIFirst = true;
         });
+
+        playerFirst.setBounds(110, 10, 100, 100);
+        playerFirst.setFont(GUI.customFont[12]);
+        playerFirst.addActionListener(e -> {
+            submitBtn.setEnabled(true);
+            selected = true;
+            playerFirst.setEnabled(false);
+            AIFirst.setEnabled(true);
+            Main.isPlayersTurn = true;
+            Main.AIFirst = false;
+        });
+
+        // headsBtn = new JButton("Heads or Tails?");
+        // headsBtn.setEnabled(false);
+        // headsBtn.setSize(600, 100);
+        // headsBtn.setLocation(150, 150);
+        // headsBtn.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent arg0) {
+        //         Main.heads = !Main.heads;
+        //         if (!Main.heads) {
+        //             headsBtn.setText("You have selected tails");
+        //         } else {
+        //             headsBtn.setText("You have selected heads");
+        //         }
+        //         System.out.println(Main.heads);
+        //     }
+        // });
 
         submitBtn = new JButton("Submit");
         submitBtn.setSize(600, 100);
         submitBtn.setLocation(150, 400);
+        submitBtn.setEnabled(false);
         // System.out.println("testing");
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                // window.getContentPane().remove(submitBtn);
-                // window.getContentPane().remove(bkgImageContainer);
-                // window.getContentPane().remove(headsBtn);
-                window.getContentPane().removeAll();
-                window.getContentPane().revalidate();
-                window.getContentPane().repaint();
-                window.getContentPane().setBackground(Color.WHITE);
-                window.setLocationRelativeTo(null);
-                isImageVisible = false;
-                coinFlipResults();
+                if (selected) {
+                    window.getContentPane().removeAll();
+                    window.getContentPane().revalidate();
+                    window.getContentPane().repaint();
+                    window.getContentPane().setBackground(Color.WHITE);
+                    window.setLocationRelativeTo(null);
+                    isImageVisible = false;
+                    // coinFlipResults();
+                    try {
+                    
+                            GUI.display(window);
+                        
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
         });
 
         submitBtn.setVisible(true);
-        headsBtn.setVisible(true);
+        // headsBtn.setVisible(true);
+        AIFirst.setVisible(true);
+        playerFirst.setVisible(true);
         bkgImageContainer.setVisible(true);
 
         window.getContentPane().add(submitBtn);
-        window.getContentPane().add(headsBtn);
+        // window.getContentPane().add(headsBtn);
+        window.getContentPane().add(AIFirst);
+        window.getContentPane().add(playerFirst);
         window.getContentPane().add(bkgImageContainer);
 
         window.getContentPane().setBackground(Color.WHITE);
@@ -223,8 +260,8 @@ public class MainMenu {
                 window.setLocationRelativeTo(null);
                 isImageVisible = false;
                 try {
-                	Placing.place(Main.AIPlacementBoard);							
-                	Game.printPlacementArray(Main.AIPlacementBoard);
+                    Placing.place(Main.AIPlacementBoard);
+                    Game.printPlacementArray(Main.AIPlacementBoard);
                     GUI.display(MainMenu.window);
                 } catch (IOException e) {
                     // TODO Auto-generated catch block

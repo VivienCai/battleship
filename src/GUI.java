@@ -1,11 +1,7 @@
 import java.awt.*;
-import java.awt.image.BufferedImage;
-// import java.io.File;
-import java.io.*;
-import java.io.InputStream;
 
-import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
+import java.io.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -21,6 +17,8 @@ public class GUI {
     private static boolean alreadyFired = false;
     private static Coordinate h;
     private static JLabel AIHit = new JLabel();
+    private static JButton saveGame;
+
     // protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER",
     // "SUBMARINE", "DESTROYER" };
 
@@ -127,7 +125,7 @@ public class GUI {
         // nextBtn = new JButton(new ImageIcon(buttonIcon));
 
         initNextBtn(nextBtn);
-        AIHitInit();
+        // AIHitInit();
         // nextBtn.setBorderPainted(false);
 
         displayArray(Main.playerAttackBoard, displayArrayPlayerAttack, 100, 55, window, true, nextBtn);
@@ -149,6 +147,7 @@ public class GUI {
         } else {
             currentTurn.setText("It is your turn.");
             AIHit.setText("Pick a point to fire at on the attack board.");
+            AIHitInit();
         }
 
         currentTurn.setVisible(true);
@@ -166,7 +165,7 @@ public class GUI {
         // AI's TURN
         if (!Main.isPlayersTurn) {
             alreadyFired = false;
-            if (AI.isHunting ) {
+            if (AI.isHunting) {
                 // to determine if there are "unique" points (points that are of different
                 // ships)
                 if (AI.uniqueHitPoints.size() > 0) {
@@ -180,13 +179,13 @@ public class GUI {
                 // density
             } else {
                 // ai generate a hit using hit or hunt
-            	if (Main.easyMode) {
-            		h = Hitting.findProbabilityGUIEasy();
+                if (Main.easyMode) {
+                    h = Hitting.findProbabilityGUIEasy();
 
-            	}else {
-            		h = Hitting.findProbabilityGUI();
-            	}
-            	
+                } else {
+                    h = Hitting.findProbabilityGUI();
+                }
+
             }
 
             int y = h.getY();
@@ -235,52 +234,56 @@ public class GUI {
                         + ". It missed. Please click next turn to continue.");
             }
             nextBtn.setEnabled(true);
+            // AIHitInit();
         } else {
 
         }
-        
-        //saving game
-        if(!Main.roundOver) {    //save only triggers at the end of each round
+        saveGame = new JButton("Save Game");
+
+        // saving game
+        if (!Main.roundOver) { // save only triggers at the end of each round
             int inputInt;
-        	int result = JOptionPane.showConfirmDialog(null, "Do you want to save your game?");
+            int result = JOptionPane.showConfirmDialog(null, "Do you want to save your game?");
             switch (result) {
-               case JOptionPane.YES_OPTION:
-               System.out.println("Yes");
-               while(true) {
-               String input = JOptionPane.showInputDialog(null, "Please the save file number you want to save to.");
-               		try {
-               			inputInt=Integer.parseInt(input);
-               			break;
-               		}catch(Exception e){
-               			
-               		}
-               }
-               
-               
-				try {
-					FileHandling.saveGame(inputInt);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				Game.printPlacementArray(Main.AIAttackBoard);
-			    JOptionPane.showMessageDialog(frame, "Thank you for playing our battleship game and we are sorry to see you go. Please come back soon");
-			    JOptionPane.showMessageDialog(frame, "Your files have been saved in two files called Info" + inputInt + ".txt and Grids"+inputInt+".txt");
-			    JOptionPane.showMessageDialog(frame, "Please DO NOT tamper with the two files or your data may be PERMANENTLY lost");
+                case JOptionPane.YES_OPTION:
+                    System.out.println("Yes");
+                    while (true) {
+                        String input = JOptionPane.showInputDialog(null,
+                                "Please the save file number you want to save to. Enter NO if you do not want to save");
+                        if (input.equals("NO")) {
+                            break;
+                        }
+                        try {
+                            inputInt = Integer.parseInt(input);
+                            break;
+                        } catch (Exception e) {
+                        }
+                    }
 
-               
-               break;
-               case JOptionPane.NO_OPTION:
-               System.out.println("No");
-               break;
-            }        	
- 	        
+                    // try {
+                    // FileHandling.saveGame(inputInt);
+                    // } catch (Exception e1) {
+                    // // TODO Auto-generated catch block
+                    // e1.printStackTrace();
+                    // }
+                    // Game.printPlacementArray(Main.AIAttackBoard);
+                    // JOptionPane.showMessageDialog(frame, "Your game has been saved. You may
+                    // either ex"t out or keep on playing.);
+                    // JOptionPane.showMessageDialog(frame, "Your files have been saved in two files
+                    // called Info" + inputInt + ".txt and Grids"+inputInt+".txt");
+                    // JOptionPane.showMessageDialog(frame, "Please DO NOT tamper with the two files
+                    // or your data may be PERMANENTLY lost");
+
+                    break;
+                case JOptionPane.NO_OPTION:
+                    System.out.println("No");
+                    break;
+            }
+
         }
-        
-        Main.roundOver=!Main.roundOver;	
 
-        
-        
+        Main.roundOver = !Main.roundOver;
+
         nextBtn.addActionListener(e -> {
             reInitFrame(window, nextBtn, currentTurn, AIAttack, playerAttack, AIScore, playerScore);
         });
@@ -289,17 +292,18 @@ public class GUI {
     public static void initScore(JLabel score, int xPosition, int yPosition, boolean isAi) {
         String displayScore = "";
         if (isAi) {
-            displayScore = "Hits/Misses/Ships left: "
-                    + String.valueOf(Main.AIHit + " / " + Main.AIMiss + " / " + Main.getPlayerShipsAlive().size());
+            displayScore = "Total shots/Hits/Misses/Ships left: "
+                    + String.valueOf(Main.AIShot + "/ " + Main.AIHit + " / " + Main.AIMiss + " / "
+                            + Main.getPlayerShipsAlive().size());
         } else {
-            displayScore = "Hits/Misses/Ships left: "
-                    + String.valueOf(Main.PlayerHit + " / " + Main.PlayerMiss + " / " + Main.shipsAlive.size());
+            displayScore = "Total shots/Hits/Misses/Ships left: "
+                    + String.valueOf(Main.PlayerShot + "/" + Main.PlayerHit + " / " + Main.PlayerMiss + " / "
+                            + Main.shipsAlive.size());
         }
-        score.setBounds(xPosition, yPosition, 300, 20);
+        score.setBounds(xPosition, yPosition, 500, 20);
         score.setText(displayScore);
-        score.setFont(customFont[18]);
+        score.setFont(customFont[16]);
         score.setVisible(true);
-
     }
 
     public static void AIHitInit() {
@@ -386,12 +390,12 @@ public class GUI {
                                                     Main.playerShipsAlive);
                                             String AIHitString = "You hit " + JLabelCoordinateString(k, g) + ". "
                                                     + bruhman + ". Please press next turn to continue.";
-                                            AIHitInit();
                                             AIHit.setText(AIHitString);
+                                            AIHitInit();
                                             // AIHit.setHorizontalAlignment(JLabel.CENTER);
                                             // Main.isPlayersTurn = false;
+                                            nextBtn.setEnabled(true);
                                         }
-                                        nextBtn.setEnabled(true);
                                     } else {
                                         // if already fired
                                         JOptionPane.showMessageDialog(frame,
