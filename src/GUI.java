@@ -258,12 +258,13 @@ public class GUI {
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 10; j++) {
                 JButton cur = displayArray[i][j];
-                window.getContentPane().remove(cur);
+                cur.setEnabled(false);
                 cur.setVisible(false);
+                window.getContentPane().remove(cur);
             }
         }
-        // window.getContentPane().revalidate();
-        // window.getContentPane().repaint();
+        window.getContentPane().revalidate();
+        window.getContentPane().repaint();
         window.getContentPane().setBackground(Color.WHITE);
         window.setLocationRelativeTo(null);
     }
@@ -324,12 +325,15 @@ public class GUI {
     }
 
     public static void endingScreen(JFrame window, Boolean AIwon, Boolean AITIE) {
-        window.getContentPane().removeAll();
         removeArray(displayArrayAIAttack, window);
         removeArray(displayArrayPlayerAttack, window);
+        AIIcon.setEnabled(false);
+        playerIcon.setEnabled(false);
+        window.getContentPane().removeAll();
+
         window.getContentPane().remove(AIIcon);
         window.getContentPane().remove(playerIcon);
-        window.getContentPane().revalidate();
+        window.getContentPane().validate();
         window.getContentPane().repaint();
         window.getContentPane().setBackground(Color.WHITE);
         window.setLocationRelativeTo(null);
@@ -382,31 +386,34 @@ public class GUI {
 
     // TODO: ORGANIZE AND MAKE IT LESS BAD
     public static void display(JFrame window) throws IOException {
-    	
+
         if (Main.shipsAlive.size() == 0) {
             System.out.println("AI lost, player wins");
 
-            endingScreen(window, true, false);
-
+            endingScreen(window, false, false);
+            return;
         }
         if (Main.playerShipsAlive.size() == 0) {
             System.out.println("AI won, player lost");
 
             endingScreen(window, true, false);
+            return;
         }
         if (Main.shipsAlive.size() == 0 && Main.playerShipsAlive.size() == 0) {
             System.out.println("AI and player tie.");
 
             endingScreen(window, true, true);
+            return;
         }
-        saveGame=new JButton ("Save Game");
+      
+        saveGame = new JButton("Save Game");
         saveGame.setBounds(760, 25, 200, 45);
         saveGame.setFont(customFont[16]);
         saveGame.setForeground(Color.black);
         saveGame.setBackground(accent);
         saveGame.setBorder(new RoundedBorder(30));
         saveGame.setVisible(true);
-        
+
         JLabel currentTurn = new JLabel();
         currentTurn.setBounds(790, 660, 300, 30);
         currentTurn.setFont(customFont[22]);
@@ -557,13 +564,14 @@ public class GUI {
             AIHit.setHorizontalAlignment(JLabel.CENTER);
         }
 
-        //less invasive save game
-        
+        // less invasive save game
+
         saveGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-            	int inputInt=0;
-                int result = JOptionPane.showConfirmDialog(null, "Do you want to save your game? Please make sure you are saving your game after you or the AI moved");
+                int inputInt = 0;
+                int result = JOptionPane.showConfirmDialog(null,
+                        "Do you want to save your game? Please make sure you are saving your game after you or the AI moved");
                 switch (result) {
                     case JOptionPane.YES_OPTION:
                         System.out.println("Yes");
@@ -580,66 +588,72 @@ public class GUI {
                             }
                         }
 
-                         try {
-                         FileHandling.saveGame(inputInt);
-                         } catch (Exception e1) {
-                         // TODO Auto-generated catch block
-                         e1.printStackTrace();
-                         }
-                         Game.printPlacementArray(Main.AIAttackBoard);
-                         JOptionPane.showMessageDialog(frame, "Your game has been saved. You may either ext out or keep on playing.");
-                         JOptionPane.showMessageDialog(frame, "Your files have been saved in two filescalled Info" + inputInt + ".txt and Grids"+inputInt+".txt");
-                         JOptionPane.showMessageDialog(frame, "Please DO NOT tamper with the two filesor your data may be PERMANENTLY lost");
+                        try {
+                            FileHandling.saveGame(inputInt);
+                        } catch (Exception e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
+                        Game.printPlacementArray(Main.AIAttackBoard);
+                        JOptionPane.showMessageDialog(frame,
+                                "Your game has been saved. You may either ext out or keep on playing.");
+                        JOptionPane.showMessageDialog(frame, "Your files have been saved in two filescalled Info"
+                                + inputInt + ".txt and Grids" + inputInt + ".txt");
+                        JOptionPane.showMessageDialog(frame,
+                                "Please DO NOT tamper with the two filesor your data may be PERMANENTLY lost");
 
                         break;
                     case JOptionPane.NO_OPTION:
                         System.out.println("No");
                         break;
                 }
-            	
-            	
+
             }
         });
-        
-        
+
         // saving game
-//        if (!Main.roundOver) { // save only triggers at the end of each round
-//            int inputInt;
-//            int result = JOptionPane.showConfirmDialog(null, "Do you want to save your game?");
-//            switch (result) {
-//                case JOptionPane.YES_OPTION:
-//                    System.out.println("Yes");
-//                    while (true) {
-//                        String input = JOptionPane.showInputDialog(null,
-//                                "Please the save file number you want to save to. Enter NO if you do not want to save");
-//                        if (input.equals("NO")) {
-//                            break;
-//                        }
-//                        try {
-//                            inputInt = Integer.parseInt(input);
-//                            break;
-//                        } catch (Exception e) {
-//                        }
-//                    }
-//
-//                     try {
-//                     FileHandling.saveGame(inputInt);
-//                     } catch (Exception e1) {
-//                     // TODO Auto-generated catch block
-//                     e1.printStackTrace();
-//                     }
-//                     Game.printPlacementArray(Main.AIAttackBoard);
-//                     JOptionPane.showMessageDialog(frame, "Your game has been saved. You may either ext out or keep on playing.");
-//                     JOptionPane.showMessageDialog(frame, "Your files have been saved in two filescalled Info" + inputInt + ".txt and Grids"+inputInt+".txt");
-//                     JOptionPane.showMessageDialog(frame, "Please DO NOT tamper with the two filesor your data may be PERMANENTLY lost");
-//
-//                    break;
-//                case JOptionPane.NO_OPTION:
-//                    System.out.println("No");
-//                    break;
-//            }
-//
-//        }
+        // if (!Main.roundOver) { // save only triggers at the end of each round
+        // int inputInt;
+        // int result = JOptionPane.showConfirmDialog(null, "Do you want to save your
+        // game?");
+        // switch (result) {
+        // case JOptionPane.YES_OPTION:
+        // System.out.println("Yes");
+        // while (true) {
+        // String input = JOptionPane.showInputDialog(null,
+        // "Please the save file number you want to save to. Enter NO if you do not want
+        // to save");
+        // if (input.equals("NO")) {
+        // break;
+        // }
+        // try {
+        // inputInt = Integer.parseInt(input);
+        // break;
+        // } catch (Exception e) {
+        // }
+        // }
+        //
+        // try {
+        // FileHandling.saveGame(inputInt);
+        // } catch (Exception e1) {
+        // // TODO Auto-generated catch block
+        // e1.printStackTrace();
+        // }
+        // Game.printPlacementArray(Main.AIAttackBoard);
+        // JOptionPane.showMessageDialog(frame, "Your game has been saved. You may
+        // either ext out or keep on playing.");
+        // JOptionPane.showMessageDialog(frame, "Your files have been saved in two
+        // filescalled Info" + inputInt + ".txt and Grids"+inputInt+".txt");
+        // JOptionPane.showMessageDialog(frame, "Please DO NOT tamper with the two
+        // filesor your data may be PERMANENTLY lost");
+        //
+        // break;
+        // case JOptionPane.NO_OPTION:
+        // System.out.println("No");
+        // break;
+        // }
+        //
+        // }
 
         Main.roundOver = !Main.roundOver;
 
