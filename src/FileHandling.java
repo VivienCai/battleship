@@ -37,8 +37,9 @@ public class FileHandling {
                     continue;
                 } else {
                     Coordinate cur = Main.AIAttackBoard[i][j];
-                    boolean isShip = cur.getIsShip(), isHit = cur.getIsHit();
-                    if (isHit && isShip) {
+                    boolean isShip = cur.getIsShip(), isHit = cur.getIsHit(), isSunk = cur.getIsSunk(),
+                            isUnique = cur.getIsUnique();
+                    if ((isHit && isShip) || (isHit && isSunk) || isUnique) {
                         text2.print("X ");
                     } else if (isHit && !isShip) {
                     	text2.print("M ");
@@ -59,6 +60,8 @@ public class FileHandling {
 	//resumes all info but boards
  	File infoFile = new java.io.File("info" + fileNumber+".txt");              //miht not work for diff comps
 		Scanner fsc = new Scanner(infoFile);
+		Main.isPlayersTurn=fsc.nextBoolean();
+		Main.easyMode=fsc.nextBoolean();
 		Main.AIFirst=fsc.nextBoolean();
 		AI.isHunting=fsc.nextBoolean();
 		Main.AIShot= fsc.nextInt();
@@ -298,7 +301,8 @@ public class FileHandling {
 		Scanner sc = new Scanner(System.in);
         System.out.println("Which save file would you like to save to? Please enter a number greater than 1.");
         PrintWriter text = new PrintWriter("Info" + fileNumber + ".txt");
-
+        text.println(!Main.isPlayersTurn);
+        text.println(Main.easyMode);
         text.println(Main.AIFirst);
         text.println(AI.isHunting);
         text.println(Main.AIShot + " " + Main.AIHit + " " + Main.AIMiss);
@@ -368,7 +372,7 @@ public class FileHandling {
         text.close();
 
         FileHandling.saveBoards(fileNumber);
-
+        Game.printPlacementArray(Main.AIAttackBoard);
         System.out.println(
                 "Thank you for playing our battleship game and we are sorry to see you go. Please come back soon");
         System.out.println("Your files have been saved in 2 fileS called Info" + fileNumber + ".txt and Grids"

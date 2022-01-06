@@ -153,6 +153,7 @@ public class MainMenu {
 
         AIFirst.setBounds(10, 10, 100, 100);
         AIFirst.setFont(GUI.customFont[12]);
+        
         AIFirst.addActionListener(e -> {
             submitBtn.setEnabled(true);
             selected = true;

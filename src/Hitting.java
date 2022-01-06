@@ -230,8 +230,8 @@ public class Hitting extends AI {
     	Random rand = new Random();
     	
     	while(true) {
-    		int xCoord =  rand.nextInt(1+10)+1;
-    		int yCoord =  rand.nextInt(1+10)+1;
+    		int xCoord =  rand.nextInt(0+10)+1;
+    		int yCoord =  rand.nextInt(0+10)+1;
     		
     		Coordinate c = Main.AIAttackBoard[yCoord][xCoord];
     		if (!c.getIsHit()) {  //if it is not already hit
