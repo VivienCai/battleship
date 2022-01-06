@@ -45,6 +45,8 @@ public class FileHandling {
                     	text2.print("M ");
                     } else if (!isHit && isShip) {
                     	text2.print("S ");
+                    } else if(isSunk) {
+                    	text2.print("D ");
                     } else {
                     	text2.print("O ");
                     }
@@ -137,7 +139,7 @@ public class FileHandling {
 		for(int i=0;i<size;i++) {
 			int xCoord=fsc.nextInt();
 			int yCoord=fsc.nextInt();
-			Coordinate coord=new Coordinate(xCoord, yCoord);
+			Coordinate coord=new Coordinate(yCoord, xCoord);
 			AI.uniqueHitPoints.add(i,coord);
 		}
 		
@@ -192,107 +194,6 @@ public class FileHandling {
 		}		
  	}
  
- 
- 
- 
- 
- 
-	public static void resumeBoards(int fileNumber) throws Exception {
-		File gridFile = new java.io.File("Grids" + fileNumber+".txt");						//same with this
-		String testarr[][]=new String[11][11];
-		String testarr2[][]=new String[11][11];
-
-		Scanner fsc = new Scanner(gridFile);
-		boolean isShip;
-		boolean isHit;
-		String next;
-		
-		//Resumes player attack board
-		for (int i=1;i<11;i++) {
-			for (int j=1;j<11;j++) {
-				next =fsc.next();
-				if(next.equals("O")) {
-					isShip=false;
-					isHit=false;
-					testarr[i][j]="O";
-
-				} 
-				else if(next.equals("M")) {
-					isShip=false;
-					isHit=true;
-					testarr[i][j]="M";
-
-				}
-				else if(next.equals("S")) {
-					isShip=true;
-					isHit=false;
-					testarr[i][j]="S";
-
-				}
-				else {                          //if hit
-					isShip=true;
-					isHit=true;
-					testarr[i][j]="X";
-
-				}
-				Coordinate cur=new Coordinate(i,j);
-				cur.setIsHit(isHit);
-				cur.setIsShip(isShip);
-				Main.playerAttackBoard[i][j]=cur;
-			}
-		}
-		
-		//Converts player attack board to AI placement board
-		for (int i=1;i<11;i++) {
-        	for(int j=1;j<11;j++) {
-        		if(Main.playerAttackBoard[i][j].getIsShip()) {
-        			Main.AIPlacementBoard[i][j].setIsShip(true);
-        		}
-        	}
-        }
-		
-		//gets rid of ships on player attack board
-		for (int i=1;i<11;i++) {
-        	for(int j=1;j<11;j++) {
-        		if(Main.playerAttackBoard[i][j].getIsShip()&&!Main.playerAttackBoard[i][j].getIsHit()) {
-        			Main.playerAttackBoard[i][j].setIsShip(false);
-        		}
-        	}
-        }
-		
-		//gets info for AIHit board
-		for (int i=1;i<11;i++) {
-			for (int j=1;j<11;j++) {
-				next =fsc.next();
-				if(next.equals("O")) {
-					isShip=false;
-					isHit=false;
-					testarr2[i][j]="O";
-
-				} 
-				else if(next.equals("M")) {
-					isShip=false;
-					isHit=true;
-					testarr2[i][j]="M";
-
-				
-				}
-				else {                          //if hit
-					isShip=true;
-					isHit=true;
-					testarr2[i][j]="X";
-
-				}
-				Coordinate cur=new Coordinate(i,j);
-				cur.setIsHit(isHit);
-				cur.setIsShip(isShip);
-				Main.AIAttackBoard[i][j]=cur;
-			}
-		}	
-		System.out.println();
-		System.out.println("Player Attack Board");
-        Game.printPlacementArray(Main.playerAttackBoard);
-	}
 	
 	
 	
@@ -379,4 +280,112 @@ public class FileHandling {
                 + fileNumber + ".txt"); 
         System.out.println("Please DO NOT tamper with the two files or your data may be permanently lost");
     }
+	
+	
+	
+	
+	public static void resumeBoards(int fileNumber) throws Exception {
+		File gridFile = new java.io.File("Grids" + fileNumber+".txt");						//same with this
+		String testarr[][]=new String[11][11];
+		String testarr2[][]=new String[11][11];
+
+		Scanner fsc = new Scanner(gridFile);
+		boolean isShip;
+		boolean isHit;
+		boolean isSunk=false;
+		String next;
+		
+		//Resumes player attack board
+		for (int i=1;i<11;i++) {
+			for (int j=1;j<11;j++) {
+				next =fsc.next();
+				if(next.equals("O")) {
+					isShip=false;
+					isHit=false;
+					testarr[i][j]="O";
+
+				} 
+				else if(next.equals("M")) {
+					isShip=false;
+					isHit=true;
+					testarr[i][j]="M";
+
+				}
+				else if(next.equals("S")) {
+					isShip=true;
+					isHit=false;
+					testarr[i][j]="S";
+
+				}
+				else {                          //if hit
+					isShip=true;
+					isHit=true;
+					testarr[i][j]="X";
+
+				}
+				Coordinate cur=new Coordinate(i,j);
+				cur.setIsHit(isHit);
+				cur.setIsShip(isShip);
+				Main.playerAttackBoard[i][j]=cur;
+			}
+		}
+		
+		//Converts player attack board to AI placement board
+		for (int i=1;i<11;i++) {
+        	for(int j=1;j<11;j++) {
+        		if(Main.playerAttackBoard[i][j].getIsShip()) {
+        			Main.AIPlacementBoard[i][j].setIsShip(true);
+        		}
+        	}
+        }
+		
+		//gets rid of ships on player attack board
+		for (int i=1;i<11;i++) {
+        	for(int j=1;j<11;j++) {
+        		if(Main.playerAttackBoard[i][j].getIsShip()&&!Main.playerAttackBoard[i][j].getIsHit()) {
+        			Main.playerAttackBoard[i][j].setIsShip(false);
+        		}
+        	}
+        }
+		
+		//gets info for AIHit board
+		for (int i=1;i<11;i++) {
+			for (int j=1;j<11;j++) {
+				next =fsc.next();
+				if(next.equals("O")) {
+					isShip=false;
+					isHit=false;
+					testarr2[i][j]="O";
+
+				} 
+				else if(next.equals("M")) {
+					isShip=false;
+					isHit=true;
+					testarr2[i][j]="M";
+					
+				}
+				else if(next.equals("D")) {
+					isHit=true;
+					isShip=true;
+					isSunk=true;
+					
+					
+                }
+				else {                          //if hit
+					isShip=true;
+					isHit=true;
+					testarr2[i][j]="X";
+
+				}
+				Coordinate cur=new Coordinate(i,j);
+				cur.setIsHit(isHit);
+				cur.setIsShip(isShip);
+				cur.setIsSunk(isSunk);
+				Main.AIAttackBoard[i][j]=cur;
+			}
+		}	
+		System.out.println();
+		System.out.println("Player Attack Board");
+        Game.printPlacementArray(Main.playerAttackBoard);
+	}
 }
