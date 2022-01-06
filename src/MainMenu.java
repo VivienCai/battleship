@@ -206,8 +206,9 @@ public class MainMenu {
                     isImageVisible = false;
                     // coinFlipResults();
                     try {
-                    
-                            GUI.display(window);
+                        Placing.place(Main.AIPlacementBoard);
+                        Game.printPlacementArray(Main.AIPlacementBoard);
+                        GUI.display(window);
                         
                     } catch (IOException e) {
                         e.printStackTrace();

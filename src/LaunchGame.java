@@ -11,7 +11,7 @@ public class LaunchGame {
 
 		Main.initArrays();
 		Game.initHitPoint();
-	//	Placing.place(Main.AIPlacementBoard);							moved this somewhere else cause it kept on bugging my file handling
+		// Placing.place(Main.AIPlacementBoard);							//moved this somewhere else cause it kept on bugging my file handling
 	//	Game.printPlacementArray(Main.AIPlacementBoard);
 		GUI.setUpWindow();
 	}

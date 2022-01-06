@@ -12,13 +12,19 @@ public class Placing {
         int y;
         // if vertical
         if (orientationV) {
-            x = (int) ((Math.random() * 10) + 1);
+            x = (int) ((Math.random() * 2) + 1);
+            if (x == 2) {
+                x = 10;
+            }
             y = (int) ((Math.random() * (11 - shipSize)) + 1);
 
         } // if horizontal
         else {
             x = (int) ((Math.random() * (11 - shipSize)) + 1);
-            y = (int) ((Math.random() * 10) + 1);
+            y = (int) ((Math.random() * 2) + 1);
+            if (y==2) {
+                y=10;
+            }
         }
         return new Coordinate(y, x);
     }

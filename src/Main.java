@@ -114,6 +114,7 @@ public class Main {
         // public static void hello() throws Exception{
         // instantiating Coordinate for boards
         // intro message, coin flip, and instruction for input
+        Game.initHitPoint();
         introPrompt();
         // prompt user to "press enter to continue"
         promptEnterKey();
