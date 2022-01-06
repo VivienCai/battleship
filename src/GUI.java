@@ -19,6 +19,8 @@ public class GUI {
     private static JLabel AIHit = new JLabel();
     private static JButton saveGame;
     private static JLabel legendImg = new JLabel(new ImageIcon("legend.png"));
+    private static JButton AIIcon = new JButton(new ImageIcon("ai-150x150.png"));
+    private static JButton playerIcon = new JButton(new ImageIcon("person-150x150.png"));
 
     // protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER",
     // "SUBMARINE", "DESTROYER" };
@@ -92,208 +94,6 @@ public class GUI {
             MainMenu startMenu = new MainMenu(frame);
             startMenu.loadTitleScreen();
         }
-    }
-
-    // TODO: ORGANIZE AND MAKE IT LESS BAD
-    public static void display(JFrame window) throws IOException {
-
-        if (Main.shipsAlive.size() == 0) {
-            System.out.println("AI lost, player wins");
-
-            endingScreen(window, true, false);
-
-        }
-        if (Main.playerShipsAlive.size() == 0) {
-            System.out.println("AI won, player lost");
-
-            endingScreen(window, true, false);
-        }
-        if (Main.shipsAlive.size() == 0 && Main.playerShipsAlive.size() == 0) {
-            System.out.println("AI and player tie.");
-
-            endingScreen(window, true, true);
-        }
-
-        JLabel currentTurn = new JLabel();
-        currentTurn.setBounds(790, 660, 300, 30);
-        currentTurn.setFont(customFont[22]);
-
-        legendImg.setBounds(30, 570, 220, 200);
-        JButton nextBtn = new JButton("Next turn");
-        // JButton nextBtn;
-        // BufferedImage buttonIcon = ImageIO.read(new File("vsj.png"));
-        // Image img = icon.getImage();
-        // Image newimg = img.getScaledInstance(NEW_WIDTH, NEW_HEIGHT,
-        // java.awt.Image.SCALE_SMOOTH);
-        // icon = new ImageIcon(newimg);
-
-        // nextBtn = new JButton(new ImageIcon(buttonIcon));
-
-        initNextBtn(nextBtn);
-        AIHitInit();
-        // nextBtn.setBorderPainted(false);
-
-        displayArray(Main.playerAttackBoard, displayArrayPlayerAttack, 100, 55, window, true, nextBtn);
-        displayArray(Main.AIAttackBoard, displayArrayAIAttack, 100, 540, window, false, nextBtn);
-
-        JLabel AIAttack = new JLabel();
-        initArrayNames(AIAttack, 540, 45, "Your Home Board");
-        JLabel playerAttack = new JLabel();
-        initArrayNames(playerAttack, 55, 45, "Your Attack Board");
-
-        JLabel AIScore = new JLabel();
-        initScore(AIScore, 540, 85, true);
-
-        JLabel playerScore = new JLabel();
-        initScore(playerScore, 55, 85, false);
-
-        if (!Main.isPlayersTurn) {
-            currentTurn.setText("It is AIsha's turn.");
-        } else {
-            currentTurn.setText("It is your turn.");
-            AIHit.setText("Pick a point to fire at on the attack board.");
-            // AIHitInit();
-        }
-
-        currentTurn.setVisible(true);
-        legendImg.setVisible(true);
-
-        window.getContentPane().add(legendImg);
-        window.getContentPane().add(AIHit);
-        window.getContentPane().add(nextBtn);
-        window.getContentPane().add(currentTurn);
-        window.getContentPane().add(AIAttack);
-        window.getContentPane().add(playerAttack);
-        window.getContentPane().add(AIScore);
-        window.getContentPane().add(playerScore);
-
-        nextBtn.setEnabled(false);
-
-        // AI's TURN
-        if (!Main.isPlayersTurn) {
-            alreadyFired = false;
-            if (AI.isHunting) {
-                // to determine if there are "unique" points (points that are of different
-                // ships)
-                if (AI.uniqueHitPoints.size() > 0) {
-                    Coordinate hello = AI.uniqueHitPoints.get(0);
-                    String ship = AI.shipsHit.get(0);
-                    h = Hunting.huntGUI(hello, ship);
-                } else {
-                    System.out.println("Some error occured ur so fcked hahsldkfjalsdkjf");
-                }
-                // otherwise run the hit algorithm which is the one that uses probability
-                // density
-            } else {
-                // ai generate a hit using hit or hunt
-                if (Main.easyMode) {
-                    h = Hitting.findProbabilityGUIEasy();
-
-                } else {
-                    h = Hitting.findProbabilityGUI();
-                }
-
-            }
-
-            int y = h.getY();
-            int x = h.getX();
-            String AIHitString = "AIsha hit " + JLabelCoordinateString(y, x) + ". Is it a hit, miss, or sink?";
-            JLabel label = new JLabel(AIHitString);
-            label.setFont(customFont[14]);
-
-            // AIHit.setBounds(x, y, width, height);
-            AIHit.setHorizontalAlignment(JLabel.CENTER);
-            // AIHit.setVerticalAlignment(600);
-
-            AIHit.setText(AIHitString);
-            String[] hitOrMiss = { "Hit", "Miss", "Sink" };
-            int index = JOptionPane.showOptionDialog(window, label, "AIsha Hit", JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE, null, hitOrMiss, hitOrMiss[0]);
-            if (index == 0 || index == 2) {
-                System.out.println("was a hit");
-
-                JLabel label2 = new JLabel("What ship did AIsha hit?");
-                label2.setFont(customFont[16]);
-                int shipIndex = JOptionPane.showOptionDialog(window, label2, "What ship?",
-                        JOptionPane.DEFAULT_OPTION,
-                        JOptionPane.INFORMATION_MESSAGE, null, getShips(), getShips()[0]);
-
-                if (index == 0) {
-                    AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
-                            + ". It hit your " + Game.shipOf(shipIndex) + ". Please click next turn to continue.");
-                } else {
-                    AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
-                            + ". It sunk your " + Game.shipOf(shipIndex) + ". Please click next turn to continue.");
-                }
-
-                if (!AI.isHunting) {
-                    Hitting.getInputGUI(h, index, shipIndex);
-
-                } else {
-                    Hunting.getInputGUI(h, index, shipIndex);
-
-                }
-            } else if (index == 1) {
-                Main.AIAttackBoard[y][x].setIsHit(true);
-                Main.AIMiss++;
-                Main.AIShot++;
-                AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
-                        + ". It missed. Please click next turn to continue.");
-            }
-            nextBtn.setEnabled(true);
-            // AIHitInit();
-        } else {
-            AIHit.setHorizontalAlignment(JLabel.CENTER);
-        }
-        saveGame = new JButton("Save Game");
-
-        // saving game
-        if (!Main.roundOver) { // save only triggers at the end of each round
-            int inputInt;
-            int result = JOptionPane.showConfirmDialog(null, "Do you want to save your game?");
-            switch (result) {
-                case JOptionPane.YES_OPTION:
-                    System.out.println("Yes");
-                    while (true) {
-                        String input = JOptionPane.showInputDialog(null,
-                                "Please the save file number you want to save to. Enter NO if you do not want to save");
-                        if (input.equals("NO")) {
-                            break;
-                        }
-                        try {
-                            inputInt = Integer.parseInt(input);
-                            break;
-                        } catch (Exception e) {
-                        }
-                    }
-
-                    // try {
-                    // FileHandling.saveGame(inputInt);
-                    // } catch (Exception e1) {
-                    // // TODO Auto-generated catch block
-                    // e1.printStackTrace();
-                    // }
-                    // Game.printPlacementArray(Main.AIAttackBoard);
-                    // JOptionPane.showMessageDialog(frame, "Your game has been saved. You may
-                    // either ex"t out or keep on playing.);
-                    // JOptionPane.showMessageDialog(frame, "Your files have been saved in two files
-                    // called Info" + inputInt + ".txt and Grids"+inputInt+".txt");
-                    // JOptionPane.showMessageDialog(frame, "Please DO NOT tamper with the two files
-                    // or your data may be PERMANENTLY lost");
-
-                    break;
-                case JOptionPane.NO_OPTION:
-                    System.out.println("No");
-                    break;
-            }
-
-        }
-
-        Main.roundOver = !Main.roundOver;
-
-        nextBtn.addActionListener(e -> {
-            reInitFrame(window, nextBtn, currentTurn, AIAttack, playerAttack, AIScore, playerScore);
-        });
     }
 
     public static void initScore(JLabel score, int xPosition, int yPosition, boolean isAi) {
@@ -498,6 +298,8 @@ public class GUI {
         window.getContentPane().remove(AIScore);
         window.getContentPane().remove(PlayerScore);
         window.getContentPane().remove(legendImg);
+        window.getContentPane().remove(AIIcon);
+        window.getContentPane().remove(playerIcon);
 
         // legendImg.setVisible(false);
         AIHit.setVisible(false);
@@ -522,6 +324,10 @@ public class GUI {
 
     public static void endingScreen(JFrame window, Boolean AIwon, Boolean AITIE) {
         window.getContentPane().removeAll();
+        removeArray(displayArrayAIAttack, window);
+        removeArray(displayArrayPlayerAttack, window);
+        window.getContentPane().remove(AIIcon);
+        window.getContentPane().remove(playerIcon);
         window.getContentPane().revalidate();
         window.getContentPane().repaint();
         window.getContentPane().setBackground(Color.WHITE);
@@ -547,6 +353,7 @@ public class GUI {
                 + "\nNumber of ships left: "
                 + Main.shipsAlive.size());
         AIstats.setBounds(695, 320, 250, 200);
+        AIstats.setEditable(false);
         AIstats.setFont(GUI.customFont[20]);
 
         JTextPane playerStats = new JTextPane();
@@ -554,12 +361,14 @@ public class GUI {
                 "Total shots: " + Main.PlayerShot + "\nHits:  " + Main.PlayerHit + " \nMisses: " + Main.PlayerMiss
                         + "\nNumber of ships left: "
                         + Main.getPlayerShipsAlive().size());
+        playerStats.setEditable(false);
         playerStats.setBounds(425, 320, 250, 200);
         playerStats.setFont(GUI.customFont[20]);
 
         AIstats.setVisible(true);
         playerStats.setVisible(true);
         bkgImageContainer.setVisible(true);
+
         window.getContentPane().add(AIstats);
         window.getContentPane().add(playerStats);
         window.getContentPane().add(bkgImageContainer);
@@ -568,6 +377,225 @@ public class GUI {
         window.getContentPane().revalidate();
         window.getContentPane().repaint();
         window.setLocationRelativeTo(null);
+    }
+
+    // TODO: ORGANIZE AND MAKE IT LESS BAD
+    public static void display(JFrame window) throws IOException {
+
+        if (Main.shipsAlive.size() == 0) {
+            System.out.println("AI lost, player wins");
+
+            endingScreen(window, true, false);
+
+        }
+        if (Main.playerShipsAlive.size() == 0) {
+            System.out.println("AI won, player lost");
+
+            endingScreen(window, true, false);
+        }
+        if (Main.shipsAlive.size() == 0 && Main.playerShipsAlive.size() == 0) {
+            System.out.println("AI and player tie.");
+
+            endingScreen(window, true, true);
+        }
+
+        JLabel currentTurn = new JLabel();
+        currentTurn.setBounds(790, 660, 300, 30);
+        currentTurn.setFont(customFont[22]);
+
+        legendImg.setBounds(30, 570, 220, 200);
+        playerIcon.setBounds(500, 620, 150, 150);
+        AIIcon.setBounds(350, 620, 150, 150);
+
+        AIIcon.setBorderPainted(false);
+        AIIcon.setBackground(Color.WHITE);
+
+        playerIcon.setBorderPainted(false);
+        playerIcon.setBackground(Color.WHITE);
+
+        // JButton nextBtn;
+        // BufferedImage buttonIcon = ImageIO.read(new File("vsj.png"));
+        // Image img = icon.getImage();
+        // Image newimg = img.getScaledInstance(NEW_WIDTH, NEW_HEIGHT,
+        // java.awt.Image.SCALE_SMOOTH);
+        // icon = new ImageIcon(newimg);
+
+        // nextBtn = new JButton(new ImageIcon(buttonIcon));
+
+        JButton nextBtn = new JButton("Next turn");
+        initNextBtn(nextBtn);
+        AIHitInit();
+        // nextBtn.setBorderPainted(false);
+
+        displayArray(Main.playerAttackBoard, displayArrayPlayerAttack, 100, 55, window, true, nextBtn);
+        displayArray(Main.AIAttackBoard, displayArrayAIAttack, 100, 540, window, false, nextBtn);
+
+        JLabel AIAttack = new JLabel();
+        initArrayNames(AIAttack, 540, 45, "Your Home Board");
+        JLabel playerAttack = new JLabel();
+        initArrayNames(playerAttack, 55, 45, "Your Attack Board");
+
+        JLabel AIScore = new JLabel();
+        initScore(AIScore, 540, 85, true);
+
+        JLabel playerScore = new JLabel();
+        initScore(playerScore, 55, 85, false);
+
+        if (!Main.isPlayersTurn) {
+            currentTurn.setText("It is AIsha's turn.");
+        } else {
+            currentTurn.setText("It is your turn.");
+            AIHit.setText("Pick a point to fire at on the attack board.");
+            // AIHitInit();
+        }
+
+        currentTurn.setVisible(true);
+        legendImg.setVisible(true);
+        AIIcon.setVisible(true);
+        playerIcon.setVisible(true);
+
+        window.getContentPane().add(AIIcon);
+        window.getContentPane().add(playerIcon);
+        window.getContentPane().add(legendImg);
+        window.getContentPane().add(AIHit);
+        window.getContentPane().add(nextBtn);
+        window.getContentPane().add(currentTurn);
+        window.getContentPane().add(AIAttack);
+        window.getContentPane().add(playerAttack);
+        window.getContentPane().add(AIScore);
+        window.getContentPane().add(playerScore);
+
+        nextBtn.setEnabled(false);
+
+        // AI's TURN
+        if (!Main.isPlayersTurn) {
+            playerIcon.setEnabled(false);
+            AIIcon.setEnabled(true);
+            alreadyFired = false;
+            if (AI.isHunting) {
+                // to determine if there are "unique" points (points that are of different
+                // ships)
+                if (AI.uniqueHitPoints.size() > 0) {
+                    Coordinate hello = AI.uniqueHitPoints.get(0);
+                    String ship = AI.shipsHit.get(0);
+                    h = Hunting.huntGUI(hello, ship);
+                } else {
+                    System.out.println("Some error occured ur so fcked hahsldkfjalsdkjf");
+                }
+                // otherwise run the hit algorithm which is the one that uses probability
+                // density
+            } else {
+                // ai generate a hit using hit or hunt
+                if (Main.easyMode) {
+                    h = Hitting.findProbabilityGUIEasy();
+
+                } else {
+                    h = Hitting.findProbabilityGUI();
+                }
+
+            }
+
+            int y = h.getY();
+            int x = h.getX();
+            String AIHitString = "AIsha hit " + JLabelCoordinateString(y, x) + ". Is it a hit, miss, or sink?";
+            JLabel label = new JLabel(AIHitString);
+            label.setFont(customFont[14]);
+
+            // AIHit.setBounds(x, y, width, height);
+            AIHit.setHorizontalAlignment(JLabel.CENTER);
+            // AIHit.setVerticalAlignment(600);
+
+            AIHit.setText(AIHitString);
+            String[] hitOrMiss = { "Hit", "Miss", "Sink" };
+            int index = JOptionPane.showOptionDialog(window, label, "AIsha Hit", JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, null, hitOrMiss, hitOrMiss[0]);
+            if (index == 0 || index == 2) {
+                System.out.println("was a hit");
+
+                JLabel label2 = new JLabel("What ship did AIsha hit?");
+                label2.setFont(customFont[16]);
+                int shipIndex = JOptionPane.showOptionDialog(window, label2, "What ship?",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE, null, getShips(), getShips()[0]);
+
+                if (index == 0) {
+                    AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
+                            + ". It hit your " + Game.shipOf(shipIndex) + ". Please click next turn to continue.");
+                } else {
+                    AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
+                            + ". It sunk your " + Game.shipOf(shipIndex) + ". Please click next turn to continue.");
+                }
+
+                if (!AI.isHunting) {
+                    Hitting.getInputGUI(h, index, shipIndex);
+
+                } else {
+                    Hunting.getInputGUI(h, index, shipIndex);
+
+                }
+            } else if (index == 1) {
+                Main.AIAttackBoard[y][x].setIsHit(true);
+                Main.AIMiss++;
+                Main.AIShot++;
+                AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
+                        + ". It missed. Please click next turn to continue.");
+            }
+            nextBtn.setEnabled(true);
+            // AIHitInit();
+        } else {
+            playerIcon.setEnabled(true);
+            AIIcon.setEnabled(false);
+            AIHit.setHorizontalAlignment(JLabel.CENTER);
+        }
+        saveGame = new JButton("Save Game");
+
+        // saving game
+        if (!Main.roundOver) { // save only triggers at the end of each round
+            int inputInt;
+            int result = JOptionPane.showConfirmDialog(null, "Do you want to save your game?");
+            switch (result) {
+                case JOptionPane.YES_OPTION:
+                    System.out.println("Yes");
+                    while (true) {
+                        String input = JOptionPane.showInputDialog(null,
+                                "Please the save file number you want to save to. Enter NO if you do not want to save");
+                        if (input.equals("NO")) {
+                            break;
+                        }
+                        try {
+                            inputInt = Integer.parseInt(input);
+                            break;
+                        } catch (Exception e) {
+                        }
+                    }
+
+                    // try {
+                    // FileHandling.saveGame(inputInt);
+                    // } catch (Exception e1) {
+                    // // TODO Auto-generated catch block
+                    // e1.printStackTrace();
+                    // }
+                    // Game.printPlacementArray(Main.AIAttackBoard);
+                    // JOptionPane.showMessageDialog(frame, "Your game has been saved. You may
+                    // either ex"t out or keep on playing.);
+                    // JOptionPane.showMessageDialog(frame, "Your files have been saved in two files
+                    // called Info" + inputInt + ".txt and Grids"+inputInt+".txt");
+                    // JOptionPane.showMessageDialog(frame, "Please DO NOT tamper with the two files
+                    // or your data may be PERMANENTLY lost");
+
+                    break;
+                case JOptionPane.NO_OPTION:
+                    System.out.println("No");
+                    break;
+            }
+
+        }
+
+        Main.roundOver = !Main.roundOver;
+
+        nextBtn.addActionListener(e -> {
+            reInitFrame(window, nextBtn, currentTurn, AIAttack, playerAttack, AIScore, playerScore);
+        });
     }
 
 }
