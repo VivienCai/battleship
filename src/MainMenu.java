@@ -205,13 +205,13 @@ public class MainMenu {
                     window.setLocationRelativeTo(null);
                     isImageVisible = false;
                     // coinFlipResults();
-                    // GUI.endingScreen(window, "TESTING YASSSSSSSSSSSS");
+                    // GUI.endingScreen(window, false, true);
                     try {
-                        Placing.place(Main.AIPlacementBoard);
-                        Game.printPlacementArray(Main.AIPlacementBoard);
-                        GUI.display(window);
+                    Placing.place(Main.AIPlacementBoard);
+                    Game.printPlacementArray(Main.AIPlacementBoard);
+                    GUI.display(window);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                    e.printStackTrace();
                     }
                 }
 

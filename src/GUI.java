@@ -100,18 +100,18 @@ public class GUI {
         if (Main.shipsAlive.size() == 0) {
             System.out.println("AI lost, player wins");
             endString = "AI lost, player wins";
-            endingScreen(window, endString);
+            endingScreen(window, true, false);
 
         }
         if (Main.playerShipsAlive.size() == 0) {
             System.out.println("AI won, player lost");
             endString = "AI won, player lost";
-            endingScreen(window, endString);
+            endingScreen(window, true, false);
         }
         if (Main.shipsAlive.size() == 0 && Main.playerShipsAlive.size() == 0) {
             System.out.println("AI and player tie.");
             endString = "AI and player tie.";
-            endingScreen(window, endString);
+            endingScreen(window, true, true);
         }
 
         JLabel currentTurn = new JLabel();
@@ -516,25 +516,49 @@ public class GUI {
 
     }
 
-    public static void endingScreen(JFrame window, String endString) {
+    public static void endingScreen(JFrame window, Boolean AIwon, Boolean AITIE) {
         window.getContentPane().removeAll();
         window.getContentPane().revalidate();
         window.getContentPane().repaint();
         window.getContentPane().setBackground(Color.WHITE);
         window.setLocationRelativeTo(null);
 
-        // backgroundImageIcon = new ImageIcon("Title.png");
+        ImageIcon backgroundImageIcon;
+        if (AIwon && !AITIE) {
+            backgroundImageIcon = new ImageIcon("AIWON.png");
+        } else if (!AIwon && !AITIE) {
+            backgroundImageIcon = new ImageIcon("PLAYERWIN.png");
+        } else {
+            backgroundImageIcon = new ImageIcon("TIE.png");
+        }
 
-        JLabel end = new JLabel(endString);
-        end.setSize(500, 100);
-        end.setBounds(JLabel.CENTER + 200, 350, 600, 30);
-        end.setFont(GUI.customFont[40]);
+        JLabel bkgImageContainer = new JLabel(backgroundImageIcon);
+        bkgImageContainer.setSize(window.getContentPane().getWidth(),
+                window.getContentPane().getHeight());
+        bkgImageContainer.setLocation(0, 20);
+        bkgImageContainer.setVisible(true);
 
-        end.setVisible(true);
-        window.getContentPane().add(end);
+        JTextPane AIstats = new JTextPane();
+        AIstats.setText("Total shots: " + Main.AIShot + "\nHits:  " + Main.AIHit + " \nMisses: " + Main.AIMiss
+                + "\nNumber of ships left: "
+                + Main.shipsAlive.size());
+        AIstats.setBounds(695, 320, 250, 200);
+        AIstats.setFont(GUI.customFont[20]);
 
-        end.setHorizontalAlignment(JLabel.CENTER);
-        // end.setVerticalAlignment(JLabel.CENTER);
+        JTextPane playerStats = new JTextPane();
+        playerStats.setText(
+                "Total shots: " + Main.PlayerShot + "\nHits:  " + Main.PlayerHit + " \nMisses: " + Main.PlayerMiss
+                        + "\nNumber of ships left: "
+                        + Main.getPlayerShipsAlive().size());
+        playerStats.setBounds(425, 320, 250, 200);
+        playerStats.setFont(GUI.customFont[20]);
+
+        AIstats.setVisible(true);
+        playerStats.setVisible(true);
+        bkgImageContainer.setVisible(true);
+        window.getContentPane().add(AIstats);
+        window.getContentPane().add(playerStats);
+        window.getContentPane().add(bkgImageContainer);
 
         window.setVisible(true);
         window.getContentPane().revalidate();
