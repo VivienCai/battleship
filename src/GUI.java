@@ -18,7 +18,7 @@ public class GUI {
     private static Coordinate h;
     private static JLabel AIHit = new JLabel();
     private static JButton saveGame;
-    private static String endString;
+    private static JLabel legendImg = new JLabel(new ImageIcon("legend.png"));
 
     // protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER",
     // "SUBMARINE", "DESTROYER" };
@@ -99,26 +99,26 @@ public class GUI {
 
         if (Main.shipsAlive.size() == 0) {
             System.out.println("AI lost, player wins");
-            endString = "AI lost, player wins";
+
             endingScreen(window, true, false);
 
         }
         if (Main.playerShipsAlive.size() == 0) {
             System.out.println("AI won, player lost");
-            endString = "AI won, player lost";
+
             endingScreen(window, true, false);
         }
         if (Main.shipsAlive.size() == 0 && Main.playerShipsAlive.size() == 0) {
             System.out.println("AI and player tie.");
-            endString = "AI and player tie.";
+
             endingScreen(window, true, true);
         }
 
         JLabel currentTurn = new JLabel();
-        // JLabel AIHit = new JLabel();
         currentTurn.setBounds(790, 660, 300, 30);
         currentTurn.setFont(customFont[22]);
 
+        legendImg.setBounds(30, 570, 220, 200);
         JButton nextBtn = new JButton("Next turn");
         // JButton nextBtn;
         // BufferedImage buttonIcon = ImageIO.read(new File("vsj.png"));
@@ -156,7 +156,9 @@ public class GUI {
         }
 
         currentTurn.setVisible(true);
+        legendImg.setVisible(true);
 
+        window.getContentPane().add(legendImg);
         window.getContentPane().add(AIHit);
         window.getContentPane().add(nextBtn);
         window.getContentPane().add(currentTurn);
@@ -495,12 +497,14 @@ public class GUI {
         window.getContentPane().remove(playerAttack);
         window.getContentPane().remove(AIScore);
         window.getContentPane().remove(PlayerScore);
+        window.getContentPane().remove(legendImg);
 
+        // legendImg.setVisible(false);
         AIHit.setVisible(false);
         nextBtn.setVisible(false);
         currentTurn.setVisible(false);
-        AIScore.setVisible(false);
-        AIScore.setVisible(false);
+        // AIScore.setVisible(false);
+        // AIScore.setVisible(false);
         window.getContentPane().validate();
         window.getContentPane().repaint();
         window.getContentPane().setBackground(Color.WHITE);
