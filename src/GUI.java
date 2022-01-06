@@ -1,11 +1,8 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.*;
-
 import javax.swing.*;
 import javax.swing.border.*;
-
 import java.util.*;
 
 public class GUI {
@@ -19,9 +16,9 @@ public class GUI {
     private static Coordinate h;
     private static JLabel AIHit = new JLabel();
     private static JButton saveGame;
-    private static JLabel legendImg = new JLabel(new ImageIcon("legend.png"));
-    private static JButton AIIcon = new JButton(new ImageIcon("ai-150x150.png"));
-    private static JButton playerIcon = new JButton(new ImageIcon("person-150x150.png"));
+    private static JLabel legendImg = new JLabel(new ImageIcon("assets/legend.png"));
+    private static JButton AIIcon = new JButton(new ImageIcon("assets/ai-150x150.png"));
+    private static JButton playerIcon = new JButton(new ImageIcon("assets/person-150x150.png"));
 
     // protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER",
     // "SUBMARINE", "DESTROYER" };
@@ -44,14 +41,7 @@ public class GUI {
         return ships;
     }
 
-    public static void initNextBtn(JButton nextBtn) {
-        nextBtn.setBounds(790, 700, 140, 45);
-        nextBtn.setFont(customFont[16]);
-        nextBtn.setForeground(Color.black);
-        nextBtn.setBackground(accent);
-        nextBtn.setBorder(new RoundedBorder(30));
-        nextBtn.setVisible(true);
-    }
+    
 
     public static void setUpWindow() throws Exception {
 
@@ -69,12 +59,7 @@ public class GUI {
 
     }
 
-    public static void initArrayNames(JLabel arrayLabel, int xPosition, int yPosition, String text) {
-        arrayLabel.setBounds(xPosition, yPosition, 200, 50);
-        arrayLabel.setFont(customFont[18]);
-        arrayLabel.setText(text);
-        arrayLabel.setVisible(true);
-    }
+    
 
     public static void startGame() throws Exception {
         for (int i = 0; i < 49; i++) {
@@ -97,32 +82,8 @@ public class GUI {
         }
     }
 
-    public static void initScore(JLabel score, int xPosition, int yPosition, boolean isAi) {
-        String displayScore = "";
-        if (isAi) {
-            displayScore = "Total shots/Hits/Misses/Ships left: "
-                    + String.valueOf(Main.AIShot + " / " + Main.AIHit + " / " + Main.AIMiss + " / "
-                            + Main.getPlayerShipsAlive().size());
-        } else {
-            displayScore = "Total shots/Hits/Misses/Ships left: "
-                    + String.valueOf(Main.PlayerShot + " / " + Main.PlayerHit + " / " + Main.PlayerMiss + " / "
-                            + Main.shipsAlive.size());
-        }
-        score.setBounds(xPosition, yPosition, 500, 20);
-        score.setText(displayScore);
-        score.setFont(customFont[16]);
-        score.setVisible(true);
-    }
 
-    public static void AIHitInit() {
-        AIHit.setFont(customFont[16]);
-        AIHit.setVisible(true);
-        AIHit.setBounds(JLabel.CENTER + 200, 545, 600, 30);
-        // AIHit.setPreferredSize(new Dimension(500, 30));
-        // AIHit.setVerticalAlignment(530);
-        // AIHit.setHorizontalAlignment(JLabel.CENTER);
-
-    }
+    
 
     public static void displayArray(Coordinate array[][], JButton display[][], int yPosition, int xPosition,
             JFrame window, boolean isEnabled, JButton nextBtn) {
@@ -199,7 +160,7 @@ public class GUI {
                                             String AIHitString = "You hit " + JLabelCoordinateString(k, g) + ". "
                                                     + bruhman + ". Please press next turn to continue.";
                                             AIHit.setText(AIHitString);
-                                            AIHitInit();
+                                            InitGUI.AIHitInit(AIHit);
                                             // AIHit.setHorizontalAlignment(JLabel.CENTER);
                                             // Main.isPlayersTurn = false;
                                             nextBtn.setEnabled(true);
@@ -263,32 +224,10 @@ public class GUI {
                 window.getContentPane().remove(cur);
             }
         }
-        window.getContentPane().revalidate();
-        window.getContentPane().repaint();
-        window.getContentPane().setBackground(Color.WHITE);
-        window.setLocationRelativeTo(null);
+        InitGUI.initWindow(window);
     }
 
-    private static class RoundedBorder implements Border {
-
-        private int radius;
-
-        RoundedBorder(int radius) {
-            this.radius = radius;
-        }
-
-        public Insets getBorderInsets(Component c) {
-            return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
-        }
-
-        public boolean isBorderOpaque() {
-            return true;
-        }
-
-        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-            g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
-        }
-    }
+    
 
     public static void reInitFrame(JFrame window, JButton nextBtn, JLabel currentTurn, JLabel AIAttack,
             JLabel playerAttack, JLabel AIScore, JLabel PlayerScore) {
@@ -309,10 +248,7 @@ public class GUI {
         currentTurn.setVisible(false);
         // AIScore.setVisible(false);
         // AIScore.setVisible(false);
-        window.getContentPane().validate();
-        window.getContentPane().repaint();
-        window.getContentPane().setBackground(Color.WHITE);
-        window.setLocationRelativeTo(null);
+        InitGUI.initWindow(window);
         removeArray(displayArrayAIAttack, window);
         removeArray(displayArrayPlayerAttack, window);
         try {
@@ -333,18 +269,15 @@ public class GUI {
 
         window.getContentPane().remove(AIIcon);
         window.getContentPane().remove(playerIcon);
-        window.getContentPane().validate();
-        window.getContentPane().repaint();
-        window.getContentPane().setBackground(Color.WHITE);
-        window.setLocationRelativeTo(null);
+        InitGUI.initWindow(window);
 
         ImageIcon backgroundImageIcon;
         if (AIwon && !AITIE) {
-            backgroundImageIcon = new ImageIcon("AIWON.png");
+            backgroundImageIcon = new ImageIcon("assets/AIWON.png");
         } else if (!AIwon && !AITIE) {
-            backgroundImageIcon = new ImageIcon("PLAYERWIN.png");
+            backgroundImageIcon = new ImageIcon("assets/PLAYERWIN.png");
         } else {
-            backgroundImageIcon = new ImageIcon("TIE.png");
+            backgroundImageIcon = new ImageIcon("assets/TIE.png");
         }
 
         JLabel bkgImageContainer = new JLabel(backgroundImageIcon);
@@ -379,27 +312,28 @@ public class GUI {
         window.getContentPane().add(bkgImageContainer);
 
         window.setVisible(true);
-        window.getContentPane().revalidate();
-        window.getContentPane().repaint();
-        window.setLocationRelativeTo(null);
+        InitGUI.initWindow(window);
     }
 
     // TODO: ORGANIZE AND MAKE IT LESS BAD
     public static void display(JFrame window) throws IOException {
+        JButton nextBtn = new JButton("Next turn");
+        JLabel AIScore = new JLabel();
+        JLabel playerAttack = new JLabel();
+        JLabel AIAttack = new JLabel();
+        JLabel playerScore = new JLabel();
+        JLabel currentTurn = new JLabel();
 
         if (Main.shipsAlive.size() == 0) {
             System.out.println("AI lost, player wins");
-
             endingScreen(window, false, false);
             return;
-        }
-        if (Main.playerShipsAlive.size() == 0) {
+        }else if (Main.playerShipsAlive.size() == 0) {
             System.out.println("AI won, player lost");
 
             endingScreen(window, true, false);
             return;
-        }
-        if (Main.shipsAlive.size() == 0 && Main.playerShipsAlive.size() == 0) {
+        }else if (Main.shipsAlive.size() == 0 && Main.playerShipsAlive.size() == 0) {
             System.out.println("AI and player tie.");
 
             endingScreen(window, true, true);
@@ -411,58 +345,34 @@ public class GUI {
         saveGame.setFont(customFont[16]);
         saveGame.setForeground(Color.black);
         saveGame.setBackground(accent);
-        saveGame.setBorder(new RoundedBorder(30));
+        // TODO: make this class visible to all
+        // saveGame.setBorder(new RoundedBorder(30)); 
         saveGame.setVisible(true);
 
-        JLabel currentTurn = new JLabel();
-        currentTurn.setBounds(790, 660, 300, 30);
         currentTurn.setFont(customFont[22]);
+        currentTurn.setBounds(790, 660, 300, 30);
 
         legendImg.setBounds(30, 570, 220, 200);
-        playerIcon.setBounds(500, 620, 150, 150);
-        AIIcon.setBounds(350, 620, 150, 150);
 
         AIIcon.setBorderPainted(false);
+        AIIcon.setBounds(350, 620, 150, 150);
         AIIcon.setBackground(Color.WHITE);
 
+        playerIcon.setBounds(500, 620, 150, 150);
         playerIcon.setBorderPainted(false);
         playerIcon.setBackground(Color.WHITE);
 
-        // JButton nextBtn;
-        // BufferedImage buttonIcon = ImageIO.read(new File("vsj.png"));
-        // Image img = icon.getImage();
-        // Image newimg = img.getScaledInstance(NEW_WIDTH, NEW_HEIGHT,
-        // java.awt.Image.SCALE_SMOOTH);
-        // icon = new ImageIcon(newimg);
-
-        // nextBtn = new JButton(new ImageIcon(buttonIcon));
-
-        JButton nextBtn = new JButton("Next turn");
-        initNextBtn(nextBtn);
-        AIHitInit();
-        // nextBtn.setBorderPainted(false);
+        InitGUI.initNextBtn(nextBtn);
+        InitGUI.AIHitInit(AIHit);
 
         displayArray(Main.playerAttackBoard, displayArrayPlayerAttack, 100, 55, window, true, nextBtn);
         displayArray(Main.AIAttackBoard, displayArrayAIAttack, 100, 540, window, false, nextBtn);
 
-        JLabel AIAttack = new JLabel();
-        initArrayNames(AIAttack, 540, 45, "Your Home Board");
-        JLabel playerAttack = new JLabel();
-        initArrayNames(playerAttack, 55, 45, "Your Attack Board");
+        InitGUI.initArrayNames(AIAttack, 540, 45, "Your Home Board");
+        InitGUI.initArrayNames(playerAttack, 55, 45, "Your Attack Board");
 
-        JLabel AIScore = new JLabel();
-        initScore(AIScore, 540, 85, true);
-
-        JLabel playerScore = new JLabel();
-        initScore(playerScore, 55, 85, false);
-
-        if (!Main.isPlayersTurn) {
-            currentTurn.setText("It is AIsha's turn.");
-        } else {
-            currentTurn.setText("It is your turn.");
-            AIHit.setText("Pick a point to fire at on the attack board.");
-            // AIHitInit();
-        }
+        InitGUI.initScore(AIScore, 540, 85, true);
+        InitGUI.initScore(playerScore, 55, 85, false);
 
         currentTurn.setVisible(true);
         legendImg.setVisible(true);
@@ -481,20 +391,33 @@ public class GUI {
         window.getContentPane().add(AIScore);
         window.getContentPane().add(playerScore);
 
+        nextBtn.addActionListener(e -> {
+            reInitFrame(window, nextBtn, currentTurn, AIAttack, playerAttack, AIScore, playerScore);
+        });
         nextBtn.setEnabled(false);
+        
+        // setting text 
+        // if (!Main.isPlayersTurn) {
+            
+        // } else {
+            
+        // }
 
         // AI's TURN
         if (!Main.isPlayersTurn) {
+            currentTurn.setText("It is AIsha's turn.");
             playerIcon.setEnabled(false);
             AIIcon.setEnabled(true);
+
             alreadyFired = false;
+
             if (AI.isHunting) {
                 // to determine if there are "unique" points (points that are of different
                 // ships)
                 if (AI.uniqueHitPoints.size() > 0) {
-                    Coordinate hello = AI.uniqueHitPoints.get(0);
+                    Coordinate huntPoint = AI.uniqueHitPoints.get(0);
                     String ship = AI.shipsHit.get(0);
-                    h = Hunting.huntGUI(hello, ship);
+                    h = Hunting.huntGUI(huntPoint, ship);
                 } else {
                     System.out.println("Some error occured ur so fcked hahsldkfjalsdkjf");
                 }
@@ -502,6 +425,7 @@ public class GUI {
                 // density
             } else {
                 // ai generate a hit using hit or hunt
+
                 if (Main.easyMode) {
                     h = Hitting.findProbabilityGUIEasy();
 
@@ -510,18 +434,18 @@ public class GUI {
                 }
 
             }
+            
+            // get x and y
+            int y = h.getY(), x = h.getX();
 
-            int y = h.getY();
-            int x = h.getX();
             String AIHitString = "AIsha hit " + JLabelCoordinateString(y, x) + ". Is it a hit, miss, or sink?";
             JLabel label = new JLabel(AIHitString);
+            
             label.setFont(customFont[14]);
 
-            // AIHit.setBounds(x, y, width, height);
             AIHit.setHorizontalAlignment(JLabel.CENTER);
-            // AIHit.setVerticalAlignment(600);
-
             AIHit.setText(AIHitString);
+
             String[] hitOrMiss = { "Hit", "Miss", "Sink" };
             int index = JOptionPane.showOptionDialog(window, label, "AIsha Hit", JOptionPane.DEFAULT_OPTION,
                     JOptionPane.INFORMATION_MESSAGE, null, hitOrMiss, hitOrMiss[0]);
@@ -556,11 +480,17 @@ public class GUI {
                 AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
                         + ". It missed. Please click next turn to continue.");
             }
+
             nextBtn.setEnabled(true);
-            // AIHitInit();
+
         } else {
+            currentTurn.setText("It is your turn.");
+            
             playerIcon.setEnabled(true);
+            
             AIIcon.setEnabled(false);
+            
+            AIHit.setText("Pick a point to fire at on the attack board.");
             AIHit.setHorizontalAlignment(JLabel.CENTER);
         }
 
@@ -657,9 +587,8 @@ public class GUI {
 
         Main.roundOver = !Main.roundOver;
 
-        nextBtn.addActionListener(e -> {
-            reInitFrame(window, nextBtn, currentTurn, AIAttack, playerAttack, AIScore, playerScore);
-        });
     }
+
+    
 
 }
