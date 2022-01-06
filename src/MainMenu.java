@@ -19,7 +19,7 @@ public class MainMenu {
     private JButton nextBtn;
     private JTextPane results = new JTextPane();
 
-    private JButton AIFirst = new JButton("AI First");;
+    private JButton AIFirst = new JButton("AIsha First");;
     private JButton playerFirst = new JButton("Player First");
 
     private boolean selected = false;
@@ -142,7 +142,7 @@ public class MainMenu {
     }
 
     public void loadCoinFlip() {
-        
+
         backgroundImageIcon = new ImageIcon("coinflip.jpeg");
 
         // backgroundImageIcon = new ImageIcon("Title.png");
@@ -177,16 +177,16 @@ public class MainMenu {
         // headsBtn.setSize(600, 100);
         // headsBtn.setLocation(150, 150);
         // headsBtn.addActionListener(new ActionListener() {
-        //     @Override
-        //     public void actionPerformed(ActionEvent arg0) {
-        //         Main.heads = !Main.heads;
-        //         if (!Main.heads) {
-        //             headsBtn.setText("You have selected tails");
-        //         } else {
-        //             headsBtn.setText("You have selected heads");
-        //         }
-        //         System.out.println(Main.heads);
-        //     }
+        // @Override
+        // public void actionPerformed(ActionEvent arg0) {
+        // Main.heads = !Main.heads;
+        // if (!Main.heads) {
+        // headsBtn.setText("You have selected tails");
+        // } else {
+        // headsBtn.setText("You have selected heads");
+        // }
+        // System.out.println(Main.heads);
+        // }
         // });
 
         submitBtn = new JButton("Submit");
@@ -205,11 +205,11 @@ public class MainMenu {
                     window.setLocationRelativeTo(null);
                     isImageVisible = false;
                     // coinFlipResults();
+                    // GUI.endingScreen(window, "TESTING YASSSSSSSSSSSS");
                     try {
                         Placing.place(Main.AIPlacementBoard);
                         Game.printPlacementArray(Main.AIPlacementBoard);
                         GUI.display(window);
-                        
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

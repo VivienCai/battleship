@@ -18,6 +18,7 @@ public class GUI {
     private static Coordinate h;
     private static JLabel AIHit = new JLabel();
     private static JButton saveGame;
+    private static String endString;
 
     // protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER",
     // "SUBMARINE", "DESTROYER" };
@@ -41,7 +42,7 @@ public class GUI {
     }
 
     public static void initNextBtn(JButton nextBtn) {
-        nextBtn.setBounds(790, 600, 140, 45);
+        nextBtn.setBounds(790, 700, 140, 45);
         nextBtn.setFont(customFont[16]);
         nextBtn.setForeground(Color.black);
         nextBtn.setBackground(accent);
@@ -56,8 +57,8 @@ public class GUI {
         frame.getContentPane().setLayout(null);
         frame.getContentPane().setBackground(Color.WHITE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(1000, 700));
-        frame.setMinimumSize(new Dimension(1000, 700));
+        frame.setPreferredSize(new Dimension(1000, 850));
+        frame.setMinimumSize(new Dimension(1000, 850));
         frame.setResizable(false);
         frame.pack();
 
@@ -98,20 +99,24 @@ public class GUI {
 
         if (Main.shipsAlive.size() == 0) {
             System.out.println("AI lost, player wins");
-            // break;
+            endString = "AI lost, player wins";
+            endingScreen(window, endString);
+
         }
         if (Main.playerShipsAlive.size() == 0) {
             System.out.println("AI won, player lost");
-            // break;
+            endString = "AI won, player lost";
+            endingScreen(window, endString);
         }
         if (Main.shipsAlive.size() == 0 && Main.playerShipsAlive.size() == 0) {
             System.out.println("AI and player tie.");
-            // break;
+            endString = "AI and player tie.";
+            endingScreen(window, endString);
         }
 
         JLabel currentTurn = new JLabel();
         // JLabel AIHit = new JLabel();
-        currentTurn.setBounds(790, 560, 300, 30);
+        currentTurn.setBounds(790, 660, 300, 30);
         currentTurn.setFont(customFont[22]);
 
         JButton nextBtn = new JButton("Next turn");
@@ -143,7 +148,7 @@ public class GUI {
         initScore(playerScore, 55, 85, false);
 
         if (!Main.isPlayersTurn) {
-            currentTurn.setText("It is AI's turn.");
+            currentTurn.setText("It is AIsha's turn.");
         } else {
             currentTurn.setText("It is your turn.");
             AIHit.setText("Pick a point to fire at on the attack board.");
@@ -190,7 +195,7 @@ public class GUI {
 
             int y = h.getY();
             int x = h.getX();
-            String AIHitString = "The AI hit " + JLabelCoordinateString(y, x) + ". Is it a hit, miss, or sink?";
+            String AIHitString = "AIsha hit " + JLabelCoordinateString(y, x) + ". Is it a hit, miss, or sink?";
             JLabel label = new JLabel(AIHitString);
             label.setFont(customFont[14]);
 
@@ -200,22 +205,22 @@ public class GUI {
 
             AIHit.setText(AIHitString);
             String[] hitOrMiss = { "Hit", "Miss", "Sink" };
-            int index = JOptionPane.showOptionDialog(window, label, "AI Hit", JOptionPane.DEFAULT_OPTION,
+            int index = JOptionPane.showOptionDialog(window, label, "AIsha Hit", JOptionPane.DEFAULT_OPTION,
                     JOptionPane.INFORMATION_MESSAGE, null, hitOrMiss, hitOrMiss[0]);
             if (index == 0 || index == 2) {
                 System.out.println("was a hit");
 
-                JLabel label2 = new JLabel("What ship did the AI hit?");
+                JLabel label2 = new JLabel("What ship did AIsha hit?");
                 label2.setFont(customFont[16]);
                 int shipIndex = JOptionPane.showOptionDialog(window, label2, "What ship?",
                         JOptionPane.DEFAULT_OPTION,
                         JOptionPane.INFORMATION_MESSAGE, null, getShips(), getShips()[0]);
 
                 if (index == 0) {
-                    AIHit.setText("The AI hit " + JLabelCoordinateString(y, x)
+                    AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
                             + ". It hit your " + Game.shipOf(shipIndex) + ". Please click next turn to continue.");
                 } else {
-                    AIHit.setText("The AI hit " + JLabelCoordinateString(y, x)
+                    AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
                             + ". It sunk your " + Game.shipOf(shipIndex) + ". Please click next turn to continue.");
                 }
 
@@ -230,7 +235,7 @@ public class GUI {
                 Main.AIAttackBoard[y][x].setIsHit(true);
                 Main.AIMiss++;
                 Main.AIShot++;
-                AIHit.setText("The AI hit " + JLabelCoordinateString(y, x)
+                AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
                         + ". It missed. Please click next turn to continue.");
             }
             nextBtn.setEnabled(true);
@@ -293,11 +298,11 @@ public class GUI {
         String displayScore = "";
         if (isAi) {
             displayScore = "Total shots/Hits/Misses/Ships left: "
-                    + String.valueOf(Main.AIShot + "/ " + Main.AIHit + " / " + Main.AIMiss + " / "
+                    + String.valueOf(Main.AIShot + " / " + Main.AIHit + " / " + Main.AIMiss + " / "
                             + Main.getPlayerShipsAlive().size());
         } else {
             displayScore = "Total shots/Hits/Misses/Ships left: "
-                    + String.valueOf(Main.PlayerShot + "/" + Main.PlayerHit + " / " + Main.PlayerMiss + " / "
+                    + String.valueOf(Main.PlayerShot + " / " + Main.PlayerHit + " / " + Main.PlayerMiss + " / "
                             + Main.shipsAlive.size());
         }
         score.setBounds(xPosition, yPosition, 500, 20);
@@ -309,7 +314,7 @@ public class GUI {
     public static void AIHitInit() {
         AIHit.setFont(customFont[16]);
         AIHit.setVisible(true);
-        AIHit.setBounds(JLabel.CENTER + 200, 540, 600, 30);
+        AIHit.setBounds(JLabel.CENTER + 200, 545, 600, 30);
         // AIHit.setPreferredSize(new Dimension(500, 30));
         // AIHit.setVerticalAlignment(530);
         // AIHit.setHorizontalAlignment(JLabel.CENTER);
@@ -380,7 +385,7 @@ public class GUI {
                                         JLabel label3 = new JLabel("Are you sure you want to hit " + yInd + xInd + "?");
                                         label3.setFont(customFont[14]);
                                         int index = JOptionPane.showOptionDialog(window,
-                                                label3, "AI hit",
+                                                label3, "AIsha hit",
                                                 JOptionPane.DEFAULT_OPTION,
                                                 JOptionPane.INFORMATION_MESSAGE, null, confirmation, confirmation[0]);
                                         if (index == 0) {
@@ -509,6 +514,32 @@ public class GUI {
             e1.printStackTrace();
         }
 
+    }
+
+    public static void endingScreen(JFrame window, String endString) {
+        window.getContentPane().removeAll();
+        window.getContentPane().revalidate();
+        window.getContentPane().repaint();
+        window.getContentPane().setBackground(Color.WHITE);
+        window.setLocationRelativeTo(null);
+
+        // backgroundImageIcon = new ImageIcon("Title.png");
+
+        JLabel end = new JLabel(endString);
+        end.setSize(500, 100);
+        end.setBounds(JLabel.CENTER + 200, 350, 600, 30);
+        end.setFont(GUI.customFont[40]);
+
+        end.setVisible(true);
+        window.getContentPane().add(end);
+
+        end.setHorizontalAlignment(JLabel.CENTER);
+        // end.setVerticalAlignment(JLabel.CENTER);
+
+        window.setVisible(true);
+        window.getContentPane().revalidate();
+        window.getContentPane().repaint();
+        window.setLocationRelativeTo(null);
     }
 
 }
