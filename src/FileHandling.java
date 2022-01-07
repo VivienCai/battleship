@@ -418,6 +418,7 @@ public class FileHandling {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 int inputInt = 0;
+                boolean save=false;
                 int result = JOptionPane.showConfirmDialog(null,
                         "Do you want to save your game? Please make sure you are saving your game after you or the AI moved");
                 switch (result) {
@@ -431,26 +432,27 @@ public class FileHandling {
                             }
                             try {
                                 inputInt = Integer.parseInt(input);
+                                save=true;
                                 break;
                             } catch (Exception e) {
                             }
                         }
-
-                        try {
-                            FileHandling.saveGame(inputInt);
-                        } catch (Exception e1) {
-                            // TODO Auto-generated catch block
-                            e1.printStackTrace();
-                        }
-                        Game.printPlacementArray(Main.AIAttackBoard);
-                        JOptionPane.showMessageDialog(GUI.frame,
+                        
+                        if (save) {
+                        	try {
+                        		FileHandling.saveGame(inputInt);
+                        	} catch (Exception e1) {
+                        		// TODO Auto-generated catch block
+                        		e1.printStackTrace();
+                        	}
+                        	Game.printPlacementArray(Main.AIAttackBoard);
+                        	JOptionPane.showMessageDialog(GUI.frame,
                                 "Your game has been saved. You may either exit out or keep on playing.");
-                        JOptionPane.showMessageDialog(GUI.frame, "Your files have been saved in two filescalled Info"
+                        	JOptionPane.showMessageDialog(GUI.frame, "Your files have been saved in two filescalled Info"
                                 + inputInt + ".txt and Grids" + inputInt + ".txt");
-                        JOptionPane.showMessageDialog(GUI.frame,
+                        	JOptionPane.showMessageDialog(GUI.frame,
                                 "Please DO NOT tamper with the two filesor your data may be PERMANENTLY lost");
-
-                        break;
+                        }
                     case JOptionPane.NO_OPTION:
                         System.out.println("No");
                         break;
