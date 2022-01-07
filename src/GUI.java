@@ -261,6 +261,7 @@ public class GUI {
     }
 
     public static void endingScreen(JFrame window, Boolean AIwon, Boolean AITIE) {
+        // Hitting.prn
         removeArray(displayArrayAIAttack, window);
         removeArray(displayArrayPlayerAttack, window);
         AIIcon.setEnabled(false);

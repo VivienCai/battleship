@@ -221,7 +221,7 @@ public class Hitting extends AI {
         }
         // printArray();
         Coordinate h = AIhitGUI();
-        // printArray(Main.AIAttackBoard);
+        printArray(Main.AIAttackBoard);
         resetArray();
         return h;
     }
