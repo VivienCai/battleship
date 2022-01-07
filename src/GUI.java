@@ -7,7 +7,7 @@ import java.util.*;
 
 public class GUI {
     // private volatile boolean isImageVisible;
-    private static JFrame frame;
+    public static JFrame frame;
     // private static boolean gamestate = true;
     private static JButton displayArrayAIAttack[][] = new JButton[11][11];
     private static JButton displayArrayPlayerAttack[][] = new JButton[11][11];
@@ -15,7 +15,7 @@ public class GUI {
     private static boolean alreadyFired = false;
     private static Coordinate h;
     private static JLabel AIHit = new JLabel();
-    private static JButton saveGame;
+    public static JButton saveGame;
     private static JLabel legendImg = new JLabel(new ImageIcon("assets/legend.png"));
     private static JButton AIIcon = new JButton(new ImageIcon("assets/ai-150x150.png"));
     private static JButton playerIcon = new JButton(new ImageIcon("assets/person-150x150.png"));
@@ -339,15 +339,8 @@ public class GUI {
             endingScreen(window, true, true);
             return;
         }
-      
-        saveGame = new JButton("Save Game");
-        saveGame.setBounds(760, 25, 200, 45);
-        saveGame.setFont(customFont[16]);
-        saveGame.setForeground(Color.black);
-        saveGame.setBackground(accent);
-        // TODO: make this class visible to all
-        // saveGame.setBorder(new RoundedBorder(30)); 
-        saveGame.setVisible(true);
+   
+        FileHandling.saveGameButton();
 
         currentTurn.setFont(customFont[22]);
         currentTurn.setBounds(790, 660, 300, 30);
@@ -493,97 +486,6 @@ public class GUI {
             AIHit.setText("Pick a point to fire at on the attack board.");
             AIHit.setHorizontalAlignment(JLabel.CENTER);
         }
-
-        // less invasive save game
-
-        saveGame.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                int inputInt = 0;
-                int result = JOptionPane.showConfirmDialog(null,
-                        "Do you want to save your game? Please make sure you are saving your game after you or the AI moved");
-                switch (result) {
-                    case JOptionPane.YES_OPTION:
-                        System.out.println("Yes");
-                        while (true) {
-                            String input = JOptionPane.showInputDialog(null,
-                                    "Please the save file number you want to save to. Enter NO if you do not want to save");
-                            if (input.equals("NO")) {
-                                break;
-                            }
-                            try {
-                                inputInt = Integer.parseInt(input);
-                                break;
-                            } catch (Exception e) {
-                            }
-                        }
-
-                        try {
-                            FileHandling.saveGame(inputInt);
-                        } catch (Exception e1) {
-                            // TODO Auto-generated catch block
-                            e1.printStackTrace();
-                        }
-                        Game.printPlacementArray(Main.AIAttackBoard);
-                        JOptionPane.showMessageDialog(frame,
-                                "Your game has been saved. You may either ext out or keep on playing.");
-                        JOptionPane.showMessageDialog(frame, "Your files have been saved in two filescalled Info"
-                                + inputInt + ".txt and Grids" + inputInt + ".txt");
-                        JOptionPane.showMessageDialog(frame,
-                                "Please DO NOT tamper with the two filesor your data may be PERMANENTLY lost");
-
-                        break;
-                    case JOptionPane.NO_OPTION:
-                        System.out.println("No");
-                        break;
-                }
-
-            }
-        });
-
-        // saving game
-        // if (!Main.roundOver) { // save only triggers at the end of each round
-        // int inputInt;
-        // int result = JOptionPane.showConfirmDialog(null, "Do you want to save your
-        // game?");
-        // switch (result) {
-        // case JOptionPane.YES_OPTION:
-        // System.out.println("Yes");
-        // while (true) {
-        // String input = JOptionPane.showInputDialog(null,
-        // "Please the save file number you want to save to. Enter NO if you do not want
-        // to save");
-        // if (input.equals("NO")) {
-        // break;
-        // }
-        // try {
-        // inputInt = Integer.parseInt(input);
-        // break;
-        // } catch (Exception e) {
-        // }
-        // }
-        //
-        // try {
-        // FileHandling.saveGame(inputInt);
-        // } catch (Exception e1) {
-        // // TODO Auto-generated catch block
-        // e1.printStackTrace();
-        // }
-        // Game.printPlacementArray(Main.AIAttackBoard);
-        // JOptionPane.showMessageDialog(frame, "Your game has been saved. You may
-        // either ext out or keep on playing.");
-        // JOptionPane.showMessageDialog(frame, "Your files have been saved in two
-        // filescalled Info" + inputInt + ".txt and Grids"+inputInt+".txt");
-        // JOptionPane.showMessageDialog(frame, "Please DO NOT tamper with the two
-        // filesor your data may be PERMANENTLY lost");
-        //
-        // break;
-        // case JOptionPane.NO_OPTION:
-        // System.out.println("No");
-        // break;
-        // }
-        //
-        // }
 
         Main.roundOver = !Main.roundOver;
 
