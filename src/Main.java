@@ -22,6 +22,7 @@ public class Main {
     protected static boolean heads = false;
     protected static boolean isPlayersTurn;
 
+    protected static int playerShipTimesHit[]=new int[6];
     protected static Coordinate playerAttackBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIPlacementBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIAttackBoard[][] = new Coordinate[11][11];
@@ -191,6 +192,10 @@ public class Main {
         // initializing arrays for coordinate that have been hit for each ship
         for (int i = 0; i < 7; i++) {
             Hunting.pointsHit[i] = new ArrayList<Coordinate>();
+        }
+        
+        for(int i=0;i<6;i++) {
+        	playerShipTimesHit[i]=0;
         }
 
     }
