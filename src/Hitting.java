@@ -229,12 +229,12 @@ public class Hitting extends AI {
     public static Coordinate findProbabilityGUIEasy() {
     	Random rand = new Random();
     	
-    	while(true) {
-    		int xCoord =  rand.nextInt(0+10)+1;
+    	while(true) {  
+    		int xCoord =  rand.nextInt(0+10)+1;  //Creates a random x and y integer
     		int yCoord =  rand.nextInt(0+10)+1;
     		
     		Coordinate c = Main.AIAttackBoard[yCoord][xCoord];
-    		if (!c.getIsHit()) {  //if it is not already hit
+    		if (!c.getIsHit()) {  				//Checks if created point has already been hit
     			Main.AIAttackBoard[yCoord][xCoord].setIsHit(true);
                 return Main.AIAttackBoard[yCoord][xCoord];
     		} 	

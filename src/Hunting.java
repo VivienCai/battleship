@@ -217,19 +217,12 @@ public class Hunting extends AI {
         if (shipSize == 3) {
             shipIndex = Ship.getIndexOfThreeShip(shipHitName);
         }
-        // sum vertically and horizontally
         // VERTICAL
         // start point is hit point + 1 - shipsize (check if in bounds)
         int isVertical = 0;
-        // System.out.print("Points hit for all: ");
-        // for (int i = 2; i < 7; i++) {
-        // for (Coordinate J : pointsHit[i]) {
-        // System.out.print(i + "queue : ");
-        // System.out.println(J.toString());
-        // }
-        // }
+        
+        //If 2 points have been hit, check if they are aligned vertically or horizontally
         if (pointsHit[shipIndex].size() >= 2) {
-            // System.out.println("im running");
             Coordinate cur = pointsHit[shipIndex].get(0);
             Coordinate next = pointsHit[shipIndex].get(1);
             if (next.getY() == cur.getY()) {
@@ -238,29 +231,32 @@ public class Hunting extends AI {
                 isVertical = 2;
             }
         }
-        // undetermined
+        // Only 1 point has been hit
         if (isVertical == 0) {
             sumVertical(shipSize, h);
             sumHorizontal(h, shipSize);
-            // vertical
+        // 2 points have been hit horizontally
         } else if (isVertical == 1) {
             sumHorizontal(h, shipSize);
+        // 2 points have been hit horizontally
         } else {
             sumVertical(shipSize, h);
         }
 
-        printArray(huntingProbability);
+        													printArray(huntingProbability);  //do we still need this?
     }
 
+    
+    
     public static Coordinate max(int y, int x, int shipSize) {
-        // horizontal add possible hits to arraylist
+        // Finds the max points and adds then to a queue (horizontally)
         for (int i = 1; i <= 10; i++) {
             if (huntingProbability[y][i].getProbability() > 0) {
                 hitPointQueue.add(huntingProbability[y][i]);
             }
         }
 
-        // vertical add possible hits to arraylist
+        // Finds the max points and adds then to a queue (vertically)
         for (int i = 1; i <= 10; i++) {
             if (huntingProbability[i][x].getProbability() > 0) {
                 hitPointQueue.add(huntingProbability[i][x]);
@@ -269,23 +265,8 @@ public class Hunting extends AI {
         Collections.sort(hitPointQueue, Collections.reverseOrder());
 
         return hitPointQueue.remove(0);
-
     }
 
-    public static void main(String[] args) {
-        Main.initArrays();
-        for (int i = 0; i <= 10; i++) {
-            for (int j = 0; j <= 10; j++) {
-                huntingProbability[i][j] = new Coordinate(i, j);
-
-            }
-        }
-        Coordinate test = Main.AIAttackBoard[5][5];
-        Main.AIAttackBoard[5][5].setIsHit(true);
-        Main.AIAttackBoard[3][5].setIsHit(true);
-        hunt(test, "CARRIER");
-
-    }
 
     public static void sumVertical(int shipSize, Coordinate h) {
         int y = h.getY();
@@ -295,6 +276,8 @@ public class Hunting extends AI {
             if (i < 1) {
                 continue;
             }
+            
+            //Checks if the area around the ship has been hit before
             for (int j = i; j < i + shipSize; j++) {
                 if (j > 10
                         || (Main.AIAttackBoard[j][x].getIsHit() && !Main.AIAttackBoard[j][x].getIsShip() && j != y)) {
@@ -309,10 +292,8 @@ public class Hunting extends AI {
                     }
                     int currentProbability = huntingProbability[j][x].getProbability();
                     huntingProbability[j][x].setProbability(currentProbability + 1);
-
                 }
             }
-
         }
     }
 
@@ -337,10 +318,8 @@ public class Hunting extends AI {
                     }
                     int currentProbability = huntingProbability[y][j].getProbability();
                     huntingProbability[y][j].setProbability(currentProbability + 1);
-
                 }
             }
-
         }
     }
 
