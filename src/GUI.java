@@ -457,11 +457,13 @@ public class GUI {
             
             
             //while loop
-            boolean supposedToBeSunk=false;
-            boolean supposedToBeHit=false;
+            boolean supposedToBeSunk;  
+            boolean supposedToBeHit;
 
             do {
             	supposedToBeSunk=false;
+				supposedToBeHit=false;
+
             	int index = JOptionPane.showOptionDialog(window, label, "AIsha Hit", JOptionPane.DEFAULT_OPTION,
                     JOptionPane.INFORMATION_MESSAGE, null, hitOrMiss, hitOrMiss[0]);
             	if (index == 0 || index == 2) {
@@ -484,21 +486,22 @@ public class GUI {
                 		
             			}else {
             				AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
-            				+ ". It hit your " + Game.shipOf(shipIndex) + ". Please click next turn to continue.");
+            				+ ". It hit your " + Game.shipOf(shipIndex) + ". Please click next turn to continue or save game to save.");
             				Main.playerShipTimesHit[shipIndex]++;                      		
-                	}
-                	
-                	
-                    
-            		} else {
-            			AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
-            			+ ". It sunk your " + Game.shipOf(shipIndex) + ". Please click next turn to continue.");
+            			}                    
+            		} else {	
+            			
+            			if(Main.playerShipTimesHit[shipIndex]+1!= Ship.getSize(Main.playerShipsAlive.get(shipIndex))) {
+            				JOptionPane.showMessageDialog(GUI.frame,
+                                    "Your input is not possible. Please try again.");                   				
+            				supposedToBeHit=true;
+            			}else {
+            				AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
+                			+ ". It sunk your " + Game.shipOf(shipIndex) + ". Please click next turn to continue or save game to save.");
+            			}	
             		}
-
-            		
-            		
-            		//maybe smtg to do with this
-            		if(!supposedToBeSunk) {
+            			
+            		if(!supposedToBeSunk && !supposedToBeHit) {    //only triggers if input is correct
             			if (!AI.isHunting) {
             				Hitting.getInputGUI(h, index, shipIndex);
             			} else {
@@ -511,14 +514,12 @@ public class GUI {
             		Main.AIMiss++;
             		Main.AIShot++;
             		AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
-            		+ ". It missed. Please click next turn to continue.");
+            		+ ". It missed. Please click next turn to continue or save game to save.");
             	}
 
             	nextBtn.setEnabled(true);
             
-            } while(supposedToBeSunk);
-            
-            
+            } while(supposedToBeSunk ||supposedToBeHit);
             
             
         //Player's turn    
