@@ -458,6 +458,7 @@ public class GUI {
             
             //while loop
             boolean supposedToBeSunk=false;
+            boolean supposedToBeHit=false;
 
             do {
             	supposedToBeSunk=false;
@@ -494,13 +495,17 @@ public class GUI {
             			+ ". It sunk your " + Game.shipOf(shipIndex) + ". Please click next turn to continue.");
             		}
 
-            		if (!AI.isHunting) {
-            			Hitting.getInputGUI(h, index, shipIndex);
-
-            		} else {
-            			Hunting.getInputGUI(h, index, shipIndex);
-
+            		
+            		
+            		//maybe smtg to do with this
+            		if(!supposedToBeSunk) {
+            			if (!AI.isHunting) {
+            				Hitting.getInputGUI(h, index, shipIndex);
+            			} else {
+            				Hunting.getInputGUI(h, index, shipIndex);
+            			}
             		}
+            		
             	} else if (index == 1) {  //Hit missed
             		Main.AIAttackBoard[y][x].setIsHit(true);
             		Main.AIMiss++;
