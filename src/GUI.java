@@ -22,6 +22,9 @@ public class GUI {
     private static JButton playerIcon = new JButton(new ImageIcon("assets/person-150x150.png"));
     protected static JLabel displayedTimer = new JLabel("00:00");
 
+    protected static boolean AIwon;
+    protected static boolean AITIE;
+
     // protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER",
     // "SUBMARINE", "DESTROYER" };
 
@@ -260,7 +263,7 @@ public class GUI {
 
     }
 
-    public static void endingScreen(JFrame window, Boolean AIwon, Boolean AITIE) {
+    public static void endingScreen(JFrame window) {
         // Hitting.prn
         removeArray(displayArrayAIAttack, window);
         removeArray(displayArrayPlayerAttack, window);
@@ -318,21 +321,7 @@ public class GUI {
         window.getContentPane().add(bkgImageContainer);
 
         window.setVisible(true);
-        // InitGUI.initWindow(window);
-        System.out.println("test 2");
-        // if (AIwon && !AITIE) {
-        // MusicPlayer.playSound("victory.wav", false);
-        // // MusicPlayer.playSound("ourlove.wav", true);
-        // } else if (!AIwon && !AITIE) {
-        // MusicPlayer.playSound("disappointed.wav", false);
-        // if (Math.random() > 0.5) {
-        // MusicPlayer.playSound("Woman.wav", true);
-        // } else {
-        // MusicPlayer.playSound("superbass.wav", true);
-        // }
-        // } else {
-        // MusicPlayer.playSound("superbass.wav", true);
-        // }
+        InitGUI.initWindow(window);
         // return;
     }
 
@@ -357,37 +346,31 @@ public class GUI {
             Main.count++;
         }
 
-        if (Main.shipsAlive.size() == 0) {
-            // if (Main.AIShot == 1) {
+        // if (Main.shipsAlive.size() == 0) {
+        if (Main.AIShot == 1) {
             System.out.println("AI lost, player wins");
-            endingScreen(window, false, false);
-            InitGUI.initWindow(window);
-            MusicPlayer.playSound("victory.wav", false);
-
-            InitGUI.initWindow(window);
-            // MusicPlayer.playSound("ourlove.wav", false);
-
-            return;
-        } else if (Main.playerShipsAlive.size() == 0) {
-            // } else if (Main.PlayerShot == 1) {
-            System.out.println("AI won, player lost");
+            AIwon = false;
+            AITIE = false;
+            endingScreen(window);
             MusicPlayer.playSound("disappointed.wav", false);
-            endingScreen(window, true, false);
-            if (Math.random() > 0.5) {
-                MusicPlayer.playSound("Woman.wav", true);
-            } else {
-                MusicPlayer.playSound("superbass.wav", true);
-            }
+            new Music().start();
+            return;
+            // } else if (Main.playerShipsAlive.size() == 0) {
+        } else if (Main.PlayerShot == 1) {
+            System.out.println("AI won, player lost");
+            AIwon = true;
+            AITIE = false;
+            endingScreen(window);
+            MusicPlayer.playSound("victory.wav", false);
+            new Music().start();
             return;
         } else if (Main.shipsAlive.size() == 0 && Main.playerShipsAlive.size() == 0) {
             System.out.println("AI and player tie.");
-
-            endingScreen(window, true, true);
-
-            MusicPlayer.playSound("superbass.wav", true);
-
+            AITIE = true;
+            AIwon = true;
+            endingScreen(window);
+            new Music().start();
             return;
-
         }
 
         FileHandling.saveGameButton();
