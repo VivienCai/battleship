@@ -4,7 +4,6 @@ import java.util.*;
 
 import javax.swing.*;
 
-
 /* Sarina Li, Vivien Cai, Jiaan Li
 * Mon December 20
 * ICS4U1
@@ -21,8 +20,9 @@ public class Main {
     protected static boolean easyMode, roundOver = false;
     protected static boolean heads = false;
     protected static boolean isPlayersTurn;
+    protected static int count = 0;
 
-    protected static int playerShipTimesHit[]=new int[6];
+    protected static int playerShipTimesHit[] = new int[6];
     protected static Coordinate playerAttackBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIPlacementBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIAttackBoard[][] = new Coordinate[11][11];
@@ -100,9 +100,9 @@ public class Main {
             counter++;
             String temp = sc.nextLine();
             if (temp.equals("SAVE")) { // sees if the user wants to save the game
-            	System.out.println("enter save game number");
-            	int numb=sc.nextInt();
-            	FileHandling.saveGame(numb);
+                System.out.println("enter save game number");
+                int numb = sc.nextInt();
+                FileHandling.saveGame(numb);
                 break;
             }
         }
@@ -159,8 +159,8 @@ public class Main {
             counter++;
             String temp = sc.nextLine();
             if (temp.equals("SAVE")) { // sees if the user wants to save the game
-            	System.out.println("enter save game number");
-            	int numb=sc.nextInt();
+                System.out.println("enter save game number");
+                int numb = sc.nextInt();
                 FileHandling.saveGame(numb);
                 break;
             }
@@ -193,9 +193,9 @@ public class Main {
         for (int i = 0; i < 7; i++) {
             Hunting.pointsHit[i] = new ArrayList<Coordinate>();
         }
-        
-        for(int i=0;i<6;i++) {
-        	playerShipTimesHit[i]=0;
+
+        for (int i = 0; i < 6; i++) {
+            playerShipTimesHit[i] = 0;
         }
 
     }
@@ -219,8 +219,9 @@ public class Main {
         initArrays();
 
         if (input.equals("RESUME")) {
-            System.out.println("Which save file would you like to resume from? Please enter the save file number you saved to.");
-            int temp = sc.nextInt();                                                                              // add crash prevention
+            System.out.println(
+                    "Which save file would you like to resume from? Please enter the save file number you saved to.");
+            int temp = sc.nextInt(); // add crash prevention
             FileHandling.resumeGame(temp);
             FileHandling.resumeBoards(temp);
         } else {
@@ -242,9 +243,6 @@ public class Main {
         System.out.println("If one of your ships were hit, type \"HIT, [SHIPTYPE]\". EX. HIT, BATTLESHIP ");
         System.out.println("If one of your ships were sunk, type \"SUNK, [SHIPTYPE]\". EX. SUNK, BATTLESHIP ");
     }
-
-
-   
 
     public static void printShipsAlive() {
         System.out.println("________________________________");

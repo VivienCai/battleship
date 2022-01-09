@@ -4,7 +4,6 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.util.*;
-
 import java.util.Timer;
 
 public class GUI {
@@ -21,6 +20,7 @@ public class GUI {
     private static JLabel legendImg = new JLabel(new ImageIcon("assets/legend.png"));
     private static JButton AIIcon = new JButton(new ImageIcon("assets/ai-150x150.png"));
     private static JButton playerIcon = new JButton(new ImageIcon("assets/person-150x150.png"));
+    protected static JLabel displayedTimer = new JLabel("00:00");
 
     // protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER",
     // "SUBMARINE", "DESTROYER" };
@@ -61,6 +61,7 @@ public class GUI {
 
     public static void startGame() throws Exception {
         for (int i = 0; i < 49; i++) {
+
             File fontFile = new File("SF-UI-Display-Bold.ttf");
             try {
                 // create the font to use. Specify the size!
@@ -79,6 +80,7 @@ public class GUI {
             MainMenu startMenu = new MainMenu(frame);
             startMenu.loadTitleScreen();
         }
+        System.out.println("Done init!");
     }
 
     public static void displayArray(Coordinate array[][], JButton display[][], int yPosition, int xPosition,
@@ -239,11 +241,12 @@ public class GUI {
         window.getContentPane().remove(legendImg);
         window.getContentPane().remove(AIIcon);
         window.getContentPane().remove(playerIcon);
-
+        window.getContentPane().remove(displayedTimer);
         // legendImg.setVisible(false);
         AIHit.setVisible(false);
         nextBtn.setVisible(false);
         currentTurn.setVisible(false);
+        displayedTimer.setVisible(false);
         // AIScore.setVisible(false);
         // AIScore.setVisible(false);
         InitGUI.initWindow(window);
@@ -286,9 +289,8 @@ public class GUI {
 
         JTextPane AIstats = new JTextPane();
         AIstats.setText("Total shots: " + Main.AIShot + "\nHits:  " + Main.AIHit + " \nMisses: " + Main.AIMiss
-                + "\nNumber of ships left: "
-                + Main.shipsAlive.size());
-        AIstats.setBounds(695, 320, 250, 200);
+                + "\nNumber of ships left: " + Main.shipsAlive.size());
+        AIstats.setBounds(695, 320, 250, 190);
         AIstats.setEditable(false);
         AIstats.setFont(GUI.customFont[20]);
 
@@ -298,13 +300,19 @@ public class GUI {
                         + "\nNumber of ships left: "
                         + Main.getPlayerShipsAlive().size());
         playerStats.setEditable(false);
-        playerStats.setBounds(425, 320, 250, 200);
+        playerStats.setBounds(425, 320, 250, 190);
         playerStats.setFont(GUI.customFont[20]);
 
+        JLabel time = new JLabel("Game time:" + ScheduledTask.currentTime);
+        time.setBounds(560, 500, 300, 50);
+        time.setFont(customFont[20]);
+
+        time.setVisible(true);
         AIstats.setVisible(true);
         playerStats.setVisible(true);
         bkgImageContainer.setVisible(true);
 
+        window.getContentPane().add(time);
         window.getContentPane().add(AIstats);
         window.getContentPane().add(playerStats);
         window.getContentPane().add(bkgImageContainer);
@@ -342,12 +350,15 @@ public class GUI {
         JLabel playerScore = new JLabel();
         JLabel currentTurn = new JLabel();
 
-        Timer time = new Timer(); // Instantiate Timer Object
-		ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
-		time.schedule(st, 0, 1000);
+        if (Main.count == 0) {
+            Timer time = new Timer(); // Instantiate Timer Object
+            ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
+            time.schedule(st, 0, 1000); // Create Repetitively task for every 1 secs
+            Main.count++;
+        }
 
-        // if (Main.shipsAlive.size() == 0) {
-        if (Main.AIShot == 1) {
+        if (Main.shipsAlive.size() == 0) {
+            // if (Main.AIShot == 1) {
             System.out.println("AI lost, player wins");
             endingScreen(window, false, false);
             InitGUI.initWindow(window);
@@ -357,8 +368,8 @@ public class GUI {
             // MusicPlayer.playSound("ourlove.wav", false);
 
             return;
-            // } else if (Main.playerShipsAlive.size() == 0) {
-        } else if (Main.PlayerShot == 1) {
+        } else if (Main.playerShipsAlive.size() == 0) {
+            // } else if (Main.PlayerShot == 1) {
             System.out.println("AI won, player lost");
             MusicPlayer.playSound("disappointed.wav", false);
             endingScreen(window, true, false);
@@ -394,6 +405,9 @@ public class GUI {
         playerIcon.setBorderPainted(false);
         playerIcon.setBackground(Color.WHITE);
 
+        displayedTimer.setBounds(800, 620, 300, 20);
+        displayedTimer.setFont(customFont[22]);
+
         InitGUI.initNextBtn(nextBtn);
         InitGUI.AIHitInit(AIHit);
 
@@ -410,6 +424,7 @@ public class GUI {
         legendImg.setVisible(true);
         AIIcon.setVisible(true);
         playerIcon.setVisible(true);
+        displayedTimer.setVisible(true);
 
         window.getContentPane().add(AIIcon);
         window.getContentPane().add(playerIcon);
@@ -422,6 +437,7 @@ public class GUI {
         window.getContentPane().add(playerAttack);
         window.getContentPane().add(AIScore);
         window.getContentPane().add(playerScore);
+        window.getContentPane().add(displayedTimer);
 
         nextBtn.addActionListener(e -> {
             reInitFrame(window, nextBtn, currentTurn, AIAttack, playerAttack, AIScore, playerScore);

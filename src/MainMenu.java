@@ -125,8 +125,9 @@ public class MainMenu {
                     window.setLocationRelativeTo(null);
                     isImageVisible = false;
                     try {
-
+                        
                         GUI.display(MainMenu.window);
+                     
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
