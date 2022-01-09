@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 public class FileHandling {
+	public static boolean firstRound=true;
 	public static void saveBoards(int fileNumber) throws Exception{
     	PrintWriter text2 = new PrintWriter("Grids"+fileNumber+".txt");
     	
@@ -78,6 +79,8 @@ public class FileHandling {
 		Scanner fsc = new Scanner(infoFile);
 		
 		//Resuming all the easy to resume variables
+		ScheduledTask.minute=fsc.nextInt();
+		ScheduledTask.second=fsc.nextInt();
 		Main.isPlayersTurn=fsc.nextBoolean();
 		Main.easyMode=fsc.nextBoolean();
 		Main.AIFirst=fsc.nextBoolean();
@@ -89,6 +92,16 @@ public class FileHandling {
 		Main.PlayerHit=fsc.nextInt();
 		Main.PlayerMiss=fsc.nextInt();
 		int counter2 =0;
+		Main.playerShipTimesHit.clear();
+		while (true) {
+			int temp=fsc.nextInt();
+			if (temp==4560) {
+				break;
+			}else {
+				Main.playerShipTimesHit.add(temp);
+				System.out.println(temp+" "+Main.playerShipTimesHit.size());
+			}
+        }
 		
 		//resuming playerhit board
 		while(fsc.hasNext()) {                        
@@ -222,6 +235,7 @@ public class FileHandling {
         System.out.println("Which save file would you like to save to? Please enter a number greater than 1.");
         PrintWriter text = new PrintWriter("Info" + fileNumber + ".txt");
         
+        text.println(ScheduledTask.minute+" "+ScheduledTask.second);
         text.println(!Main.isPlayersTurn);
         text.println(Main.easyMode);
         text.println(Main.AIFirst);
@@ -229,6 +243,12 @@ public class FileHandling {
         text.println(Main.AIShot + " " + Main.AIHit + " " + Main.AIMiss);
         text.println(Main.PlayerShot + " " + Main.PlayerHit + " " + Main.PlayerMiss);
 
+        //Save timesHit information
+        for (int i=0;i<Main.playerShipTimesHit.size();i++) {
+        	text.print(Main.playerShipTimesHit.get(i)+" ");
+        }
+        text.println("4560");
+        
         //Save ship information
         for (int i = 0; i < Ship.getList().size(); i++) {
             text.print(Ship.getList().get(i).getName() + " ");
@@ -401,7 +421,28 @@ public class FileHandling {
 		}	
 	}
 	
-	
+	public static void promptSaveGame() {
+		int inputInt;
+		 while (true) {   //Keeps asking for input until player gives correct one
+             String input = JOptionPane.showInputDialog(null,
+                     "Before we get started, please enter an integer to determine where your file will be saved (this can be changed later.) ");
+             
+             try {
+                 inputInt = Integer.parseInt(input);
+                 break;
+             } catch (Exception e) {
+             }
+         }
+		 try {
+     		FileHandling.saveGame(inputInt);
+     	    JOptionPane.showMessageDialog(GUI.frame, "Your game has been successfully saved. Press OK to continue");
+
+     	} catch (Exception e1) {
+     		// TODO Auto-generated catch block
+     		e1.printStackTrace();
+     	}
+		 
+	}
 	
 
 	public static void saveGameButton(){	
@@ -428,10 +469,8 @@ public class FileHandling {
                         
                         while (true) {   //Keeps asking for input until player gives correct one
                             String input = JOptionPane.showInputDialog(null,
-                                    "Please the save file number you want to save to. Enter NO if you do not want to save");
-                            if (input.equals("NO")) {
-                                break;
-                            }
+                                    "Please the save file number you want to save to.");
+                            
                             try {
                                 inputInt = Integer.parseInt(input);
                                 save=true;

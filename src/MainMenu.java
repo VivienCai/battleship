@@ -232,7 +232,6 @@ public class MainMenu {
                     try {
                         Placing.place(Main.AIPlacementBoard);
                         Game.printPlacementArray(Main.AIPlacementBoard);
-                        System.out.println(":hsehs");
                         GUI.display(window);
                     } catch (IOException e) {
                         e.printStackTrace();

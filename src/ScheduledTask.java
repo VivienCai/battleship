@@ -2,8 +2,8 @@ import java.util.TimerTask;
 
 public class ScheduledTask extends TimerTask {
 
-    int minute = 0;
-    int second = 0;
+    static int minute = 0;
+    static int second = 0;
 
     protected static String currentTime;
 

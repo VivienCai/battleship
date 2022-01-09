@@ -338,7 +338,8 @@ public class GUI {
         JLabel AIAttack = new JLabel();
         JLabel playerScore = new JLabel();
         JLabel currentTurn = new JLabel();
-
+        
+        
         if (Main.count == 0) {
             Timer time = new Timer(); // Instantiate Timer Object
             ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
@@ -346,8 +347,8 @@ public class GUI {
             Main.count++;
         }
 
-        // if (Main.shipsAlive.size() == 0) {
-        if (Main.AIShot == 1) {
+         if (Main.shipsAlive.size() == 0) {
+//        if (Main.AIShot == 1) {
             System.out.println("AI lost, player wins");
             AIwon = false;
             AITIE = false;
@@ -355,13 +356,13 @@ public class GUI {
             MusicPlayer.playSound("disappointed.wav", false);
             new Music().start();
             return;
-            // } else if (Main.playerShipsAlive.size() == 0) {
-        } else if (Main.PlayerShot == 1) {
+            } else if (Main.playerShipsAlive.size() == 0) {
+      //  } else if (Main.PlayerShot == 1) {
             System.out.println("AI won, player lost");
             AIwon = true;
             AITIE = false;
             endingScreen(window);
-            MusicPlayer.playSound("victory.wav", false);
+ //           MusicPlayer.playSound("victory.wav", false);
             new Music().start();
             return;
         } else if (Main.shipsAlive.size() == 0 && Main.playerShipsAlive.size() == 0) {
@@ -427,6 +428,11 @@ public class GUI {
         });
         nextBtn.setEnabled(false);
 
+        if (FileHandling.firstRound) {
+            	FileHandling.promptSaveGame();
+            	FileHandling.firstRound=false;
+            }
+        
         if (!Main.isPlayersTurn) {
             currentTurn.setText("It is AIsha's turn.");
             playerIcon.setEnabled(false);
@@ -483,7 +489,7 @@ public class GUI {
                 int index = JOptionPane.showOptionDialog(window, label, "AIsha Hit", JOptionPane.DEFAULT_OPTION,
                         JOptionPane.INFORMATION_MESSAGE, null, hitOrMiss, hitOrMiss[0]);
                 if (index == 0 || index == 2) {
-                    MusicPlayer.playSound("explosion.wav", false);
+//                    MusicPlayer.playSound("explosion.wav", false);
                     System.out.println("was a hit");
 
                     JLabel label2 = new JLabel("What ship did AIsha hit?");
@@ -491,11 +497,11 @@ public class GUI {
                     int shipIndex = JOptionPane.showOptionDialog(window, label2, "What ship?",
                             JOptionPane.DEFAULT_OPTION,
                             JOptionPane.INFORMATION_MESSAGE, null, getShips(), getShips()[0]);
-
+                    System.out.println("ShipIndex:"+ shipIndex);
                     if (index == 0) { // Hit a point
 
                         // If the amount of times hit is equal to size
-                        if (Main.playerShipTimesHit[shipIndex] + 1 == Ship
+                        if (Main.playerShipTimesHit.get(shipIndex) + 1 == Ship
                                 .getSize(Main.playerShipsAlive.get(shipIndex))) {
                             JOptionPane.showMessageDialog(GUI.frame,
                                     "Your input is not possible. Please try again.");
@@ -505,11 +511,11 @@ public class GUI {
                             AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
                                     + ". It hit your " + Game.shipOf(shipIndex)
                                     + ". Please click next turn to continue or save game to save.");
-                            Main.playerShipTimesHit[shipIndex]++;
+                            Main.playerShipTimesHit.set(shipIndex, Main.playerShipTimesHit.get(shipIndex)+1);    //add 1
                         }
                     } else {
 
-                        if (Main.playerShipTimesHit[shipIndex] + 1 != Ship
+                        if (Main.playerShipTimesHit.get(shipIndex) + 1 != Ship
                                 .getSize(Main.playerShipsAlive.get(shipIndex))) {
                             JOptionPane.showMessageDialog(GUI.frame,
                                     "Your input is not possible. Please try again.");
@@ -518,6 +524,7 @@ public class GUI {
                             AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
                                     + ". It sunk your " + Game.shipOf(shipIndex)
                                     + ". Please click next turn to continue or save game to save.");
+                            Main.playerShipTimesHit.remove(shipIndex);
                         }
                     }
 
@@ -530,7 +537,7 @@ public class GUI {
                     }
 
                 } else if (index == 1) { // Hit missed
-                    MusicPlayer.playSound("miss.wav", false);
+  //                  MusicPlayer.playSound("miss.wav", false);
                     Main.AIAttackBoard[y][x].setIsHit(true);
                     Main.AIMiss++;
                     Main.AIShot++;
