@@ -5,6 +5,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.util.*;
 
+import java.util.Timer;
+
 public class GUI {
     // private volatile boolean isImageVisible;
     public static JFrame frame;
@@ -59,10 +61,11 @@ public class GUI {
 
     public static void startGame() throws Exception {
         for (int i = 0; i < 49; i++) {
+            File fontFile = new File("SF-UI-Display-Bold.ttf");
             try {
                 // create the font to use. Specify the size!
                 Integer x = i;
-                customFont[i] = Font.createFont(Font.TRUETYPE_FONT, new File("SF-UI-Display-Bold.ttf"))
+                customFont[i] = Font.createFont(Font.TRUETYPE_FONT, fontFile)
                         .deriveFont(x.floatValue());
                 GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
                 // register the font
@@ -307,7 +310,27 @@ public class GUI {
         window.getContentPane().add(bkgImageContainer);
 
         window.setVisible(true);
-        InitGUI.initWindow(window);
+        // InitGUI.initWindow(window);
+        System.out.println("test 2");
+        // if (AIwon && !AITIE) {
+        // MusicPlayer.playSound("victory.wav", false);
+        // // MusicPlayer.playSound("ourlove.wav", true);
+        // } else if (!AIwon && !AITIE) {
+        // MusicPlayer.playSound("disappointed.wav", false);
+        // if (Math.random() > 0.5) {
+        // MusicPlayer.playSound("Woman.wav", true);
+        // } else {
+        // MusicPlayer.playSound("superbass.wav", true);
+        // }
+        // } else {
+        // MusicPlayer.playSound("superbass.wav", true);
+        // }
+        // return;
+    }
+
+    public static void testing() {
+        MusicPlayer.playSound("ourlove.wav", false);
+
     }
 
     // TODO: ORGANIZE AND MAKE IT LESS BAD
@@ -319,28 +342,41 @@ public class GUI {
         JLabel playerScore = new JLabel();
         JLabel currentTurn = new JLabel();
 
-        if (Main.shipsAlive.size() == 0) {
+        Timer time = new Timer(); // Instantiate Timer Object
+		ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
+		time.schedule(st, 0, 1000);
 
+        // if (Main.shipsAlive.size() == 0) {
+        if (Main.AIShot == 1) {
             System.out.println("AI lost, player wins");
+            endingScreen(window, false, false);
+            InitGUI.initWindow(window);
+            MusicPlayer.playSound("victory.wav", false);
+
+            InitGUI.initWindow(window);
+            // MusicPlayer.playSound("ourlove.wav", false);
+
+            return;
+            // } else if (Main.playerShipsAlive.size() == 0) {
+        } else if (Main.PlayerShot == 1) {
+            System.out.println("AI won, player lost");
             MusicPlayer.playSound("disappointed.wav", false);
+            endingScreen(window, true, false);
             if (Math.random() > 0.5) {
                 MusicPlayer.playSound("Woman.wav", true);
             } else {
                 MusicPlayer.playSound("superbass.wav", true);
             }
-            endingScreen(window, false, false);
-            return;
-        } else if (Main.playerShipsAlive.size() == 0) {
-            MusicPlayer.playSound("victory.wav", false);
-            MusicPlayer.playSound("ourlove.wav", true);
-            System.out.println("AI won, player lost");
-            endingScreen(window, true, false);
             return;
         } else if (Main.shipsAlive.size() == 0 && Main.playerShipsAlive.size() == 0) {
             System.out.println("AI and player tie.");
-            MusicPlayer.playSound("superbass.wav", true);
+
             endingScreen(window, true, true);
+
+            MusicPlayer.playSound("superbass.wav", true);
+
             return;
+
         }
 
         FileHandling.saveGameButton();

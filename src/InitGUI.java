@@ -72,6 +72,6 @@ public class InitGUI {
         window.getContentPane().repaint();
         window.setLocationRelativeTo(null);
         window.getContentPane().setBackground(Color.WHITE);
-        window.setLocationRelativeTo(null);
+
     }
 }
