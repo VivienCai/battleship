@@ -15,12 +15,15 @@ public class MainMenu {
     private JButton headsBtn;
     private JButton submitBtn;
     private JLabel battleshipTitle;
+    private JLabel openingScreenImg;
 
     private JButton nextBtn;
     private JTextPane results = new JTextPane();
 
-    private JButton AIFirst = new JButton("AIsha First");;
-    private JButton playerFirst = new JButton("Player First");
+    private JButton AIFirst = new JButton(new ImageIcon("assets/ai-150x150.png"));
+    private JButton playerFirst = new JButton(new ImageIcon("assets/person-150x150.png"));
+    private ImageIcon easyMode = new ImageIcon("assets/easymode-100x100.png");
+    private ImageIcon hardMode = new ImageIcon("assets/hardmode-100x100.png");
 
     private boolean selected = false;
 
@@ -33,18 +36,27 @@ public class MainMenu {
 
     public void loadTitleScreen() throws Exception {
 
-        battleshipTitle = new JLabel("Battleship");
-        battleshipTitle.setFont(GUI.customFont[48]);
-        battleshipTitle.setBounds(300, 150, 300, 200);
+        // battleshipTitle = new JLabel("Battleship");
+        // battleshipTitle.setFont(GUI.customFont[48]);
+        // battleshipTitle.setBounds(300, 150, 300, 200);
 
         // bkgImageContainer.setSize(window.getContentPane().getWidth(),
         // window.getContentPane().getHeight() / 2);
         // bkgImageContainer.setLocation(0, 0);
         // bkgImageContainer.setVisible(true);
 
-        startGame = new JButton("Start Game");
-        startGame.setSize(600, 100);
-        startGame.setLocation(150, bkgImageContainer.getHeight() + 50);
+        openingScreenImg = new JLabel(new ImageIcon("assets/openingscreen.png"));
+        openingScreenImg.setSize(window.getContentPane().getWidth(),
+                window.getContentPane().getHeight() + 30);
+        openingScreenImg.setLocation(0, 20);
+
+        startGame = new JButton(new ImageIcon("assets/play-100x100.png"));
+        startGame.setSize(100, 100);
+        startGame.setBorderPainted(false);
+        startGame.setBackground(Color.WHITE);
+
+        // TODO: CHANGE POSITION
+        startGame.setLocation(150, 375);
         startGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -66,22 +78,31 @@ public class MainMenu {
             }
         });
 
-        easyModeBtn = new JButton("Easy Mode is now " + Main.easyMode);
-        easyModeBtn.setSize(600, 100);
-        easyModeBtn.setLocation(150, 300);
+        easyModeBtn = new JButton(hardMode);
+        easyModeBtn.setSize(100, 100);
+        easyModeBtn.setLocation(150, 495);
+        easyModeBtn.setBorderPainted(false);
+        easyModeBtn.setBackground(Color.WHITE);
 
         easyModeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 Main.easyMode = !Main.easyMode;
-                easyModeBtn.setText("Easy Mode: " + Main.easyMode);
+                if (Main.easyMode) {
+                    easyModeBtn.setIcon(easyMode);
+                } else {
+                    easyModeBtn.setIcon(hardMode);
+                }
                 System.out.println(Main.easyMode);
             }
         });
 
-        resumeGame = new JButton("Resume Game");
-        resumeGame.setSize(600, 100);
-        resumeGame.setLocation(150, 500);
+        resumeGame = new JButton(new ImageIcon("assets/save-100x100.png"));
+        resumeGame.setSize(100, 100);
+        resumeGame.setLocation(150, 615);
+        resumeGame.setBorderPainted(false);
+        resumeGame.setBackground(Color.WHITE);
+
         resumeGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -124,20 +145,19 @@ public class MainMenu {
         startGame.setVisible(true);
         easyModeBtn.setVisible(true);
         resumeGame.setVisible(true);
-        battleshipTitle.setVisible(true);
+        openingScreenImg.setVisible(true);
+        // battleshipTitle.setVisible(true);
 
         window.getContentPane().add(startGame);
         window.getContentPane().add(easyModeBtn);
         window.getContentPane().add(resumeGame);
+        window.getContentPane().add(openingScreenImg);
 
-        // window.getContentPane().add(bkgImageContainer);
-        window.getContentPane().add(battleshipTitle);
+        window.getContentPane().add(bkgImageContainer);
+        // window.getContentPane().add(battleshipTitle);
 
-        window.getContentPane().setBackground(Color.WHITE);
         window.setVisible(true);
-        window.getContentPane().revalidate();
-        window.getContentPane().repaint();
-        window.setLocationRelativeTo(null);
+        InitGUI.initWindow(window);
 
     }
 
@@ -151,19 +171,21 @@ public class MainMenu {
                 window.getContentPane().getHeight());
         bkgImageContainer.setLocation(0, 0);
 
-        AIFirst.setBounds(10, 10, 100, 100);
-        AIFirst.setFont(GUI.customFont[12]);
-        
+        AIFirst.setBounds(10, 10, 150, 150);
+        AIFirst.setBorderPainted(false);
+        AIFirst.setBackground(Color.WHITE);
         AIFirst.addActionListener(e -> {
             submitBtn.setEnabled(true);
             selected = true;
             AIFirst.setEnabled(false);
             playerFirst.setEnabled(true);
+            Main.isPlayersTurn = false;
             Main.AIFirst = true;
         });
 
-        playerFirst.setBounds(110, 10, 100, 100);
-        playerFirst.setFont(GUI.customFont[12]);
+        playerFirst.setBounds(160, 10, 150, 150);
+        playerFirst.setBorderPainted(false);
+        playerFirst.setBackground(Color.WHITE);
         playerFirst.addActionListener(e -> {
             submitBtn.setEnabled(true);
             selected = true;

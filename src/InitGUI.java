@@ -26,10 +26,11 @@ public class InitGUI {
             g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
         }
     }
+
     public static void AIHitInit(JLabel AIHit) {
         AIHit.setFont(GUI.customFont[16]);
         AIHit.setVisible(true);
-        AIHit.setBounds(JLabel.CENTER + 200, 545, 600, 30);
+        AIHit.setBounds(JLabel.CENTER + 200, 545, 700, 30);
 
     }
 
@@ -49,6 +50,7 @@ public class InitGUI {
         score.setFont(GUI.customFont[16]);
         score.setVisible(true);
     }
+
     public static void initNextBtn(JButton nextBtn) {
         nextBtn.setBounds(790, 700, 140, 45);
         nextBtn.setFont(GUI.customFont[16]);

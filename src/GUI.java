@@ -41,8 +41,6 @@ public class GUI {
         return ships;
     }
 
-    
-
     public static void setUpWindow() throws Exception {
 
         frame = new JFrame();
@@ -58,8 +56,6 @@ public class GUI {
         startGame();
 
     }
-
-    
 
     public static void startGame() throws Exception {
         for (int i = 0; i < 49; i++) {
@@ -81,9 +77,6 @@ public class GUI {
             startMenu.loadTitleScreen();
         }
     }
-
-
-    
 
     public static void displayArray(Coordinate array[][], JButton display[][], int yPosition, int xPosition,
             JFrame window, boolean isEnabled, JButton nextBtn) {
@@ -132,10 +125,10 @@ public class GUI {
                 Coordinate cur = array[i][j];
                 JButton current = display[i][j];
                 current.setEnabled(isEnabled);
-                
+
                 current.addActionListener(e -> {
-                	
-              //  	while(true) {      //Loops until player enters a valid input
+
+                    // while(true) { //Loops until player enters a valid input
                     Object button = e.getSource();
                     for (int k = 1; k <= 10; k++) {
                         for (int g = 1; g <= 10; g++) {
@@ -145,8 +138,7 @@ public class GUI {
                                 String yInd = String.valueOf(Coordinate.columnIndex(k));
                                 String xInd = String.valueOf(g);
                                 // call player's turn method
-                        //        boolean hitBefore=Main.playerAttackBoard[yInd][xInd].getIsHit();
-                                
+                                // boolean hitBefore=Main.playerAttackBoard[yInd][xInd].getIsHit();
                                 if (Main.isPlayersTurn) {
                                     if (!alreadyFired) {
                                         // are u sure
@@ -166,8 +158,6 @@ public class GUI {
                                                     + bruhman + ". Please press next turn to continue.";
                                             AIHit.setText(AIHitString);
                                             InitGUI.AIHitInit(AIHit);
-                                            // AIHit.setHorizontalAlignment(JLabel.CENTER);
-                                            // Main.isPlayersTurn = false;
                                             nextBtn.setEnabled(true);
                                         }
                                     } else {
@@ -180,8 +170,8 @@ public class GUI {
                             }
                         }
                     }
-                    
-                //	} 
+
+                    // }
 
                 });
                 current.setBounds(xPositionSum, yPosition, sizeOfButton, sizeOfButton);
@@ -234,8 +224,6 @@ public class GUI {
         InitGUI.initWindow(window);
     }
 
-    
-
     public static void reInitFrame(JFrame window, JButton nextBtn, JLabel currentTurn, JLabel AIAttack,
             JLabel playerAttack, JLabel AIScore, JLabel PlayerScore) {
         Main.isPlayersTurn = !Main.isPlayersTurn;
@@ -261,7 +249,6 @@ public class GUI {
         try {
             display(window);
         } catch (IOException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         }
 
@@ -323,9 +310,6 @@ public class GUI {
         InitGUI.initWindow(window);
     }
 
-    
-    
-    
     // TODO: ORGANIZE AND MAKE IT LESS BAD
     public static void display(JFrame window) throws IOException {
         JButton nextBtn = new JButton("Next turn");
@@ -336,21 +320,29 @@ public class GUI {
         JLabel currentTurn = new JLabel();
 
         if (Main.shipsAlive.size() == 0) {
+
             System.out.println("AI lost, player wins");
+            MusicPlayer.playSound("disappointed.wav", false);
+            if (Math.random() > 0.5) {
+                MusicPlayer.playSound("Woman.wav", true);
+            } else {
+                MusicPlayer.playSound("superbass.wav", true);
+            }
             endingScreen(window, false, false);
             return;
-        }else if (Main.playerShipsAlive.size() == 0) {
+        } else if (Main.playerShipsAlive.size() == 0) {
+            MusicPlayer.playSound("victory.wav", false);
+            MusicPlayer.playSound("ourlove.wav", true);
             System.out.println("AI won, player lost");
-
             endingScreen(window, true, false);
             return;
-        }else if (Main.shipsAlive.size() == 0 && Main.playerShipsAlive.size() == 0) {
+        } else if (Main.shipsAlive.size() == 0 && Main.playerShipsAlive.size() == 0) {
             System.out.println("AI and player tie.");
-
+            MusicPlayer.playSound("superbass.wav", true);
             endingScreen(window, true, true);
             return;
         }
-   
+
         FileHandling.saveGameButton();
 
         currentTurn.setFont(customFont[22]);
@@ -399,15 +391,7 @@ public class GUI {
             reInitFrame(window, nextBtn, currentTurn, AIAttack, playerAttack, AIScore, playerScore);
         });
         nextBtn.setEnabled(false);
-        
-        // setting text 
-        // if (!Main.isPlayersTurn) {
-            
-        // } else {
-            
-        // }
 
-        // AI's TURN
         if (!Main.isPlayersTurn) {
             currentTurn.setText("It is AIsha's turn.");
             playerIcon.setEnabled(false);
@@ -438,109 +422,107 @@ public class GUI {
                 }
 
             }
-            
+
             // get x and y
-            
-            
+
             int y = h.getY(), x = h.getX();
 
             String AIHitString = "AIsha hit " + JLabelCoordinateString(y, x) + ". Is it a hit, miss, or sink?";
             JLabel label = new JLabel(AIHitString);
-            
+
             label.setFont(customFont[14]);
 
             AIHit.setHorizontalAlignment(JLabel.CENTER);
             AIHit.setText(AIHitString);
 
-            String[] hitOrMiss = { "Hit", "Miss", "Sink" }; 
-            
-            
-            
-            //while loop
-            boolean supposedToBeSunk;  
+            String[] hitOrMiss = { "Hit", "Miss", "Sink" };
+
+            // while loop
+            boolean supposedToBeSunk;
             boolean supposedToBeHit;
 
             do {
-            	supposedToBeSunk=false;
-				supposedToBeHit=false;
+                supposedToBeSunk = false;
+                supposedToBeHit = false;
 
-            	int index = JOptionPane.showOptionDialog(window, label, "AIsha Hit", JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE, null, hitOrMiss, hitOrMiss[0]);
-            	if (index == 0 || index == 2) {
-            		System.out.println("was a hit");
+                int index = JOptionPane.showOptionDialog(window, label, "AIsha Hit", JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE, null, hitOrMiss, hitOrMiss[0]);
+                if (index == 0 || index == 2) {
+                    MusicPlayer.playSound("explosion.wav", false);
+                    System.out.println("was a hit");
 
-            		JLabel label2 = new JLabel("What ship did AIsha hit?");
-            		label2.setFont(customFont[16]);
-            		int shipIndex = JOptionPane.showOptionDialog(window, label2, "What ship?",
-            				JOptionPane.DEFAULT_OPTION,
-                        JOptionPane.INFORMATION_MESSAGE, null, getShips(), getShips()[0]);
+                    JLabel label2 = new JLabel("What ship did AIsha hit?");
+                    label2.setFont(customFont[16]);
+                    int shipIndex = JOptionPane.showOptionDialog(window, label2, "What ship?",
+                            JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.INFORMATION_MESSAGE, null, getShips(), getShips()[0]);
 
-            		if (index == 0) { //Hit a point
-            			
-            			//If the amount of times hit is equal to size                	           	
-            			if (Main.playerShipTimesHit[shipIndex]+1== Ship.getSize(Main.playerShipsAlive.get(shipIndex))) { 
-            				JOptionPane.showMessageDialog(GUI.frame,
-                                "Your input is not possible. Please try again.");               		
-            				supposedToBeSunk=true;
-                		
-                		
-            			}else {
-            				AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
-            				+ ". It hit your " + Game.shipOf(shipIndex) + ". Please click next turn to continue or save game to save.");
-            				Main.playerShipTimesHit[shipIndex]++;                      		
-            			}                    
-            		} else {	
-            			
-            			if(Main.playerShipTimesHit[shipIndex]+1!= Ship.getSize(Main.playerShipsAlive.get(shipIndex))) {
-            				JOptionPane.showMessageDialog(GUI.frame,
-                                    "Your input is not possible. Please try again.");                   				
-            				supposedToBeHit=true;
-            			}else {
-            				AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
-                			+ ". It sunk your " + Game.shipOf(shipIndex) + ". Please click next turn to continue or save game to save.");
-            			}	
-            		}
-            			
-            		if(!supposedToBeSunk && !supposedToBeHit) {    //only triggers if input is correct
-            			if (!AI.isHunting) {
-            				Hitting.getInputGUI(h, index, shipIndex);
-            			} else {
-            				Hunting.getInputGUI(h, index, shipIndex);
-            			}
-            		}
-            		
-            	} else if (index == 1) {  //Hit missed
-            		Main.AIAttackBoard[y][x].setIsHit(true);
-            		Main.AIMiss++;
-            		Main.AIShot++;
-            		AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
-            		+ ". It missed. Please click next turn to continue or save game to save.");
-            	}
+                    if (index == 0) { // Hit a point
 
-            	nextBtn.setEnabled(true);
-            
-            } while(supposedToBeSunk ||supposedToBeHit);
-            
-            
-        //Player's turn    
+                        // If the amount of times hit is equal to size
+                        if (Main.playerShipTimesHit[shipIndex] + 1 == Ship
+                                .getSize(Main.playerShipsAlive.get(shipIndex))) {
+                            JOptionPane.showMessageDialog(GUI.frame,
+                                    "Your input is not possible. Please try again.");
+                            supposedToBeSunk = true;
+
+                        } else {
+                            AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
+                                    + ". It hit your " + Game.shipOf(shipIndex)
+                                    + ". Please click next turn to continue or save game to save.");
+                            Main.playerShipTimesHit[shipIndex]++;
+                        }
+                    } else {
+
+                        if (Main.playerShipTimesHit[shipIndex] + 1 != Ship
+                                .getSize(Main.playerShipsAlive.get(shipIndex))) {
+                            JOptionPane.showMessageDialog(GUI.frame,
+                                    "Your input is not possible. Please try again.");
+                            supposedToBeHit = true;
+                        } else {
+                            AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
+                                    + ". It sunk your " + Game.shipOf(shipIndex)
+                                    + ". Please click next turn to continue or save game to save.");
+                        }
+                    }
+
+                    if (!supposedToBeSunk && !supposedToBeHit) { // only triggers if input is correct
+                        if (!AI.isHunting) {
+                            Hitting.getInputGUI(h, index, shipIndex);
+                        } else {
+                            Hunting.getInputGUI(h, index, shipIndex);
+                        }
+                    }
+
+                } else if (index == 1) { // Hit missed
+                    MusicPlayer.playSound("miss.wav", false);
+                    Main.AIAttackBoard[y][x].setIsHit(true);
+                    Main.AIMiss++;
+                    Main.AIShot++;
+                    AIHit.setText("AIsha hit " + JLabelCoordinateString(y, x)
+                            + ". It missed. Please click \"next turn\" to continue or \"save game\" to save.");
+                }
+
+                nextBtn.setEnabled(true);
+
+            } while (supposedToBeSunk || supposedToBeHit);
+
+            // Player's turn
         } else {
             currentTurn.setText("It is your turn.");
-            
+
             playerIcon.setEnabled(true);
-            
+
             AIIcon.setEnabled(false);
-            
+
             AIHit.setText("Pick a point to fire at on the attack board.");
             AIHit.setHorizontalAlignment(JLabel.CENTER);
         }
 
-        
-        //loop end
-        
+        // loop end
+
         Main.roundOver = !Main.roundOver;
 
     }
-
-    
 
 }

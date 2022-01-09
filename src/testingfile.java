@@ -558,7 +558,42 @@ public class testingfile {
          * }
          * 
          */
+        // Coordinate cur = Main.AIPlacementBoard[inputy][inputx];
+        // Coordinate curPlayer = Main.playerAttackBoard[inputy][inputx];
 
+        // // check if it is a ship point and if it has not been hit before
+        // if (cur.getIsShip() && !cur.getIsHit()) {
+        // // setting it as hit for both boards
+        // cur.setIsHit(true);
+        // curPlayer.setIsHit(true);
+        // // key is the coordinate we hit (e.g E4 -> CARRIER)
+        // String key = Game.getAccessKey(inputy, inputx);
+        // // getting the ship and adding times hit by 1
+        // Ship shipHit = Game.AIMapOfCoor.get(key);
+        // shipHit.addTimesHit();
+        // String shipHitName = shipHit.toString();
+
+        // // if the ship has been hit the size it is (indicates it to be sunk)
+        // if (shipHit.getTimesHit() == shipHit.getSize()) {
+        // // must have a default constructor so we can remove the name of the ship from
+        // // the list of ships alive
+        // Ship remove = new Ship();
+        // // looping through AI's player
+        // for (Ship aliveShip : shipsAlive) {
+        // if (aliveShip.getName().equals(shipHitName)) {
+        // remove = aliveShip;
+        // }
+        // }
+
+        // shipsAlive.remove(remove);
+        // System.out.printf("YOU SUNK THE AI'S %s.\n", shipHit.getName());
+        // } else {
+        // System.out.printf("YOU HIT THE AI'S %s.\n", shipHit.getName());
+
+        // }
+        // curPlayer.setIsShip(true);
+        // Main.PlayerHit++;
+        // }
 
 
     }

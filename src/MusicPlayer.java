@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.*;
 import javax.sound.sampled.*;
 
 public class MusicPlayer {
@@ -25,9 +24,9 @@ public class MusicPlayer {
         if (loopInfinite) {
             clip.loop(Clip.LOOP_CONTINUOUSLY);
         } else {
-            //plays once
+            // plays once
             clip.loop(0);
-           
+
         }
     }
 
@@ -37,6 +36,11 @@ public class MusicPlayer {
             MusicPlayer audioPlayer = new MusicPlayer(loopInfinite);
             audioPlayer.play();
             while (true) {
+                if (!loopInfinite
+                        && audioPlayer.clip.getMicrosecondPosition() == audioPlayer.clip.getMicrosecondLength()) {
+                    audioPlayer.stop();
+                    break;
+                }
             }
             // audioPlayer.stop
         } catch (Exception ex) {
@@ -47,18 +51,18 @@ public class MusicPlayer {
 
     public static void main(String[] args) {
         playSound("disappointed.wav", false);
-        playSound("Woman.wav", true);
+        
+        playSound("miss.wav", true);
+     
     }
 
     // Method to play the audio
     public void play() {
         // start the clip
         clip.start();
-
     }
 
-    public void stop() throws UnsupportedAudioFileException,
-            IOException, LineUnavailableException {
+    public void stop() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         clip.stop();
         clip.close();
     }

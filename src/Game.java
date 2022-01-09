@@ -18,7 +18,7 @@ public class Game {
     public static HashMap<String, ArrayList<String>> playerSunkShips = new HashMap<>();
     public static HashMap<String, ArrayList<String>> AIMapOfShip = new HashMap<>();
 
-    //Init hashmap
+    // Init hashmap
     public static void initHitPoint() {
         for (String i : Main.playerShipsAlive) {
             Game.playerSunkShips.put(i, new ArrayList<String>());
@@ -99,42 +99,6 @@ public class Game {
         // check if the players hit hits a ship and mark it on the ai placement board,
         // cur is a placeholder variable name
         firePoint(inputx, inputy, shipsAlive, playerShipsAlive);
-        // Coordinate cur = Main.AIPlacementBoard[inputy][inputx];
-        // Coordinate curPlayer = Main.playerAttackBoard[inputy][inputx];
-
-        // // check if it is a ship point and if it has not been hit before
-        // if (cur.getIsShip() && !cur.getIsHit()) {
-        // // setting it as hit for both boards
-        // cur.setIsHit(true);
-        // curPlayer.setIsHit(true);
-        // // key is the coordinate we hit (e.g E4 -> CARRIER)
-        // String key = Game.getAccessKey(inputy, inputx);
-        // // getting the ship and adding times hit by 1
-        // Ship shipHit = Game.AIMapOfCoor.get(key);
-        // shipHit.addTimesHit();
-        // String shipHitName = shipHit.toString();
-
-        // // if the ship has been hit the size it is (indicates it to be sunk)
-        // if (shipHit.getTimesHit() == shipHit.getSize()) {
-        // // must have a default constructor so we can remove the name of the ship from
-        // // the list of ships alive
-        // Ship remove = new Ship();
-        // // looping through AI's player
-        // for (Ship aliveShip : shipsAlive) {
-        // if (aliveShip.getName().equals(shipHitName)) {
-        // remove = aliveShip;
-        // }
-        // }
-
-        // shipsAlive.remove(remove);
-        // System.out.printf("YOU SUNK THE AI'S %s.\n", shipHit.getName());
-        // } else {
-        // System.out.printf("YOU HIT THE AI'S %s.\n", shipHit.getName());
-
-        // }
-        // curPlayer.setIsShip(true);
-        // Main.PlayerHit++;
-        // }
     }
 
     public static String firePoint(int inputx, int inputy, ArrayList<Ship> shipsAlive,
@@ -145,6 +109,7 @@ public class Game {
 
         // check if it is a ship point and if it has not been hit before
         if (cur.getIsShip() && !cur.getIsHit()) {
+            MusicPlayer.playSound("explosion.wav", false);
             // setting it as hit for both boards
             cur.setIsHit(true);
             curPlayer.setIsHit(true);
@@ -154,7 +119,7 @@ public class Game {
             Ship shipHit = Game.AIMapOfCoor.get(key);
             shipHit.addTimesHit();
             String shipHitName = shipHit.toString();
-            // String shipName = shipHit.getName(); 
+            // String shipName = shipHit.getName();
 
             curPlayer.setIsShip(true);
             Main.PlayerHit++;
@@ -180,17 +145,19 @@ public class Game {
                     Main.playerAttackBoard[columnInd][rowInd].setIsShip(false);
                     Main.playerAttackBoard[columnInd][rowInd].setIsSunk(true);
                 }
-                
+
                 System.out.printf("YOU SUNK THE AI'S %s.\n", shipHitName);
                 return "YOU SUNK THE AI'S " + shipHitName + "\n";
             } else {
                 System.out.printf("YOU HIT THE AI'S %s.\n", shipHitName);
                 return "YOU HIT THE AI'S " + shipHitName + "\n";
             }
+            
         }
         // if it has been hit before and is a ship, or is not a ship point
         else if (cur.getIsShip() && cur.getIsHit() || !cur.getIsShip()) {
             // setting it as hit for both boards
+            MusicPlayer.playSound("miss.wav", false);
             cur.setIsHit(true);
             curPlayer.setIsHit(true);
             System.out.println("YOU MISSED.");
