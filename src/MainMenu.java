@@ -101,40 +101,46 @@ public class MainMenu {
         resumeGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                int inputInt;
-                while (true) {
-                    String input = JOptionPane.showInputDialog(null,
-                            "Please the save file number you want to resume from.");
-                    try {
-                        inputInt = Integer.parseInt(input);
-                        break;
-                    } catch (Exception e) {
-                    }
-                }
-
+                int inputInt=0;
+                boolean isValid=false;
+                
+                String input = JOptionPane.showInputDialog(null,
+                		"Please the save file number you want to resume from. ");
                 try {
-                    FileHandling.resumeGame(inputInt);
-                    FileHandling.resumeBoards(inputInt);
-
-                    window.getContentPane().removeAll();
-                    // window.getContentPane().remove(results);
-                    // window.getContentPane().remove(headsBtn);
-                    window.getContentPane().revalidate();
-                    window.getContentPane().repaint();
-                    window.getContentPane().setBackground(Color.WHITE);
-                    window.setLocationRelativeTo(null);
-                    isImageVisible = false;
-                    try {
-                        
-                        GUI.display(MainMenu.window);
-                     
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                	inputInt = Integer.parseInt(input);
+                	isValid=true;
                 } catch (Exception e) {
-                    e.printStackTrace();
+
+                    isValid=false;
                 }
+                
+                
+                if (isValid) {
+                	try {
+                		FileHandling.resumeGame(inputInt);
+                		FileHandling.resumeBoards(inputInt);
+
+                		window.getContentPane().removeAll();
+                		// window.getContentPane().remove(results);
+                		// window.getContentPane().remove(headsBtn);
+                		window.getContentPane().revalidate();
+                		window.getContentPane().repaint();
+                		window.getContentPane().setBackground(Color.WHITE);
+                		window.setLocationRelativeTo(null);
+                		isImageVisible = false;
+                		try {
+
+                			GUI.display(MainMenu.window);
+                		} catch (IOException e) {
+                			// TODO Auto-generated catch block
+                			e.printStackTrace();
+                		}
+                	} catch (Exception e) {
+                        JOptionPane.showMessageDialog(GUI.frame, "Sorry, we cannot find the file you are looking for.");
+                		e.printStackTrace();
+                	}
+                }	
+                
             }
         });
 
