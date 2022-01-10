@@ -11,7 +11,8 @@ import javax.swing.*;
 */
 
 public class Main {
-    // attributes
+	
+    // -----------ATTRIBUTES-----------------------
     private static boolean gamestate = true;
     protected static Scanner sc = new Scanner(System.in);
     protected static boolean AIFirst = false;
@@ -21,38 +22,85 @@ public class Main {
     protected static boolean heads = false;
     protected static boolean isPlayersTurn;
     protected static int count = 0;
-
     protected static ArrayList<Integer> playerShipTimesHit = new ArrayList<Integer>();
     protected static Coordinate playerAttackBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIPlacementBoard[][] = new Coordinate[11][11];
     protected static Coordinate AIAttackBoard[][] = new Coordinate[11][11];
-    // getting ship list of AI and player
     protected static ArrayList<Ship> shipsAlive = Ship.getList();
     protected static ArrayList<String> playerShipsAlive = Ship.getPlayerListOfShipsAlive();
-
     public static JFrame mainFrame;
-    // public static JPanel panel = new JPanel();
 
+    //Main Method
+    public static void main(String[] args) throws Exception {      
+        Game.initHitPoint();
+        introPrompt();
+        promptEnterKey();
+
+        // while the player or AI still has ships alive
+        while (gamestate) {
+            if (shipsAlive.size() == 0) {
+                System.out.println("AI lost, player wins");
+                break;
+            }
+            if (playerShipsAlive.size() == 0) {
+                System.out.println("AI won, player lost");
+                break;
+            }
+            if (shipsAlive.size() == 0 && playerShipsAlive.size() == 0) {
+                System.out.println("AI and player tie.");
+                break;
+            }
+
+            // prints the ships still alive for AI and user
+            printShipsAlive();
+            if (easyMode) {
+                if (AIFirst == true) {
+                    Game.AIMovesEasy(shipsAlive, playerShipsAlive);
+                    Game.playerMoves(shipsAlive, playerShipsAlive);
+                } else {
+                    Game.playerMoves(shipsAlive, playerShipsAlive);
+                    Game.AIMovesEasy(shipsAlive, playerShipsAlive);
+                }
+                
+            } else {   //If hard mode
+                if (AIFirst == true) {
+                    Game.AIMoves(shipsAlive, playerShipsAlive);
+                    Game.playerMoves(shipsAlive, playerShipsAlive);
+                } else {
+                    Game.playerMoves(shipsAlive, playerShipsAlive);
+                    Game.AIMoves(shipsAlive, playerShipsAlive);
+                }
+            }
+            printHitsMisses();
+            System.out.println("Round " + counter
+                    + " is over. If you would like to stop playing and save, please enter \"SAVE\".");
+            counter++;
+            String temp = sc.nextLine();
+            if (temp.equals("SAVE")) { // sees if the user wants to save the game
+                System.out.println("enter save game number");
+                int numb = sc.nextInt();
+                FileHandling.saveGame(numb);
+                break;
+            }
+        }
+    }
+    
+    
     public static void setUpMain() throws Exception {
         mainFrame = new JFrame();
         mainFrame.getContentPane().setLayout(null);
         mainFrame.getContentPane().setBackground(Color.WHITE);
-        // mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setPreferredSize(new Dimension(900, 615));
         mainFrame.setMinimumSize(new Dimension(900, 615));
         mainFrame.setResizable(false);
-        // mainFrame.pack();
     }
 
     public static void runMain() throws Exception {
         setUpMain();
-        // instantiating Coordinate for boards
-        // intro message, coin flip, and instruction for input
-        introPrompt();
-        // prompt user to "press enter to continue"
+        introPrompt(); //For coin flip, saved games, easy mode
         promptEnterKey();
 
-        // while the player or AI still has ships alive
+        // Keeps on looping until either the AI or player loses
         while (gamestate) {
             if (shipsAlive.size() == 0) {
                 System.out.println("AI lost, player wins");
@@ -70,6 +118,7 @@ public class Main {
             // prints the ships still alive for AI and user
             printShipsAlive();
             if (easyMode) {
+            	//2 scenarios, player first or AI first
                 if (AIFirst == true) {
                     isPlayersTurn = false;
                     Game.AIMovesEasy(shipsAlive, playerShipsAlive);
@@ -81,6 +130,7 @@ public class Main {
                     isPlayersTurn = false;
                     Game.AIMovesEasy(shipsAlive, playerShipsAlive);
                 }
+                
             } else {
                 if (AIFirst == true) {
                     isPlayersTurn = false;
@@ -95,6 +145,7 @@ public class Main {
                 }
             }
             printHitsMisses();
+       
             System.out.println("Round " + counter
                     + " is over. If you would like to stop playing and save, please enter \"SAVE\".");
             counter++;
@@ -106,66 +157,6 @@ public class Main {
                 break;
             }
         }
-
-    }
-
-    public static void main(String[] args) throws Exception {
-        // runMain();
-        // public static void hello() throws Exception{
-        // instantiating Coordinate for boards
-        // intro message, coin flip, and instruction for input
-        Game.initHitPoint();
-        introPrompt();
-        // prompt user to "press enter to continue"
-        promptEnterKey();
-
-        // while the player or AI still has ships alive
-        while (gamestate) {
-            if (shipsAlive.size() == 0) {
-                System.out.println("AI lost, player wins");
-                break;
-            }
-            if (playerShipsAlive.size() == 0) {
-                System.out.println("AI won, player lost");
-                break;
-            }
-            if (shipsAlive.size() == 0 && playerShipsAlive.size() == 0) {
-                System.out.println("AI and player tie.");
-                break;
-            }
-
-            // prints the ships still alive for AI and user
-            printShipsAlive();
-            if (easyMode) {
-                if (AIFirst == true) {
-                    Game.AIMovesEasy(shipsAlive, playerShipsAlive);
-                    Game.playerMoves(shipsAlive, playerShipsAlive);
-                } else {
-                    Game.playerMoves(shipsAlive, playerShipsAlive);
-                    Game.AIMovesEasy(shipsAlive, playerShipsAlive);
-                }
-            } else {
-                if (AIFirst == true) {
-                    Game.AIMoves(shipsAlive, playerShipsAlive);
-                    Game.playerMoves(shipsAlive, playerShipsAlive);
-                } else {
-                    Game.playerMoves(shipsAlive, playerShipsAlive);
-                    Game.AIMoves(shipsAlive, playerShipsAlive);
-                }
-            }
-            printHitsMisses();
-            System.out.println("Round " + counter
-                    + " is over. If you would like to stop playing and save, please enter \"SAVE\".");
-            counter++;
-            String temp = sc.nextLine();
-            if (temp.equals("SAVE")) { // sees if the user wants to save the game
-                System.out.println("enter save game number");
-                int numb = sc.nextInt();
-                FileHandling.saveGame(numb);
-                break;
-            }
-        }
-
     }
 
     // Method that initilalzies our game boards so they do not have null values
@@ -197,10 +188,8 @@ public class Main {
         for (int i = 0; i < 5; i++) {
             playerShipTimesHit.add(0);
         }
-
     }
 
-    // copied from stack overflow LMAO
     public static void promptEnterKey() {
         System.out.println("Press \"ENTER\" to continue...");
         try {
@@ -217,24 +206,24 @@ public class Main {
         System.out.println("______________________________________________________________");
         String input = sc.nextLine();
         initArrays();
-
+        
+        //Sees if the user wants to resume or start a new game
         if (input.equals("RESUME")) {
             System.out.println(
                     "Which save file would you like to resume from? Please enter the save file number you saved to.");
-            int temp = sc.nextInt(); // add crash prevention
+            int temp = sc.nextInt(); 
             FileHandling.resumeGame(temp);
             FileHandling.resumeBoards(temp);
         } else {
             System.out.println("Would you like to play on easy or hard AI mode?");
             Game.easyOrHard();
-            // System.out.println("easy mode: " + Main.easyMode);
-
+            
             // Determining who goes first
             System.out.println("To determine who goes first, lets do a coin flip!");
             Game.coinFlip();
             Placing.place(AIPlacementBoard);
-
         }
+        
         System.out.println("AI Placement Board: ");
         Game.printPlacementArray(AIPlacementBoard);
 
@@ -247,6 +236,7 @@ public class Main {
     public static void printShipsAlive() {
         System.out.println("________________________________");
         System.out.println("AI ships alive: ");
+        //Loops through all the alive ships
         for (Ship aliveShip : shipsAlive) {
             System.out.println(aliveShip);
         }
