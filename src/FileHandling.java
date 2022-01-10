@@ -47,7 +47,7 @@ public class FileHandling {
             text2.println();
         }
     	
-    	//Prints the AI attack board
+    	//Prints the AI placement board by looping through each Coordinate and assigning letter
     	for (int i = 0; i <= 10; i++) {    
             for (int j = 1; j <= 10; j++) {
                 if (i == 0) {
@@ -56,7 +56,6 @@ public class FileHandling {
                     Coordinate cur = Main.AIAttackBoard[i][j];
                     boolean isShip = cur.getIsShip(), isHit = cur.getIsHit(), isSunk = cur.getIsSunk(),
                             isUnique = cur.getIsUnique();
-                    System.out.println("Testing isSunk/isShip"+cur.getIsSunk()+"/ "+isShip);
                     if (isSunk) {
                     	text2.print("D ");
                     } else if ((isHit && isShip && !isSunk) ||isUnique) {
@@ -78,10 +77,9 @@ public class FileHandling {
 	
 	
 	public static void resumeBoards(int fileNumber) throws Exception {
-		File gridFile = new java.io.File("Grids" + fileNumber+".txt");						//same with this
-		String testarr[][]=new String[11][11];
-		String testarr2[][]=new String[11][11];
-
+		
+		//finding which file to resume from
+		File gridFile = new java.io.File("Grids" + fileNumber+".txt");					
 		Scanner fsc = new Scanner(gridFile);
 		boolean isShip;
 		boolean isHit;
@@ -95,54 +93,48 @@ public class FileHandling {
 				if(next.equals("O")) {				//Checks each letter to see what state they are
 					isShip=false;
 					isHit=false;
-					testarr[i][j]="O";
 
 				} 
-				else if(next.equals("M")) {
+				else if(next.equals("M")) { 	//if miss
 					isShip=false;
 					isHit=true;
-					testarr[i][j]="M";
 
 				}
-				else if(next.equals("S")) {
+				else if(next.equals("S")) {		//if ship and not hit
 					isShip=true;
 					isHit=false;
-					testarr[i][j]="S";
 
 				}
 				else {                          //if hit
 					isShip=true;
 					isHit=true;
-					testarr[i][j]="X";
 
 				}
+				//Creating temporary Coordinate to put into 2D array
 				Coordinate cur=new Coordinate(i,j);
 				cur.setIsHit(isHit);
 				cur.setIsShip(isShip);
-				Main.playerAttackBoard[i][j]=cur;  //Assigns the states to the Main array
+				Main.playerAttackBoard[i][j]=cur;  
 				Main.AIPlacementBoard[i][j]=cur;
 			}
 		}
 		
-
 		
 		//gets info for AIHit board
 		for (int i=1;i<11;i++) {
 			for (int j=1;j<11;j++) {
 				next =fsc.next();
-				if(next.equals("O")) {
+				if(next.equals("O")) {			//if nothing happened
 					isShip=false;
 					isHit=false;
-					testarr2[i][j]="O";
 					isSunk=false;
 				} 
-				else if(next.equals("M")) {
+				else if(next.equals("M")) {		//if miss
 					isShip=false;
 					isHit=true;
-					testarr2[i][j]="M";
 					isSunk=false;	
 				}
-				else if(next.equals("D")) {
+				else if(next.equals("D")) {		//if sunk
 					isHit=true;
 					isShip=true;
 					isSunk=true;	
@@ -150,7 +142,6 @@ public class FileHandling {
 				else {                          //if hit
 					isShip=true;
 					isHit=true;
-					testarr2[i][j]="X";
 					isSunk=false;
 				}
 				
@@ -168,7 +159,7 @@ public class FileHandling {
 	
  public static void resumeGame(int fileNumber) throws Exception{
 	//resumes all info but boards
- 	File infoFile = new java.io.File("info" + fileNumber+".txt");              //miht not work for diff comps
+ 	File infoFile = new java.io.File("info" + fileNumber+".txt");              
 		Scanner fsc = new Scanner(infoFile);
 		
 		//Resuming all the easy to resume variables
@@ -184,8 +175,12 @@ public class FileHandling {
 		Main.PlayerShot=fsc.nextInt();
 		Main.PlayerHit=fsc.nextInt();
 		Main.PlayerMiss=fsc.nextInt();
-		int counter2 =0;
 		Main.playerShipTimesHit.clear();
+		Ship.getList().clear();
+
+		int counter2 =0;	
+		int homeCoordCounter=0;
+
 		while (true) {
 			int temp=fsc.nextInt();
 			if (temp==4560) {
@@ -196,17 +191,14 @@ public class FileHandling {
 			}
         }
 		
-		//resuming playerhit board
-		int homeCoordCounter=0;
-		Ship.getList().clear();
-		
-		
+		//Resuming AI alive ship information		
 		while(fsc.hasNext()) {                        
 			
-			String name=fsc.next();
-			if (name.equals("PLAYER")) {
-				break;                                //detects when it is the player board
+			String name=fsc.next();				//Scans the next word
+			if (name.equals("PLAYER")) {		//If the next word is player, that means this part is over
+				break;                                
 			}
+			
 			boolean alive;
 			if (fsc.next().equals("ALIVE")) {
 				alive=true;
@@ -214,8 +206,6 @@ public class FileHandling {
 			else {
 				alive=false;
 			}
-			
-
 			
 			//Gets the variables from the file and converts it into a Coordinate and Ship
 			int size=fsc.nextInt();
@@ -229,6 +219,8 @@ public class FileHandling {
 			if (alive) {
 				Main.getShipsAlive().add(counter2, ship);
 			}
+			
+			//Sets ship attributes
 			Ship.getList().get(homeCoordCounter).setHomeCoord(yCoord, xCoord);
 			Ship.getList().get(homeCoordCounter).setIsSunk(!alive);
 			Ship.getList().get(homeCoordCounter).setName(name);
@@ -236,7 +228,7 @@ public class FileHandling {
 			Ship.getList().get(homeCoordCounter).setIsVertical(vertical);
 			Ship.getList().get(homeCoordCounter).setTimesHit(timesHit);
 			
-			//Resuming all ship locations from home point
+			//Resuming all ship locations from home point by looping for size times and then putting a ship point 1 away from home
 			for (int j = 1; j < size; j++) {
                 coord.setIsShip(true);
                 Main.AIPlacementBoard[yCoord][xCoord].setIsShip(true);
@@ -260,6 +252,7 @@ public class FileHandling {
 		//Resume player alive ships
 		int counter=0;
 		Main.getPlayerShipsAlive().clear();
+		
 		while (fsc.hasNext()) {    
 			String ship=fsc.next();
 			if (ship.equals("UNIQUEHITPOINTS")) {
@@ -313,14 +306,6 @@ public class FileHandling {
 			}			
 		}
 	
-//		 for (String i : Game.playerSunkShips.keySet()) {
-//	            //ship
-//	            text.print(i+" ");
-//	            for (String point : Game.playerSunkShips.get(i)) {
-//	                text.print(point + " ");
-//	            }
-//	        text.println();
-//	        }
 		
 		//adding hashmaps
 		while (fsc.hasNext()) {
@@ -342,13 +327,13 @@ public class FileHandling {
 	
 	
 	
-	
 	public static void saveGame(int fileNumber) throws Exception {
 		Scanner sc = new Scanner(System.in);
 		//Determines which file to save to
         System.out.println("Which save file would you like to save to? Please enter a number greater than 1.");
         PrintWriter text = new PrintWriter("Info" + fileNumber + ".txt");
         
+        //Saves the easy variables
         text.println(ScheduledTask.minute+" "+ScheduledTask.second);
         text.println(!Main.isPlayersTurn);
         text.println(Main.easyMode);
@@ -361,9 +346,10 @@ public class FileHandling {
         for (int i=0;i<Main.playerShipTimesHit.size();i++) {
         	text.print(Main.playerShipTimesHit.get(i)+" ");
         }
+        //Allows the code resuming code know when to stop
         text.println("4560");
         
-        //Save ship information
+        //Save ship information for each ship
         for (int i = 0; i < Ship.getList().size(); i++) {
             text.print(Ship.getList().get(i).getName() + " ");
             if (Ship.getList().get(i).getIsSunk()) { // If sunk
@@ -377,8 +363,7 @@ public class FileHandling {
             text.print(Ship.getList().get(i).getVertical() + " ");
             text.print(Ship.getList().get(i).getTimesHit() + " ");
             text.println();
-        } 
-        
+        }        
         
         //Saves player ship information
         text.println("PLAYER");
@@ -388,9 +373,10 @@ public class FileHandling {
         
         text.println();
         text.println("UNIQUEHITPOINTS");
-        text.println(AI.isHunting);     
-        text.println(AI.uniqueHitPoints.size() );
         
+        //Saves hunting information (if it is hunting, what points to hit if it is
+        text.println(AI.isHunting);     
+        text.println(AI.uniqueHitPoints.size() );        
         for (int i=0;i<AI.uniqueHitPoints.size();i++) {   
         	 text.print(AI.uniqueHitPoints.get(i).getX()+" ");
         	 text.println(AI.uniqueHitPoints.get(i).getY());
@@ -429,7 +415,6 @@ public class FileHandling {
 
         //Saves the boards
         FileHandling.saveBoards(fileNumber);
-        Game.printPlacementArray(Main.AIAttackBoard);     
     }
 	
 	
@@ -439,11 +424,11 @@ public class FileHandling {
 		int inputInt;
 		 while (true) {   //Keeps asking for input until player gives correct one
              String input = JOptionPane.showInputDialog(null,
-                     "Before we get started, please enter an integer to determine where your file will be saved (this can be changed later.) ");
+                     "Before we get started, please enter an integer to determine where your file will be saved (this can be changed later) ");
              
              try {
                  inputInt = Integer.parseInt(input);
-                 break;
+                 break;			//Only exits the loop if a proper input is given
              } catch (Exception e) {
              }
          }
@@ -452,16 +437,15 @@ public class FileHandling {
      	    JOptionPane.showMessageDialog(GUI.frame, "Your game has been successfully saved. Press OK to continue");
 
      	} catch (Exception e1) {
-     		// TODO Auto-generated catch block
      		e1.printStackTrace();
-     	}
-		 
+     	}		 
 	}
 	
 
 	public static void saveGameButton(){	
 		
 		//Creating the button
+		GUI.saveGame = new JButton("Save Game");
         GUI.saveGame.setBounds(760, 25, 200, 45);
         GUI.saveGame.setFont(GUI.customFont[16]);
         GUI.saveGame.setForeground(Color.black);
@@ -475,15 +459,13 @@ public class FileHandling {
                 int inputInt = 0;
                 boolean save=false;
                 int result = JOptionPane.showConfirmDialog(null,
-                        "Do you want to save your game? Please make sure you are saving your game after you or the AI moved");
+                        "Do you want to save your game? Please make sure you save your game after the round is finished");
                 switch (result) {
-                    case JOptionPane.YES_OPTION:
-                        System.out.println("Yes");
-                        
+                    case JOptionPane.YES_OPTION:  		//If they say yes to saving                        
                         while (true) {   //Keeps asking for input until player gives correct one
                             String input = JOptionPane.showInputDialog(null,
                                     "Please the save file number you want to save to.");
-                            
+                            //tries to save to that file
                             try {
                                 inputInt = Integer.parseInt(input);
                                 save=true;
@@ -492,26 +474,24 @@ public class FileHandling {
                             }
                         }
                         
-                        if (save) {
+                        if (save) {	//Saves the game after getting the right input
                         	try {
                         		FileHandling.saveGame(inputInt);
                         	} catch (Exception e1) {
-                        		// TODO Auto-generated catch block
                         		e1.printStackTrace();
                         	}
+                        	//Prints final reminders
                         	Game.printPlacementArray(Main.AIAttackBoard);
                         	JOptionPane.showMessageDialog(GUI.frame,
                                 "Your game has been saved. You may either exit out or keep on playing.");
                         	JOptionPane.showMessageDialog(GUI.frame, "Your files have been saved in two filescalled Info"
                                 + inputInt + ".txt and Grids" + inputInt + ".txt");
                         	JOptionPane.showMessageDialog(GUI.frame,
-                                "Please DO NOT tamper with the two filesor your data may be PERMANENTLY lost");
+                                "Please DO NOT tamper with the two files or your data may be PERMANENTLY lost");
                         }
                     case JOptionPane.NO_OPTION:
-                        System.out.println("No");
                         break;
                 }
-
             }
         });	
 	}
