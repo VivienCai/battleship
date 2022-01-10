@@ -462,7 +462,6 @@ public class FileHandling {
 	public static void saveGameButton(){	
 		
 		//Creating the button
-		GUI.saveGame = new JButton("Save Game");
         GUI.saveGame.setBounds(760, 25, 200, 45);
         GUI.saveGame.setFont(GUI.customFont[16]);
         GUI.saveGame.setForeground(Color.black);

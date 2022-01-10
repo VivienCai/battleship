@@ -1,9 +1,17 @@
+
 /* IMPORTS 
 * swing: For all graphics
 * awt: For colours
 * awt.event: For action listeners on buttons
 * io: For throwing exceptions
 */
+
+/* Sarina Li, Vivien Cai, Jiaan Li
+* Sun January 09
+* ICS4U1
+* MainMenu File
+*/
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -11,6 +19,7 @@ import java.io.*;
 
 public class MainMenu {
 
+    // -----------ATTRIBUTES-----------------------
     protected static JFrame window;
 
     // Opening screen graphics
@@ -28,12 +37,13 @@ public class MainMenu {
     private JButton submitBtn = new JButton(new ImageIcon("assets/submit.png"));
     private boolean selected = false;
 
-    //Constructor
+    // -----------METHODS-----------------------
+    // Constructor
     public MainMenu(JFrame theWindow) {
         window = theWindow;
     }
 
-    //Loading opening screen
+    // Loading opening screen
     public void loadTitleScreen() throws Exception {
         openingScreenImg.setSize(window.getContentPane().getWidth(), window.getContentPane().getHeight() + 30);
         openingScreenImg.setLocation(0, 20);
@@ -117,7 +127,7 @@ public class MainMenu {
         InitGUI.initWindow(window);
     }
 
-    //Loading turn picking screen where we pick who goes first
+    // Loading turn picking screen where we pick who goes first
     public void loadTurnPick() {
         turnpickImg.setSize(window.getContentPane().getWidth(), window.getContentPane().getHeight() + 30);
         turnpickImg.setLocation(0, 20);
