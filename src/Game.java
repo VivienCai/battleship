@@ -109,7 +109,13 @@ public class Game {
 
         // check if it is a ship point and if it has not been hit before
         if (cur.getIsShip() && !cur.getIsHit()) {
-            MusicPlayer.playSound("explosion.wav", false);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    MusicPlayer.playSound("explosion.wav", false);
+                }
+            }).start();
+
             // setting it as hit for both boards
             cur.setIsHit(true);
             curPlayer.setIsHit(true);
@@ -152,12 +158,17 @@ public class Game {
                 System.out.printf("YOU HIT THE AI'S %s.\n", shipHitName);
                 return "YOU HIT THE AI'S " + shipHitName + "\n";
             }
-            
+
         }
         // if it has been hit before and is a ship, or is not a ship point
         else if (cur.getIsShip() && cur.getIsHit() || !cur.getIsShip()) {
             // setting it as hit for both boards
-            MusicPlayer.playSound("miss.wav", false);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    MusicPlayer.playSound("miss.wav", false);
+                }
+            }).start();
             cur.setIsHit(true);
             curPlayer.setIsHit(true);
             System.out.println("YOU MISSED.");
