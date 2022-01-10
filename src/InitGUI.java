@@ -1,31 +1,8 @@
 import java.awt.*;
-import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;
-import javax.swing.border.*;
-import java.util.*;
 
 public class InitGUI {
-    private static class RoundedBorder implements Border {
-
-        private int radius;
-
-        RoundedBorder(int radius) {
-            this.radius = radius;
-        }
-
-        public Insets getBorderInsets(Component c) {
-            return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
-        }
-
-        public boolean isBorderOpaque() {
-            return true;
-        }
-
-        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-            g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
-        }
-    }
 
     public static void AIHitInit(JLabel AIHit) {
         AIHit.setFont(GUI.customFont[16]);
@@ -52,11 +29,10 @@ public class InitGUI {
     }
 
     public static void initNextBtn(JButton nextBtn) {
-        nextBtn.setBounds(790, 700, 140, 45);
+        GUI.setBackgroundButton(nextBtn);
+        nextBtn.setBounds(795, 700, 140, 45);
         nextBtn.setFont(GUI.customFont[16]);
         nextBtn.setForeground(Color.black);
-        nextBtn.setBackground(GUI.accent);
-        nextBtn.setBorder(new RoundedBorder(30));
         nextBtn.setVisible(true);
     }
 
@@ -70,8 +46,26 @@ public class InitGUI {
     public static void initWindow(JFrame window) {
         window.getContentPane().revalidate();
         window.getContentPane().repaint();
-        window.setLocationRelativeTo(null);
         window.getContentPane().setBackground(Color.WHITE);
-
+        window.setLocationRelativeTo(null);
+    }
+//dam papa u a rare breed no comparing pl im gonna commit rn
+    public static void initFonts() { 
+        for (int i = 0; i < 49; i++) {
+            File fontFile = new File("SF-UI-Display-Bold.ttf");
+            try {
+                // create the font to use. Specify the size!
+                Integer x = i;
+                GUI.customFont[i] = Font.createFont(Font.TRUETYPE_FONT, fontFile)
+                        .deriveFont(x.floatValue());
+                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+                // register the font
+                ge.registerFont(GUI.customFont[i]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (FontFormatException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

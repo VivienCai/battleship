@@ -1,7 +1,11 @@
+/* IMPORTS 
+* Util: For arrayList and sorting 
+*/
+
 /* Sarina Li, Vivien Cai, Jiaan Li
 * Mon December 20
 * ICS4U1
-* Main Class
+* File Handling class
 */
 
 
@@ -21,7 +25,7 @@ public class FileHandling {
 	public static void saveBoards(int fileNumber) throws Exception{
     	PrintWriter text2 = new PrintWriter("Grids"+fileNumber+".txt");
     	
-    	//Prints the AI placement board
+    	//Prints the AI placement board by looping through each value and assigning a letter for it
     	for (int i = 0; i <= 10; i++) {    
             for (int j = 1; j <= 10; j++) {
                 if (i == 0) {
@@ -460,7 +464,7 @@ public class FileHandling {
 		//Creating the button
 		GUI.saveGame = new JButton("Save Game");
         GUI.saveGame.setBounds(760, 25, 200, 45);
-        GUI. saveGame.setFont(GUI.customFont[16]);
+        GUI.saveGame.setFont(GUI.customFont[16]);
         GUI.saveGame.setForeground(Color.black);
         GUI.saveGame.setBackground(GUI.accent);
         GUI.saveGame.setVisible(true);	

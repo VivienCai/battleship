@@ -1,15 +1,13 @@
 import java.awt.*;
-import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;
-import javax.swing.border.*;
 import java.util.*;
 import java.util.Timer;
 
 public class GUI {
-    // private volatile boolean isImageVisible;
+
     public static JFrame frame;
-    // private static boolean gamestate = true;
+
     private static JButton displayArrayAIAttack[][] = new JButton[11][11];
     private static JButton displayArrayPlayerAttack[][] = new JButton[11][11];
     protected static Font customFont[] = new Font[49];
@@ -25,17 +23,28 @@ public class GUI {
     protected static boolean AIwon;
     protected static boolean AITIE;
 
-    // protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER",
-    // "SUBMARINE", "DESTROYER" };
-
     protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER", "SUBMARINE", "DESTROYER" };
-
     static Scanner sc = new Scanner(System.in);
-
     static Color accent = new Color(0xd6d6d6);
 
-    public GUI() {
-
+    // Sets up initial window
+    public static void setUpWindow() throws Exception {
+        frame = new JFrame();
+        frame.getContentPane().setBackground(Color.WHITE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(1000, 850));
+        frame.setMinimumSize(new Dimension(1000, 850));
+        frame.getContentPane().setLayout(null);
+        frame.setResizable(false);
+        frame.pack();
+        startGame();
+    }
+    
+    public static void startGame() throws Exception {
+        InitGUI.initFonts();
+        MainMenu startMenu = new MainMenu(frame);
+        startMenu.loadTitleScreen();
+        System.out.println("Done initializing!");
     }
 
     public static String[] getShips() {
@@ -44,46 +53,6 @@ public class GUI {
             ships[i] = Main.playerShipsAlive.get(i);
         }
         return ships;
-    }
-
-    public static void setUpWindow() throws Exception {
-
-        frame = new JFrame();
-
-        frame.getContentPane().setLayout(null);
-        frame.getContentPane().setBackground(Color.WHITE);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(1000, 850));
-        frame.setMinimumSize(new Dimension(1000, 850));
-        frame.setResizable(false);
-        frame.pack();
-
-        startGame();
-
-    }
-
-    public static void startGame() throws Exception {
-        for (int i = 0; i < 49; i++) {
-
-            File fontFile = new File("SF-UI-Display-Bold.ttf");
-            try {
-                // create the font to use. Specify the size!
-                Integer x = i;
-                customFont[i] = Font.createFont(Font.TRUETYPE_FONT, fontFile)
-                        .deriveFont(x.floatValue());
-                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-                // register the font
-                ge.registerFont(customFont[i]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (FontFormatException e) {
-                e.printStackTrace();
-            }
-
-            MainMenu startMenu = new MainMenu(frame);
-            startMenu.loadTitleScreen();
-        }
-        System.out.println("Done init!");
     }
 
     public static void displayArray(Coordinate array[][], JButton display[][], int yPosition, int xPosition,
@@ -327,7 +296,7 @@ public class GUI {
 
     // TODO: ORGANIZE AND MAKE IT LESS BAD
     public static void display(JFrame window) throws IOException {
-        JButton nextBtn = new JButton("Next turn");
+        JButton nextBtn = new JButton(new ImageIcon("assets/nxtturn.png"));
         JLabel AIScore = new JLabel();
         JLabel playerAttack = new JLabel();
         JLabel AIAttack = new JLabel();
@@ -483,12 +452,6 @@ public class GUI {
                 int index = JOptionPane.showOptionDialog(window, label, "AIsha Hit", JOptionPane.DEFAULT_OPTION,
                         JOptionPane.INFORMATION_MESSAGE, null, hitOrMiss, hitOrMiss[0]);
                 if (index == 0 || index == 2) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            MusicPlayer.playSound("explosion.wav", false);
-                        }
-                    }).start();
                     System.out.println("was a hit");
 
                     JLabel label2 = new JLabel("What ship did AIsha hit?");
@@ -497,6 +460,12 @@ public class GUI {
                             JOptionPane.DEFAULT_OPTION,
                             JOptionPane.INFORMATION_MESSAGE, null, getShips(), getShips()[0]);
                     System.out.println("ShipIndex:" + shipIndex);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MusicPlayer.playSound("explosion.wav", false);
+                        }
+                    }).start();
                     if (index == 0) { // Hit a point
 
                         // If the amount of times hit is equal to size
@@ -569,6 +538,11 @@ public class GUI {
 
         Main.roundOver = !Main.roundOver;
 
+    }
+    
+    public static void setBackgroundButton(JButton button) {
+        button.setBorderPainted(false);
+        button.setBackground(Color.WHITE);
     }
 
 }

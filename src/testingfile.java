@@ -681,6 +681,8 @@ public class testingfile {
         // System.out.println(Main.heads);
         // }
         // });
-    
+
+        // protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER",
+        // "SUBMARINE", "DESTROYER" };
     }
 }

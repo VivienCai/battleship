@@ -1,3 +1,9 @@
+/* IMPORTS 
+* swing: For all graphics
+* awt: For colours
+* awt.event: For action listeners on buttons
+* io: For throwing exceptions
+*/
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -7,7 +13,7 @@ public class MainMenu {
 
     protected static JFrame window;
 
-    // Main Menu
+    // Opening screen graphics
     private JLabel openingScreenImg = new JLabel(new ImageIcon("assets/openingscreen.png"));
     private JButton startGame = new JButton(new ImageIcon("assets/play-100x100.png"));
     private JButton easyModeBtn;
@@ -15,44 +21,37 @@ public class MainMenu {
     private ImageIcon easyMode = new ImageIcon("assets/easymode-100x100.png");
     private ImageIcon hardMode = new ImageIcon("assets/hardmode-100x100.png");
 
-    // Turn picking
+    // Turn picking screen graphics
     private JLabel turnpickImg = new JLabel(new ImageIcon("assets/turnpicking.png"));
     private JButton AIFirst = new JButton(new ImageIcon("assets/ai-150x150.png"));
     private JButton playerFirst = new JButton(new ImageIcon("assets/person-150x150.png"));
     private JButton submitBtn = new JButton(new ImageIcon("assets/submit.png"));
     private boolean selected = false;
 
+    //Constructor
     public MainMenu(JFrame theWindow) {
         window = theWindow;
     }
 
+    //Loading opening screen
     public void loadTitleScreen() throws Exception {
-        openingScreenImg.setSize(window.getContentPane().getWidth(),
-                window.getContentPane().getHeight() + 30);
+        openingScreenImg.setSize(window.getContentPane().getWidth(), window.getContentPane().getHeight() + 30);
         openingScreenImg.setLocation(0, 20);
 
-        startGame.setSize(100, 100);
-        startGame.setBorderPainted(false);
-        startGame.setBackground(Color.WHITE);
-
-        startGame.setLocation(150, 375);
+        startGame.setBounds(150, 375, 100, 100);
+        GUI.setBackgroundButton(startGame);
         startGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 window.getContentPane().removeAll();
-                window.getContentPane().revalidate();
-                window.getContentPane().repaint();
-                window.getContentPane().setBackground(Color.WHITE);
-                loadCoinFlip();
-
+                InitGUI.initWindow(window);
+                loadTurnPick();
             }
         });
 
         easyModeBtn = new JButton(hardMode);
-        easyModeBtn.setSize(100, 100);
-        easyModeBtn.setLocation(150, 495);
-        easyModeBtn.setBorderPainted(false);
-        easyModeBtn.setBackground(Color.WHITE);
+        easyModeBtn.setBounds(150, 495, 100, 100);
+        GUI.setBackgroundButton(easyModeBtn);
         easyModeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -66,23 +65,19 @@ public class MainMenu {
             }
         });
 
-        resumeGame.setSize(100, 100);
-        resumeGame.setLocation(150, 615);
-        resumeGame.setBorderPainted(false);
-        resumeGame.setBackground(Color.WHITE);
+        resumeGame.setBounds(150, 615, 100, 100);
+        GUI.setBackgroundButton(resumeGame);
         resumeGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 int inputInt = 0;
                 boolean isValid = false;
-
                 String input = JOptionPane.showInputDialog(null,
                         "Please the save file number you want to resume from. ");
                 try {
                     inputInt = Integer.parseInt(input);
                     isValid = true;
                 } catch (Exception e) {
-
                     isValid = false;
                 }
 
@@ -122,14 +117,13 @@ public class MainMenu {
         InitGUI.initWindow(window);
     }
 
-    public void loadCoinFlip() {
-        turnpickImg.setSize(window.getContentPane().getWidth(),
-                window.getContentPane().getHeight() + 30);
+    //Loading turn picking screen where we pick who goes first
+    public void loadTurnPick() {
+        turnpickImg.setSize(window.getContentPane().getWidth(), window.getContentPane().getHeight() + 30);
         turnpickImg.setLocation(0, 20);
 
         AIFirst.setBounds(300, 220, 150, 150);
-        AIFirst.setBorderPainted(false);
-        AIFirst.setBackground(Color.WHITE);
+        GUI.setBackgroundButton(AIFirst);
         AIFirst.addActionListener(e -> {
             selected = true;
             AIFirst.setEnabled(false);
@@ -140,8 +134,7 @@ public class MainMenu {
         });
 
         playerFirst.setBounds(545, 220, 150, 150);
-        playerFirst.setBorderPainted(false);
-        playerFirst.setBackground(Color.WHITE);
+        GUI.setBackgroundButton(playerFirst);
         playerFirst.addActionListener(e -> {
             selected = true;
             playerFirst.setEnabled(false);
@@ -151,20 +144,15 @@ public class MainMenu {
             Main.AIFirst = false;
         });
 
-        submitBtn.setBorderPainted(false);
-        submitBtn.setBackground(Color.WHITE);
-        submitBtn.setSize(600, 100);
-        submitBtn.setLocation(200, 500);
+        submitBtn.setBounds(200, 500, 600, 100);
+        GUI.setBackgroundButton(submitBtn);
         submitBtn.setEnabled(false);
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (selected) {
                     window.getContentPane().removeAll();
-                    window.getContentPane().revalidate();
-                    window.getContentPane().repaint();
-                    window.getContentPane().setBackground(Color.WHITE);
-                    window.setLocationRelativeTo(null);
+                    InitGUI.initWindow(window);
                     try {
                         Placing.place(Main.AIPlacementBoard);
                         Game.printPlacementArray(Main.AIPlacementBoard);
@@ -186,8 +174,6 @@ public class MainMenu {
         window.getContentPane().add(AIFirst);
         window.getContentPane().add(playerFirst);
         window.getContentPane().add(turnpickImg);
-
         InitGUI.initWindow(window);
     }
-
 }
