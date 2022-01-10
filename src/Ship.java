@@ -21,6 +21,24 @@ public class Ship {
     private static ArrayList<String> playerListOfShipsAlive = new ArrayList<String>(
   Arrays.asList("DESTROYER", "SUBMARINE", "CRUISER", "BATTLESHIP", "CARRIER"));
 
+    
+    public void setName(String input) {
+    	name=input;
+    }
+    public void setIsSunk(boolean input) {
+    	isSunk=input;
+    }
+    public void setIsVertical(boolean input) {
+    	isVertical=input;
+    }
+    public void setShipSize(int input) {
+    	size=input;
+    }
+    public void setTimesHit(int input) {
+    	timesHit=input;
+    }
+    
+    
     // default constructor 
     public Ship() {
     }
@@ -89,6 +107,11 @@ public class Ship {
         return isVertical;
     }
 
+    public void setHomeCoord(int y, int x) {
+    	homeCoor.sety(y);
+    	homeCoor.setX(x);
+    }
+    
     public int getSize() {
         return size;
     }
