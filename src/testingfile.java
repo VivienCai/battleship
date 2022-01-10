@@ -665,5 +665,22 @@ public class testingfile {
         // return isImageVisible;
         // }}
 
+        // headsBtn = new JButton("Heads or Tails?");
+        // headsBtn.setEnabled(false);
+        // headsBtn.setSize(600, 100);
+        // headsBtn.setLocation(150, 150);
+        // headsBtn.addActionListener(new ActionListener() {
+        // @Override
+        // public void actionPerformed(ActionEvent arg0) {
+        // Main.heads = !Main.heads;
+        // if (!Main.heads) {
+        // headsBtn.setText("You have selected tails");
+        // } else {
+        // headsBtn.setText("You have selected heads");
+        // }
+        // System.out.println(Main.heads);
+        // }
+        // });
+    
     }
 }

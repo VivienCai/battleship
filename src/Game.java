@@ -169,6 +169,7 @@ public class Game {
                     MusicPlayer.playSound("miss.wav", false);
                 }
             }).start();
+
             cur.setIsHit(true);
             curPlayer.setIsHit(true);
             System.out.println("YOU MISSED.");
