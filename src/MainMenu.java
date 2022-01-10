@@ -1,15 +1,16 @@
 
-/* IMPORTS 
-* swing: For all graphics
-* awt: For colours
-* awt.event: For action listeners on buttons
-* io: For throwing exceptions
-*/
 
 /* Sarina Li, Vivien Cai, Jiaan Li
 * Sun January 09
 * ICS4U1
 * MainMenu File
+*/
+
+/* IMPORTS 
+* swing: For all graphics
+* awt: For colours
+* awt.event: For action listeners on buttons
+* io: For throwing exceptions
 */
 
 import javax.swing.*;

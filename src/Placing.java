@@ -1,7 +1,7 @@
 /* Sarina Li, Vivien Cai, Jiaan Li
 * Fri December 24
 * ICS4U1
-* Placing class for placing ships on AI board
+* Placing file
 */
 
 public class Placing {

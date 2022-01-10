@@ -1,30 +1,36 @@
-import java.util.*;
-
 /* Sarina Li, Vivien Cai, Jiaan Li
 * Mon December 20
 * ICS4U1
-* Battleship AI Class
+* AI Class
 */
 
+/* IMPORTS 
+* Util: For arrayList 
+*/
+
+import java.util.*;
+
+// AI class, root of all AI behaviour in our program
 public class AI {
 
+    // attributes of our AI Class
     static Scanner sc = new Scanner(System.in);
-    static ArrayList<Coordinate> listOfShip = new ArrayList<Coordinate>();
-    static boolean isHunting = false;
-
     static int max = 0;
-    static ArrayList<Coordinate> possibleHits = new ArrayList<Coordinate>(), isParity = new ArrayList<Coordinate>();
+    static boolean isHunting = false;
     static boolean initialIsOdd = false;
-    static ArrayList<Coordinate> inParity = new ArrayList<Coordinate>();
 
-    //end when initial ship  + any other found sunk (when both queues are empty)
-    static ArrayList<Coordinate> uniqueHitPoints = new ArrayList<Coordinate>();
     static Coordinate huntingProbability[][] = new Coordinate[11][11];
+
+    // all arraylists 
+    static ArrayList<Coordinate> listOfShip = new ArrayList<Coordinate>();
+    static ArrayList<Coordinate> uniqueHitPoints = new ArrayList<Coordinate>();
     static ArrayList<Coordinate> hitPointQueue = new ArrayList<Coordinate>();
     static ArrayList<String> shipsHit = new ArrayList<String>();
-    // submarine is index 6
+    static ArrayList<Coordinate> inParity = new ArrayList<Coordinate>();
+    static ArrayList<Coordinate> possibleHits = new ArrayList<Coordinate>(), isParity = new ArrayList<Coordinate>();
     static ArrayList<Coordinate> pointsHit[] = new ArrayList[7];
 
+    // used to check if a certain square is "odd" or even (for parity)
     public static boolean isOdd(int column, int row) {
         if ((column + row) % 2 == 1) {
             return true;
@@ -33,11 +39,12 @@ public class AI {
         }
     }
     
+    // for testing, used to print the arrays in good formatting
     public static void printArray(Coordinate array[][]) {
         System.out.println("PROBABILITY GRID: ");
         System.out.print("  ");
 
-        for (int i = 1; i < 11; i++) { // for the bar at the top
+        for (int i = 1; i < 11; i++) { 
             System.out.print(i + ("  "));
         }
         System.out.println();
@@ -60,7 +67,7 @@ public class AI {
     }
 
    
-
+    // checks if the input is an integer
     public static boolean isInt(String input) {
         try {
             Integer.parseInt(input); // checks if the user input is an int
@@ -70,14 +77,7 @@ public class AI {
         }
     }
 
-    static char playerBoard[][] = new char[11][11];
-    static char playerHits[][] = new char[11][11];
-    // summing ships from length 2 to 5
-
-    // printArray();
-
-    
-
+    // checking for a valid ship (must be the following strings for it to be valid)
     public static boolean checkValidShip(String ship) {
         if (ship.equals("BATTLESHIP") || ship.equals("CARRIER") || ship.equals("SUBMARINE") || ship.equals("DESTROYER")
                 || ship.equals("CRUISER")) {
@@ -85,6 +85,8 @@ public class AI {
         }
         return false;
     }
+
+    // reset the array and max, set that coordinate probability to 0, reinitalize all of our arraylists
     public static void resetArray() {
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 10; j++) {
@@ -96,10 +98,6 @@ public class AI {
         AI.hitPointQueue = new ArrayList<Coordinate>();
         possibleHits = new ArrayList<Coordinate>();
         max = 0;
-    }
-    
-    public static void setIsHunting(boolean input) {
-    	isHunting=input;
     }
 
 }

@@ -1,3 +1,16 @@
+/* Sarina Li, Vivien Cai, Jiaan Li
+* Sun January 09
+* ICS4U1
+* GUI File
+*/
+
+/* IMPORTS 
+* awt: Colours
+* swing: GUI components
+* util.Timer: timer function 
+* io: file io and exceptions
+*/
+
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
@@ -8,28 +21,36 @@ public class GUI {
     // -----------ATTRIBUTES-----------------------
     public static JFrame frame;
 
+    // The coordinate that AI hits
+    private static Coordinate h;
+
     protected static boolean AIwon;
     protected static boolean AITIE;
     private static boolean alreadyFired = false;
+    private static boolean supposedToBeSunk;
+    private static boolean supposedToBeHit;
 
     protected static Font customFont[] = new Font[49];
 
-    private static JButton displayArrayAIAttack[][] = new JButton[11][11];
-    private static JButton displayArrayPlayerAttack[][] = new JButton[11][11];
-    private static Coordinate h;
+    protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER", "SUBMARINE", "DESTROYER" };
+    protected static Color accent = new Color(0xd6d6d6);
+
+    // display window graphics
     private static JLabel AIHit = new JLabel();
-    public static JButton saveGame = new JButton("Save Game");;
-    private static JLabel legendImg = new JLabel(new ImageIcon("assets/legend.png"));
-    private static JButton AIIcon = new JButton(new ImageIcon("assets/ai-150x150.png"));
-    private static JButton playerIcon = new JButton(new ImageIcon("assets/person-150x150.png"));
-    protected static JLabel displayedTimer = new JLabel("00:00");
-    protected static JLabel AIScore = new JLabel();
     protected static JLabel playerAttack = new JLabel();
     protected static JLabel AIAttack = new JLabel();
+    protected static JLabel AIScore = new JLabel();
     protected static JLabel playerScore = new JLabel();
     protected static JLabel currentTurn = new JLabel();
-    protected static String[] ships = { "CARRIER", "BATTLESHIP", "CRUISER", "SUBMARINE", "DESTROYER" };
-    static Color accent = new Color(0xd6d6d6);
+    protected static JLabel displayedTimer = new JLabel("00:00");
+
+    private static JButton displayArrayAIAttack[][] = new JButton[11][11];
+    private static JButton displayArrayPlayerAttack[][] = new JButton[11][11];
+    public static JButton saveGame = new JButton("Save Game");
+
+    private static JLabel legendImg = new JLabel(new ImageIcon("assets/legend.png"));
+    protected static JButton AIIcon = new JButton(new ImageIcon("assets/ai-150x150.png"));
+    protected static JButton playerIcon = new JButton(new ImageIcon("assets/person-150x150.png"));
 
     // -----------METHODS-----------------------
     // Sets up initial window
@@ -53,13 +74,12 @@ public class GUI {
         System.out.println("Done initializing!");
     }
 
-    //displays the board
+    // displays the board
     public static void display(JFrame window) throws IOException {
-
-        //next button must be put here or the program breaks
+        // next button must be put here or the program breaks
         JButton nextBtn = new JButton(new ImageIcon("assets/nxtturn.png"));
-  
 
+        // If its the first round, start timer
         if (Main.count == 0) {
             Timer time = new Timer(); // Instantiate Timer Object
             ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
@@ -67,6 +87,7 @@ public class GUI {
             Main.count++;
         }
 
+        // check if the game is over. If it is, the game ends
         if (Main.shipsAlive.size() == 0) {
             // if (Main.AIShot == 1) {
             System.out.println("AI lost, player wins");
@@ -94,70 +115,20 @@ public class GUI {
             return;
         }
 
+        // For saving the game
         FileHandling.saveGameButton();
-
-        currentTurn.setFont(customFont[22]);
-        currentTurn.setBounds(790, 660, 300, 30);
-
-        legendImg.setBounds(30, 570, 220, 200);
-
-        AIIcon.setBorderPainted(false);
-        AIIcon.setBounds(350, 620, 150, 150);
-        AIIcon.setBackground(Color.WHITE);
-
-        playerIcon.setBounds(500, 620, 150, 150);
-        playerIcon.setBorderPainted(false);
-        playerIcon.setBackground(Color.WHITE);
-
-        displayedTimer.setBounds(800, 620, 300, 20);
-        displayedTimer.setFont(customFont[22]);
-
-        InitGUI.initNextBtn(nextBtn);
-        InitGUI.AIHitInit(AIHit);
-
-        displayArray(Main.playerAttackBoard, displayArrayPlayerAttack, 100, 55, window, true, nextBtn);
-        displayArray(Main.AIAttackBoard, displayArrayAIAttack, 100, 540, window, false, nextBtn);
-
-        InitGUI.initArrayNames(AIAttack, 540, 45, "Your Home Board");
-        InitGUI.initArrayNames(playerAttack, 55, 45, "Your Attack Board");
-
-        InitGUI.initScore(AIScore, 540, 85, true);
-        InitGUI.initScore(playerScore, 55, 85, false);
-
-        currentTurn.setVisible(true);
-        legendImg.setVisible(true);
-        AIIcon.setVisible(true);
-        playerIcon.setVisible(true);
-        displayedTimer.setVisible(true);
-
-        window.getContentPane().add(AIIcon);
-        window.getContentPane().add(playerIcon);
-        window.getContentPane().add(legendImg);
-        window.getContentPane().add(AIHit);
-        window.getContentPane().add(saveGame);
-        window.getContentPane().add(nextBtn);
-        window.getContentPane().add(currentTurn);
-        window.getContentPane().add(AIAttack);
-        window.getContentPane().add(playerAttack);
-        window.getContentPane().add(AIScore);
-        window.getContentPane().add(playerScore);
-        window.getContentPane().add(displayedTimer);
-
-        nextBtn.addActionListener(e -> {
-            reInitFrame(window, nextBtn, currentTurn, AIAttack, playerAttack, AIScore, playerScore);
-        });
-        nextBtn.setEnabled(false);
-
+        initAndDisplay(nextBtn, window);
         if (FileHandling.firstRound) {
             FileHandling.promptSaveGame();
             FileHandling.firstRound = false;
         }
 
+        // Executing of round
         if (!Main.isPlayersTurn) {
+            // if it is AI's turn
             currentTurn.setText("It is AIsha's turn.");
             playerIcon.setEnabled(false);
             AIIcon.setEnabled(true);
-
             alreadyFired = false;
 
             if (AI.isHunting) {
@@ -168,29 +139,24 @@ public class GUI {
                     String ship = AI.shipsHit.get(0);
                     h = Hunting.huntGUI(huntPoint, ship);
                 } else {
-                    System.out.println("Some error occured ur so fcked hahsldkfjalsdkjf");
+                    System.out.println("An error occured.");
                 }
                 // otherwise run the hit algorithm which is the one that uses probability
                 // density
             } else {
                 // ai generate a hit using hit or hunt
-
                 if (Main.easyMode) {
                     h = Hitting.findProbabilityGUIEasy();
-
                 } else {
                     h = Hitting.findProbabilityGUI();
                 }
-
             }
 
-            // get x and y
-
+            // getting x and y from h, the coordinate that AI hits
             int y = h.getY(), x = h.getX();
-
             String AIHitString = "AIsha hit " + JLabelCoordinateString(y, x) + ". Is it a hit, miss, or sink?";
-            JLabel label = new JLabel(AIHitString);
 
+            JLabel label = new JLabel(AIHitString);
             label.setFont(customFont[14]);
 
             AIHit.setHorizontalAlignment(JLabel.CENTER);
@@ -199,32 +165,27 @@ public class GUI {
             String[] hitOrMiss = { "Hit", "Miss", "Sink" };
 
             // while loop
-            boolean supposedToBeSunk;
-            boolean supposedToBeHit;
-
             do {
                 supposedToBeSunk = false;
                 supposedToBeHit = false;
 
+                // display popup
                 int index = JOptionPane.showOptionDialog(window, label, "AIsha Hit", JOptionPane.DEFAULT_OPTION,
                         JOptionPane.INFORMATION_MESSAGE, null, hitOrMiss, hitOrMiss[0]);
-                if (index == 0 || index == 2) {
-                    System.out.println("was a hit");
 
+                // If AI hit or sunk a ship
+                if (index == 0 || index == 2) {
+                    System.out.println("AI hit a ship.");
+                    // popup for what ship the AI hit
                     JLabel label2 = new JLabel("What ship did AIsha hit?");
                     label2.setFont(customFont[16]);
                     int shipIndex = JOptionPane.showOptionDialog(window, label2, "What ship?",
                             JOptionPane.DEFAULT_OPTION,
                             JOptionPane.INFORMATION_MESSAGE, null, getShips(), getShips()[0]);
                     System.out.println("ShipIndex:" + shipIndex);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            MusicPlayer.playSound("explosion.wav", false);
-                        }
-                    }).start();
-                    if (index == 0) { // Hit a point
+                    playHIT(true);
 
+                    if (index == 0) { // Hit a point
                         // If the amount of times hit is equal to size
                         if (Main.playerShipTimesHit.get(shipIndex) + 1 == Ship
                                 .getSize(Main.playerShipsAlive.get(shipIndex))) {
@@ -238,8 +199,8 @@ public class GUI {
                                     + ". Please click next turn to continue or save game to save.");
                             Main.playerShipTimesHit.set(shipIndex, Main.playerShipTimesHit.get(shipIndex) + 1); // add 1
                         }
-                    } else {
 
+                    } else {
                         if (Main.playerShipTimesHit.get(shipIndex) + 1 != Ship
                                 .getSize(Main.playerShipsAlive.get(shipIndex))) {
                             JOptionPane.showMessageDialog(GUI.frame,
@@ -261,13 +222,8 @@ public class GUI {
                         }
                     }
 
-                } else if (index == 1) { // Hit missed
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            MusicPlayer.playSound("miss.wav", false);
-                        }
-                    }).start();
+                } else if (index == 1) { // AI misses
+                    playHIT(false);
                     Main.AIAttackBoard[y][x].setIsHit(true);
                     Main.AIMiss++;
                     Main.AIShot++;
@@ -279,24 +235,20 @@ public class GUI {
 
             } while (supposedToBeSunk || supposedToBeHit);
 
-            // Player's turn
         } else {
+            // Player's turn
             currentTurn.setText("It is your turn.");
-
             playerIcon.setEnabled(true);
-
             AIIcon.setEnabled(false);
-
             AIHit.setText("Pick a point to fire at on the attack board.");
             AIHit.setHorizontalAlignment(JLabel.CENTER);
         }
 
-        // loop end
-
+        // round is over
         Main.roundOver = !Main.roundOver;
-
     }
 
+    //display and updates the game boards
     public static void displayArray(Coordinate array[][], JButton display[][], int yPosition, int xPosition,
             JFrame window, boolean isEnabled, JButton nextBtn) {
 
@@ -353,6 +305,7 @@ public class GUI {
                                 // call player's turn method
                                 // boolean hitBefore=Main.playerAttackBoard[yInd][xInd].getIsHit();
                                 if (Main.isPlayersTurn) {
+                                    // if player has not fired yet
                                     if (!alreadyFired) {
                                         // asks for confirmation
                                         String[] confirmation = { "Yes", "No" };
@@ -360,7 +313,7 @@ public class GUI {
                                                 "Are you sure you want to hit " + yInd + xInd + "?");
                                         confirmHit.setFont(customFont[14]);
                                         int index = JOptionPane.showOptionDialog(window,
-                                                confirmHit, "AIsha hit",
+                                                confirmHit, "You hit",
                                                 JOptionPane.DEFAULT_OPTION,
                                                 JOptionPane.INFORMATION_MESSAGE, null, confirmation, confirmation[0]);
                                         if (index == 0) {
@@ -420,10 +373,9 @@ public class GUI {
         window.setLocationRelativeTo(null);
     }
 
+    //The game is over
     public static void endingScreen(JFrame window) {
-
         window.getContentPane().removeAll();
-        // InitGUI.initWindow(window);
 
         ImageIcon backgroundImageIcon;
         if (AIwon && !AITIE) {
@@ -434,6 +386,7 @@ public class GUI {
             backgroundImageIcon = new ImageIcon("assets/TIE.png");
         }
 
+        //Background image
         JLabel bkgImageContainer = new JLabel(backgroundImageIcon);
         bkgImageContainer.setSize(window.getContentPane().getWidth(),
                 window.getContentPane().getHeight());
@@ -471,10 +424,10 @@ public class GUI {
         window.getContentPane().add(bkgImageContainer);
 
         window.setVisible(true);
-        InitGUI.initWindow(window);
-        // return;
+ 
     }
 
+    //reinitializing frame so labels dont overlap each other
     public static void reInitFrame(JFrame window, JButton nextBtn, JLabel currentTurn, JLabel AIAttack,
             JLabel playerAttack, JLabel AIScore, JLabel PlayerScore) {
         Main.isPlayersTurn = !Main.isPlayersTurn;
@@ -488,13 +441,12 @@ public class GUI {
         window.getContentPane().remove(AIIcon);
         window.getContentPane().remove(playerIcon);
         window.getContentPane().remove(displayedTimer);
-        // legendImg.setVisible(false);
+
         AIHit.setVisible(false);
         nextBtn.setVisible(false);
         currentTurn.setVisible(false);
         displayedTimer.setVisible(false);
-        // AIScore.setVisible(false);
-        // AIScore.setVisible(false);
+
         InitGUI.initWindow(window);
         removeArray(displayArrayAIAttack, window);
         removeArray(displayArrayPlayerAttack, window);
@@ -507,7 +459,6 @@ public class GUI {
     }
 
     // -----------HELPER METHODS-----------------------
-
     public static void setBackgroundButton(JButton button) {
         button.setBorderPainted(false);
         button.setBackground(Color.WHITE);
@@ -536,5 +487,59 @@ public class GUI {
         }
         InitGUI.initWindow(window);
 
+    }
+
+    public static void initAndDisplay(JButton nextBtn, JFrame window) {
+        InitGUI.initCurrentTurn(currentTurn);
+        InitGUI.initLegend(legendImg);
+        InitGUI.initIcons();
+        InitGUI.initTimer(displayedTimer);
+        InitGUI.initNextBtn(nextBtn);
+        InitGUI.AIHitInit(AIHit);
+        InitGUI.initArrayNames(AIAttack, 540, 45, "Your Home Board");
+        InitGUI.initArrayNames(playerAttack, 55, 45, "Your Attack Board");
+        InitGUI.initScore(AIScore, 540, 85, true);
+        InitGUI.initScore(playerScore, 55, 85, false);
+
+        displayArray(Main.playerAttackBoard, displayArrayPlayerAttack, 100, 55, window, true, nextBtn);
+        displayArray(Main.AIAttackBoard, displayArrayAIAttack, 100, 540, window, false, nextBtn);
+
+        currentTurn.setVisible(true);
+        legendImg.setVisible(true);
+        AIIcon.setVisible(true);
+        playerIcon.setVisible(true);
+        displayedTimer.setVisible(true);
+
+        window.getContentPane().add(AIIcon);
+        window.getContentPane().add(playerIcon);
+        window.getContentPane().add(legendImg);
+        window.getContentPane().add(AIHit);
+        window.getContentPane().add(saveGame);
+        window.getContentPane().add(nextBtn);
+        window.getContentPane().add(currentTurn);
+        window.getContentPane().add(AIAttack);
+        window.getContentPane().add(playerAttack);
+        window.getContentPane().add(AIScore);
+        window.getContentPane().add(playerScore);
+        window.getContentPane().add(displayedTimer);
+
+        nextBtn.addActionListener(e -> {
+            reInitFrame(window, nextBtn, currentTurn, AIAttack, playerAttack, AIScore, playerScore);
+        });
+        nextBtn.setEnabled(false);
+
+    }
+
+    public static void playHIT(boolean hitAShip) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (hitAShip) {
+                    MusicPlayer.playSound("explosion.wav", false);
+                } else {
+                    MusicPlayer.playSound("miss.wav", false);
+                }
+            }
+        }).start();
     }
 }
