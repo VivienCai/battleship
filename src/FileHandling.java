@@ -152,6 +152,7 @@ public class FileHandling {
 				Main.AIAttackBoard[i][j]=cur;
 			}
 		}	
+		fsc.close();
 	}
 	
 	
@@ -321,14 +322,14 @@ public class FileHandling {
 					Game.playerSunkShips.get(nextShip).add(nextPoint.toString());					
 				}
 			}
-		}		
+		}	
+		fsc.close();
  	}
  
 	
 	
 	
 	public static void saveGame(int fileNumber) throws Exception {
-		Scanner sc = new Scanner(System.in);
 		//Determines which file to save to
         System.out.println("Which save file would you like to save to? Please enter a number greater than 1.");
         PrintWriter text = new PrintWriter("Info" + fileNumber + ".txt");
