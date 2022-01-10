@@ -229,6 +229,7 @@ public class Hitting extends AI {
     // Terminal specific, finds the probability of a ship being in a certain
     // position
     public static void findProbability() {
+        skewProbabilityPrompt();
         // for each ship alive
         for (String i : Main.playerShipsAlive) {
             // summing will be based on the size of the ship
@@ -248,6 +249,7 @@ public class Hitting extends AI {
     // gui specific finding probability
     public static Coordinate findProbabilityGUI() {
         // for every single ship alive sum vertically and horizontally 
+        skewProbabilityPrompt();
         for (String i : Main.playerShipsAlive) {
             int size = Ship.getSize(i);
             sumColumns(size);
@@ -281,6 +283,38 @@ public class Hitting extends AI {
                 Main.AIAttackBoard[yCoord][xCoord].setIsHit(true);
                 return Main.AIAttackBoard[yCoord][xCoord];
             }
+        }
+    }
+
+    public static void skewProbabilityPrompt() {
+        while (true) {
+
+            System.out.println("Skew Sides? (type y/n.)");
+            String input = sc.nextLine();
+            if (!input.equals("")) {
+                if (input.equals("y")) {
+                    skewProbability();
+                    System.out.println("Skewed.");
+                    break;
+                } else if (input.equals("n")) {
+                    System.out.println("Carrying on with regular hitting.");
+                    break;
+                }
+            } 
+            System.out.println("Invalid input, try again.");
+        }
+        System.out.println("Blank input, try again.");
+    }
+
+    public static void skewProbability() {
+        for (int i = 1; i <= 10; i++) {
+            Main.AIAttackBoard[1][i].setProbability(20);
+            Main.AIAttackBoard[10][i].setProbability(20);
+        }
+
+        for (int i = 2; i <= 9; i++) {
+            Main.AIAttackBoard[i][1].setProbability(20);
+            Main.AIAttackBoard[i][10].setProbability(20);
         }
     }
 
