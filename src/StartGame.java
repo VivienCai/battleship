@@ -1,9 +1,11 @@
+/* Sarina Li, Vivien Cai, Jiaan Li
+* Sun January 09
+* ICS4U1
+* StartGame File 
+* ROOT OF OUR APPLICATION
+*/
 
-//Vivien Cai, Sarina Li, Jiaan Li
-//January 6, 2020
-//Mr. Anandarajan
-//Battleship Project
-
+// root of our java project, run the GUI based game here. 
 public class StartGame {
 	public static void main(String[] args) throws Exception {
 		Main.initArrays();

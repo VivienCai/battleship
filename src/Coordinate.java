@@ -1,5 +1,12 @@
+/* Sarina Li, Vivien Cai, Jiaan Li
+* Sun January 09
+* ICS4U1
+* Coordinate File
+*/
 
-// coordinates need to be sorted by their probability so we implemented a comparator so it can be sorted/compared
+// Coordinate class that is liteerally the bread and butter of our program
+// each coordinate can store lots of useful information: sunk, miss, probability, unique, ship and is equipped with many useful methods
+// NOTE: has a comparator because the coordinate should be able to be sorted 
 public class Coordinate implements Comparable<Coordinate> {
    
     // attributes 

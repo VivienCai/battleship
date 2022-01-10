@@ -1,7 +1,20 @@
+/* Sarina Li, Vivien Cai, Jiaan Li
+* Sun January 09
+* ICS4U1
+* MusicPlayer File
+*/
+
+/* IMPORTS 
+* io: file reading 
+* javax.sound.sampled: sound playing
+*/
+
 import java.io.*;
 import javax.sound.sampled.*;
 
+// class that plays, stops and reads the music
 public class MusicPlayer {
+    // attributes 
     Long currentFrame;
     Clip clip;
 
@@ -30,7 +43,9 @@ public class MusicPlayer {
         }
     }
 
+    // play the music
     public static void playSound(String relativePath, Boolean loopInfinite) {
+        // gets the path and trys to read this sound file to play
         try {
             filePath = "sounds/" + relativePath;
             MusicPlayer audioPlayer = new MusicPlayer(loopInfinite);
@@ -49,19 +64,13 @@ public class MusicPlayer {
         }
     }
 
-    public static void main(String[] args) {
-        playSound("disappointed.wav", false);
-        
-        playSound("miss.wav", true);
-     
-    }
-
     // Method to play the audio
     public void play() {
         // start the clip
         clip.start();
     }
 
+    // to stop the music from playing
     public void stop() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         clip.stop();
         clip.close();
