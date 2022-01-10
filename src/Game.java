@@ -5,10 +5,6 @@ public class Game {
     static int iCoin;
     static int coinToss;
     static boolean coinValid = false;
-    // O - not hit or occupied
-    // X - occupied by a ship, hit
-    // M - not occupied by a ship, hit
-    // S - occupied by a ship, not hit
 
     // maps that reference a coordinate name to a ship or a ship to a list of the
     // coordinates it occupies
@@ -18,64 +14,13 @@ public class Game {
     public static HashMap<String, ArrayList<String>> playerSunkShips = new HashMap<>();
     public static HashMap<String, ArrayList<String>> AIMapOfShip = new HashMap<>();
 
-    // Init hashmap
-    public static void initHitPoint() {
-        for (String i : Main.playerShipsAlive) {
-            Game.playerSunkShips.put(i, new ArrayList<String>());
-            Game.AIMapOfShip.put(i, new ArrayList<String>());
-        }
-    }
-
-    // for printing user and AI displays using the naming conventions
-    public static void printPlacementArray(Coordinate array[][]) { // USER ATTACK BOARD
-
-        for (int i = 0; i <= 10; i++) {
-            char ind = (char) ('A' + i - 1);
-            if (i == 0) {
-                for (int j = 0; j <= 10; j++) {
-                    System.out.print(j + " ");
-                }
-            }
-            if (i > 0) {
-                System.out.print(ind + " ");
-            }
-            for (int j = 1; j <= 10; j++) {
-                if (i == 0) {
-                    continue;
-                } else {
-                    Coordinate cur = array[i][j];
-                    boolean isShip = cur.getIsShip(), isHit = cur.getIsHit(), isSunk = cur.getIsSunk(),
-                            isUnique = cur.getIsUnique();
-                    if ((isHit && isShip) || (isHit && isSunk) || isUnique) {
-                        System.out.print("X ");
-                    } else if (isHit && !isShip) {
-                        System.out.print("M ");
-                    } else if (!isHit && isShip) {
-                        System.out.print("S ");
-                    } else {
-                        System.out.print("O ");
-                    }
-
-                }
-
-            }
-            System.out.println();
-        }
-    }
-
-    public static boolean boundsCheck(int n, boolean isV, int size) {
-        if (n <= 11 - size) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public static String getAccessKey(int y, int x) {
-        char keyChar = Coordinate.columnIndex(y);
-        String accessKey = String.valueOf(keyChar) + String.valueOf(x);
-        return accessKey;
-    }
+    /*
+     * Legend
+     * O - not hit or occupied
+     * X - occupied by a ship, hit
+     * M - not occupied by a ship, hit
+     * S - occupied by a ship, not hit
+     */
 
     public static void playerMoves(ArrayList<Ship> shipsAlive, ArrayList<String> playerShipsAlive) {
         // print the placement array of the player and the hit array of the player
@@ -145,7 +90,6 @@ public class Game {
                     Main.playerAttackBoard[columnInd][rowInd].setIsShip(false);
                     Main.playerAttackBoard[columnInd][rowInd].setIsSunk(true);
                 }
-
                 System.out.printf("YOU SUNK THE AI'S %s.\n", shipHitName);
                 return "YOU SUNK THE AI'S " + shipHitName + "\n";
             } else {
@@ -169,7 +113,6 @@ public class Game {
     }
 
     public static void AIMoves(ArrayList<Ship> shipsAlive, ArrayList<String> playerShipsAlive) throws Exception {
-
         System.out.println("________________________________");
         System.out.println("It is the AI's turn");
 
@@ -212,72 +155,11 @@ public class Game {
         printPlacementArray(Main.AIAttackBoard);
     }
 
-    // coin flip method to determines who goes first
-    public static String coinFlipReturn() {
-        while (!coinValid) {
-            // System.out.println("Please enter 1 if you want to pick heads and 2 if you
-            // want to pick tails.");
-
-            // coin = Main.sc.next();
-            if (Main.heads == true) {
-                iCoin = 1;
-            } else {
-                iCoin = 2;
-            }
-            coinToss = (int) (Math.random() * 2 + 1);
-
-            // if user does not enter 1 or 2
-            // if (!coin.equals("1") && !coin.equals("2")) {
-            // System.out.println("You did not enter a valid input. Please try again.");
-            // } else {
-            // iCoin = Integer.parseInt(coin);
-            if (iCoin == 1 && iCoin == coinToss) {
-                Main.AIFirst = false;
-                Main.isPlayersTurn = true;
-                return "You picked heads.\nThe coin landed on heads.\nYou are going first!\n";
-                // System.out.print("You picked heads.");
-                // System.out.println(" The coin landed on heads.");
-                // System.out.println("You are going first!");
-            } else if (iCoin == coinToss) {
-                Main.AIFirst = false;
-                Main.isPlayersTurn = true;
-                return "You picked tails.\nThe coin landed on tails.\nYou are going first!\n";
-                // System.out.print("You picked tails.");
-                // System.out.println(" The coin landed on tails.");
-                // System.out.println("You are going first!");
-            } else if (iCoin == 1) {
-                Main.AIFirst = true;
-                Main.isPlayersTurn = false;
-                return "You picked heads.\nThe coin landed on tails.\nThe AI is going first.\n";
-                // System.out.print("You picked heads.");
-                // System.out.println(" The coin landed on tails.");
-                // System.out.println("The AI is going first.");
-            } else {
-                Main.AIFirst = true;
-                Main.isPlayersTurn = false;
-                return "You picked tails.\nThe coin landed on heads.\nThe AI is going first.\n";
-                // System.out.print("You picked tails.");
-                // System.out.println(" The coin landed on heads.");
-                // System.out.println("The AI is going first.");
-            }
-            // coinValid = true;
-            // }
-
-        }
-        Main.promptEnterKey();
-        return coin;
-    }
-
     public static void coinFlip() {
         while (!coinValid) {
             System.out.println("Please enter 1 if you want to pick heads and 2 if you want to pick tails.");
 
             coin = Main.sc.next();
-            // if (Main.heads == true) {
-            // iCoin = 1;
-            // } else {
-            // iCoin = 2;
-            // }
             coinToss = (int) (Math.random() * 2 + 1);
 
             // if user does not enter 1 or 2
@@ -340,6 +222,59 @@ public class Game {
 
     }
 
+    // ------HELPER METHODS---------
+    // Init hashmap
+    public static void initHitPoint() {
+        for (String i : Main.playerShipsAlive) {
+            Game.playerSunkShips.put(i, new ArrayList<String>());
+            Game.AIMapOfShip.put(i, new ArrayList<String>());
+        }
+    }
+
+    // getting the String of coordinate (ex F5)
+    public static String getAccessKey(int y, int x) {
+        char keyChar = Coordinate.columnIndex(y);
+        String accessKey = String.valueOf(keyChar) + String.valueOf(x);
+        return accessKey;
+    }
+
+    // for printing user and AI displays using the naming conventions
+    public static void printPlacementArray(Coordinate array[][]) { // USER ATTACK BOARD
+        for (int i = 0; i <= 10; i++) {
+            char ind = (char) ('A' + i - 1);
+            if (i == 0) {
+                for (int j = 0; j <= 10; j++) {
+                    System.out.print(j + " ");
+                }
+            }
+            if (i > 0) {
+                System.out.print(ind + " ");
+            }
+            for (int j = 1; j <= 10; j++) {
+                if (i == 0) {
+                    continue;
+                } else {
+                    Coordinate cur = array[i][j];
+                    boolean isShip = cur.getIsShip(), isHit = cur.getIsHit(), isSunk = cur.getIsSunk(),
+                            isUnique = cur.getIsUnique();
+                    if ((isHit && isShip) || (isHit && isSunk) || isUnique) {
+                        System.out.print("X ");
+                    } else if (isHit && !isShip) {
+                        System.out.print("M ");
+                    } else if (!isHit && isShip) {
+                        System.out.print("S ");
+                    } else {
+                        System.out.print("O ");
+                    }
+
+                }
+
+            }
+            System.out.println();
+        }
+    }
+
+    // printing the hashmap for testing
     public static void printHashMap() {
         for (String i : Game.AIMapOfShip.keySet()) {
             // ship
@@ -351,6 +286,7 @@ public class Game {
         }
     }
 
+    // returns ship index
     public static String shipOf(int shipIndex) {
         String ship = GUI.getShips()[shipIndex];
         return ship;
