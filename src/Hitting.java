@@ -308,13 +308,22 @@ public class Hitting extends AI {
 
     public static void skewProbability() {
         for (int i = 1; i <= 10; i++) {
-            Main.AIAttackBoard[1][i].setProbability(20);
-            Main.AIAttackBoard[10][i].setProbability(20);
+            if (!Main.AIAttackBoard[1][i].getIsHit()) {
+                Main.AIAttackBoard[1][i].setProbability(20);
+
+            }
+            if (!Main.AIAttackBoard[10][i].getIsHit()) {
+                Main.AIAttackBoard[10][i].setProbability(20);
+            }
         }
 
         for (int i = 2; i <= 9; i++) {
-            Main.AIAttackBoard[i][1].setProbability(20);
-            Main.AIAttackBoard[i][10].setProbability(20);
+            if (!Main.AIAttackBoard[i][1].getIsHit()) {
+                Main.AIAttackBoard[i][1].setProbability(20);
+            }
+            if (Main.AIAttackBoard[i][10].getIsHit()) {
+                Main.AIAttackBoard[i][10].setProbability(20);
+            }
         }
     }
 
