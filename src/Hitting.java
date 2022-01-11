@@ -321,7 +321,7 @@ public class Hitting extends AI {
             if (!Main.AIAttackBoard[i][1].getIsHit()) {
                 Main.AIAttackBoard[i][1].setProbability(20);
             }
-            if (Main.AIAttackBoard[i][10].getIsHit()) {
+            if (!Main.AIAttackBoard[i][10].getIsHit()) {
                 Main.AIAttackBoard[i][10].setProbability(20);
             }
         }
