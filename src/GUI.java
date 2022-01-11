@@ -81,10 +81,15 @@ public class GUI {
 
         // If its the first round, start timer
         if (Main.count == 0) {
-            Timer time = new Timer(); // Instantiate Timer Object
-            ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
-            time.schedule(st, 0, 1000); // Create Repetitively task for every 1 secs
-            Main.count++;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Timer time = new Timer(); // Instantiate Timer Object
+                    ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
+                    time.schedule(st, 0, 1000); // Create Repetitively task for every 1 secs
+                    Main.count++;
+                }
+            }).start();
         }
 
         // check if the game is over. If it is, the game ends
@@ -248,7 +253,7 @@ public class GUI {
         Main.roundOver = !Main.roundOver;
     }
 
-    //display and updates the game boards
+    // display and updates the game boards
     public static void displayArray(Coordinate array[][], JButton display[][], int yPosition, int xPosition,
             JFrame window, boolean isEnabled, JButton nextBtn) {
 
@@ -373,7 +378,7 @@ public class GUI {
         window.setLocationRelativeTo(null);
     }
 
-    //The game is over
+    // The game is over
     public static void endingScreen(JFrame window) {
         window.getContentPane().removeAll();
 
@@ -386,7 +391,7 @@ public class GUI {
             backgroundImageIcon = new ImageIcon("assets/TIE.png");
         }
 
-        //Background image
+        // Background image
         JLabel bkgImageContainer = new JLabel(backgroundImageIcon);
         bkgImageContainer.setSize(window.getContentPane().getWidth(),
                 window.getContentPane().getHeight());
@@ -424,10 +429,10 @@ public class GUI {
         window.getContentPane().add(bkgImageContainer);
 
         window.setVisible(true);
- 
+
     }
 
-    //reinitializing frame so labels dont overlap each other
+    // reinitializing frame so labels dont overlap each other
     public static void reInitFrame(JFrame window, JButton nextBtn, JLabel currentTurn, JLabel AIAttack,
             JLabel playerAttack, JLabel AIScore, JLabel PlayerScore) {
         Main.isPlayersTurn = !Main.isPlayersTurn;

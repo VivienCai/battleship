@@ -223,7 +223,7 @@ public class Hitting extends AI {
      * finds the square with the highest number of orientations possible in a
      * particular square.
      * 
-     * To achieve this, you must sum the vertical and horizontal separately. 
+     * To achieve this, you must sum the vertical and horizontal separately.
      */
 
     // Terminal specific, finds the probability of a ship being in a certain
@@ -248,7 +248,7 @@ public class Hitting extends AI {
 
     // gui specific finding probability
     public static Coordinate findProbabilityGUI() {
-        // for every single ship alive sum vertically and horizontally 
+        // for every single ship alive sum vertically and horizontally
         skewProbabilityPrompt();
         for (String i : Main.playerShipsAlive) {
             int size = Ship.getSize(i);
@@ -256,7 +256,7 @@ public class Hitting extends AI {
             sumRows(size);
 
         }
-        // use the method to hit 
+        // use the method to hit
         Coordinate h = AIhitGUI();
         printArray(Main.AIAttackBoard);
         // reset for future use
@@ -272,13 +272,13 @@ public class Hitting extends AI {
 
         while (true) {
             // Creates a random x and y integer
-            int xCoord = rand.nextInt(0 + 10) + 1; 
+            int xCoord = rand.nextInt(0 + 10) + 1;
             int yCoord = rand.nextInt(0 + 10) + 1;
 
             // abbr for current coordinate
             Coordinate curCoordinate = Main.AIAttackBoard[yCoord][xCoord];
             // Checks if created point has already been hit
-            if (!curCoordinate.getIsHit()) { 
+            if (!curCoordinate.getIsHit()) {
                 // set hit as true, return the hit for future purposes
                 Main.AIAttackBoard[yCoord][xCoord].setIsHit(true);
                 return Main.AIAttackBoard[yCoord][xCoord];
@@ -300,10 +300,13 @@ public class Hitting extends AI {
                     System.out.println("Carrying on with regular hitting.");
                     break;
                 }
-            } 
-            System.out.println("Invalid input, try again.");
+            } else if (input.equals("")) {
+                System.out.println("Blank input, try again.");
+            } else {
+                System.out.println("Invalid input, try again.");
+            }
         }
-        System.out.println("Blank input, try again.");
+
     }
 
     public static void skewProbability() {
@@ -327,11 +330,13 @@ public class Hitting extends AI {
         }
     }
 
-    /* LOGIC: 
-    The idea is we have to only sum these next shipsize squares if they are a) valid and not out of bounds
-    and b) not occupied by a miss in ANY of the squares. 
-
-    If they do not satisfy a or b, we can sum these next squares. 
+    /*
+     * LOGIC:
+     * The idea is we have to only sum these next shipsize squares if they are a)
+     * valid and not out of bounds
+     * and b) not occupied by a miss in ANY of the squares.
+     * 
+     * If they do not satisfy a or b, we can sum these next squares.
      */
     // method to sum rows
     public static void sumRows(int shipSize) {
@@ -345,7 +350,7 @@ public class Hitting extends AI {
                 // making sure that it is not a miss
                 for (int g = j; g < j + shipSize; g++) {
                     Coordinate cur = Main.AIAttackBoard[i][g];
-                    if (cur.getIsHit()) { 
+                    if (cur.getIsHit()) {
                         // set the flag as false, we cannot sum anymore.
                         flag = false;
                     }
@@ -361,7 +366,8 @@ public class Hitting extends AI {
         }
     }
 
-    // see sumRows method for detailed explanation. This is essentially the same method, 
+    // see sumRows method for detailed explanation. This is essentially the same
+    // method,
     // just vertically (SEE LINE 295)
     public static void sumColumns(int shipSize) {
         for (int i = 1; i <= 10; i++) {
@@ -389,11 +395,11 @@ public class Hitting extends AI {
         int coord = -1;
 
         // keeps on running until user makes a valid input
-        while (true) { 
+        while (true) {
             input = sc.nextLine();
             if (isInt(input)) {
                 coord = Integer.parseInt(input);
-                
+
                 // if its in bounds
                 if (coord >= 1 && coord <= 10) {
                     return coord;
@@ -407,14 +413,16 @@ public class Hitting extends AI {
         }
     }
 
-    // asks user for Y component of the point they want to hit. Also converts character to useable index.
+    // asks user for Y component of the point they want to hit. Also converts
+    // character to useable index.
     public static int getInputY() {
         char c;
         int coord = 0;
         // continue asking for input until it is valid
-        while (true) { 
+        while (true) {
             c = sc.nextLine().charAt(0);
-            // subtract the "base" ASCII value of 'A' to get the index, add 1 because our arrays are 1 indexed
+            // subtract the "base" ASCII value of 'A' to get the index, add 1 because our
+            // arrays are 1 indexed
             coord = (char) ((c - 'A') + 1);
             if (coord >= 1 && coord <= 10) {
                 return coord;
@@ -433,7 +441,8 @@ public class Hitting extends AI {
         return hit;
     }
 
-    // loop through the array and get the maximum. set the global variable as the max
+    // loop through the array and get the maximum. set the global variable as the
+    // max
     public static void findMax() {
         for (int i = 1; i <= 10; i++) {
             for (int j = 1; j <= 10; j++) {
