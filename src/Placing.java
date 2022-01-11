@@ -11,19 +11,53 @@ public class Placing {
         int x;
         int y;
         // if vertical
-        if (orientationV) {
-            x = (int) ((Math.random() * 2) + 1);
-            if (x == 2) {
-                x = 10;
-            }
-            y = (int) ((Math.random() * (11 - shipSize)) + 1);
+        // RANDOM PLACING AT EDGES
+        // if (orientationV) {
+        // x = (int) ((Math.random() * 2) + 1);
+        // if (x == 2) {
+        // x = 10;
+        // }
+        // y = (int) ((Math.random() * (11 - shipSize)) + 1);
 
-        } // if horizontal
-        else {
-            x = (int) ((Math.random() * (11 - shipSize)) + 1);
-            y = (int) ((Math.random() * 2) + 1);
-            if (y==2) {
-                y=10;
+        // } // if horizontal
+        // else {
+        // x = (int) ((Math.random() * (11 - shipSize)) + 1);
+        // y = (int) ((Math.random() * 2) + 1);
+        // if (y==2) {
+        // y=10;
+        // }
+        // }
+        if (orientationV) {
+            switch (shipSize) {
+                case 3:
+                    x = 2;
+                    y = 7;
+                    break;
+                case 5:
+                    x = 1;
+                    y = 1;
+                    break;
+                default:
+                    x = 0;
+                    y = 0; // should be error
+            }
+        } else {
+            switch (shipSize) {
+                case 2:
+                    x = 7;
+                    y = 9;
+                    break;
+                case 3:
+                    x = 3;
+                    y = 2;
+                    break;
+                case 4:
+                    x = 7;
+                    y = 1;
+                    break;
+                default:
+                    x = 0;
+                    y = 0; // should be error
             }
         }
         return new Coordinate(y, x);
@@ -55,9 +89,14 @@ public class Placing {
             if (i == 6) {
                 shipSize = 3;
             }
-
             // instantiating
-            boolean orientationV = (int) ((Math.random() * 2) + 1) == 1 ? true : false;
+            // boolean orientationV = (int) ((Math.random() * 2) + 1) == 1 ? true : false;
+            boolean orientationV;
+            if (i >= 5) {
+                orientationV = true;
+            } else {
+                orientationV = false;
+            }
             boolean isCoorUnique = false;
 
             // generating a new point (home coordinate of ship)
