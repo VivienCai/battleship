@@ -34,7 +34,7 @@ public class Placing {
                     y = 7;
                     break;
                 case 5:
-                    x = 1;
+                    x = 2;
                     y = 1;
                     break;
                 default:
@@ -48,12 +48,12 @@ public class Placing {
                     y = 9;
                     break;
                 case 3:
-                    x = 3;
+                    x = 4;
                     y = 2;
                     break;
                 case 4:
                     x = 7;
-                    y = 1;
+                    y = 3;
                     break;
                 default:
                     x = 0;
