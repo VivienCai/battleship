@@ -1,4 +1,4 @@
-# ICS4U Battleship
+# Battleship
 ### _Vivien Cai, Jiaan Li, Sarina Li_
 
 Welcome to the offical repository of our battleship project, glad you're here! Let's get into the Nitty Gritty.
